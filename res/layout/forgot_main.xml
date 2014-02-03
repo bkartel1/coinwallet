@@ -23,19 +23,25 @@
         android:ems="10"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:text="Please enter username" >
+        android:hint="Please enter username" >
 
     </EditText>
+    
+    <TextView 
+    android:id="@+id/textView2"
+    android:layout_width="fill_parent"
+	android:layout_height="wrap_content"
+	android:layout_below="@id/editText1"
+	android:text="answer" />
 
     <EditText
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/editText1"
-        android:layout_marginTop="25dp"
+        android:layout_below="@+id/textView2"
         android:ems="10" 
-        android:text="Please answer question"
+        android:hint="Please answer question"
         android:imeOptions="actionDone"
         android:inputType="text">
 
