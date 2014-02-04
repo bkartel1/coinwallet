@@ -5,15 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.teambitcoin.coinwallet.api.Address;
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -32,6 +37,7 @@ public class AddressScreen extends Activity {
 		initDummyList();
 		createAddressEntries();
 		
+		// Address list UI set up
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
 		
 		simpleAdapter = new SimpleAdapter(this, addressEntries, 
@@ -41,6 +47,47 @@ public class AddressScreen extends Activity {
 		addrListView.setAdapter(simpleAdapter);
 		registerForContextMenu(addrListView);
 		
+		// Add address button set up
+		Button addNewAddrBtn = (Button) findViewById(R.id.add_new_addr_btn);
+		addNewAddrBtn.setOnClickListener(new OnClickListener() {
+			// Dialog prompt for address label
+			public void onClick(View v) {
+				final EditText addrLabelText = new EditText(AddressScreen.this);
+					
+				AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
+				addNewAddrDialog.setTitle("New address");
+				addNewAddrDialog.setMessage("A new address will be generated. Please enter a label for this address.");
+				addNewAddrDialog.setView(addrLabelText);
+				addNewAddrDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						Editable addrLabelInput = addrLabelText.getText();
+						// TODO: generate the address w/label
+						Address generatedAddr = null;
+						try {
+							//generatedAddr = new BlockchainAPI().generateNewAddress(null);
+							generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						
+						HashMap<String, String> a = new HashMap<String, String>();
+						a.put("address", generatedAddr.getLabel());
+						addressEntries.add(0, a);
+						simpleAdapter.notifyDataSetChanged();					
+						
+						Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
+					}
+				});
+				addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO: cancel operation
+					}
+				});
+				
+				addNewAddrDialog.show();
+			}
+		});
 	}
 	
 	@Override
@@ -59,7 +106,6 @@ public class AddressScreen extends Activity {
 		if(menuItem.getItemId() == 2)
 		{
 			Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
-			
 		}
 		return true;
 	}
