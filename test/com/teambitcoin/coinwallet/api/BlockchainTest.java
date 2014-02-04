@@ -23,7 +23,7 @@ public class BlockchainTest {
 	@Test
 	public void accountCreation() throws Exception{
 		Account testAccount = api.createAccount("test", "thisisapassword");
-		Address added = api.generateNewAddress(testAccount);
+		Address added = api.generateNewAddress(testAccount, null);
 		List<Address> addresses = api.getAddresses(testAccount);
 		
 		boolean found = false; 
@@ -38,7 +38,7 @@ public class BlockchainTest {
 	@Test
 	public void archiving() throws Exception{
 		Account account = api.createAccount("test", "thisisapassword");
-		Address address = api.generateNewAddress(account);
+		Address address = api.generateNewAddress(account, null);
 		List<Address> addresses = api.getAddresses(account);
 		
 		boolean found = false;
