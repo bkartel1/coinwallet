@@ -41,6 +41,23 @@ public class User {
 		return username;
 	}
 	
+	private String getPassword(){
+		Cursor cursor = Database.query(TABLE_NAME, new String[]{PASSWORD_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
+		return cursor.getString(cursor.getColumnIndex(PASSWORD_COLUMN_NAME));
+	}
+	
+	public String recoverPassword(String answer){
+		Cursor cursor = Database.query(TABLE_NAME, new String[]{SECURITY_ANSWER_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
+		String correct = cursor.getString(cursor.getColumnIndex(SECURITY_ANSWER_COLUMN_NAME));
+		if (correct == null){
+			return null;
+		} else if (answer != correct) {
+			return null;
+		} else {
+			return getPassword();
+		}
+	}
+	
 	public String getGUID(){
 		return guid;
 	}

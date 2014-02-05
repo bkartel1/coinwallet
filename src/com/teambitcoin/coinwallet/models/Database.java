@@ -189,6 +189,7 @@ public class Database extends SQLiteOpenHelper {
 	 * Currently unthread-safe singleton implementationation for accessing the db.
 	 * Deprecated in preference for thread-safe methods. 
 	 * @return Instance of the Database.
+	 * @deprecated Use the thread-safe Static methods which access the db instead of providing the access details. 
 	 */
 	@Deprecated
 	protected static Database getInstance(){
