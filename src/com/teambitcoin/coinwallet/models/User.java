@@ -1,8 +1,11 @@
 package com.teambitcoin.coinwallet.models;
 
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
+
 import android.database.Cursor;
 import android.content.ContentValues;
+
 import com.teambitcoin.coinwallet.api.Account;
 import com.teambitcoin.coinwallet.api.BlockchainAPI;
 
@@ -15,8 +18,11 @@ public class User {
 	private static final String PASSWORD_COLUMN_NAME = "password";
 	private static final Pattern VALID_USERNAME = Pattern.compile("^((\\d{10})|((\\+\\d)?\\d{3}-\\d{3}-\\d{4})|([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}))$");
 	
+	private static User LOGGED_IN = null;
+	
 	private String username;
 	private String guid;
+	private String password;
 	
 	protected User(String username, String guid){
 		this.username = username;
@@ -41,7 +47,7 @@ public class User {
 		return username;
 	}
 	
-	private String getPassword(){
+	private String getDecodedPassword(){
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{PASSWORD_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
 		return cursor.getString(cursor.getColumnIndex(PASSWORD_COLUMN_NAME));
 	}
@@ -54,7 +60,7 @@ public class User {
 		} else if (answer != correct) {
 			return null;
 		} else {
-			return getPassword();
+			return getDecodedPassword();
 		}
 	}
 	
@@ -76,7 +82,35 @@ public class User {
 		return cursor.getString(cursor.getColumnIndex(SECURITY_QUESTION_COLUMN_NAME));
 	}
 	
+	private boolean authenticate(String password){
+		if (password==this.getDecodedPassword()){
+			this.password=password;
+			return true;
+		} else {
+			return false;
+		}
+	}
 	
+	public static User login(String username, String password){
+		User user = getUser(username);
+		if (user == null){
+			return null;
+		}
+		if (user.authenticate(password)){
+			LOGGED_IN = user;
+			return user;
+		} else {
+			return null;
+		}
+	}
+	
+	public static void logout(){
+		LOGGED_IN = null;
+	}
+	
+	protected String getPassword(){
+		return password;
+	}
 	
 	protected static String getSQLInitQuery(){
 		return "CREATE TABLE " + TABLE_NAME + " (" +
@@ -90,4 +124,9 @@ public class User {
 	public static boolean isValidUsername(String username){
 		return VALID_USERNAME.matcher(username).matches();
 	}
+	
+	public static User getLoggedInUser(){
+		return LOGGED_IN;
+	}
+	
 }
