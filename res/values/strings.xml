@@ -4,5 +4,9 @@
     <string name="app_name">coinwallet</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="username_title">Username:</string>
+    <string name="password_title">Password:</string>
+    <string name="login_text">Login</string>
+    <string name="register_text">Register</string>
 
 </resources>

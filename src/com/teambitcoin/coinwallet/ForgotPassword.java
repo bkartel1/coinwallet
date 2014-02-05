@@ -27,7 +27,7 @@ public void onCreate(Bundle savedInstanceState){
 		
 		
 //added this text when hit done after the user entered username
-final EditText editText1 = (EditText) findViewById(R.id.editText1);//had to make it final in order to work...
+final EditText editText1 = (EditText) findViewById(R.id.username_field);//had to make it final in order to work...
 editText1.setOnEditorActionListener(new OnEditorActionListener() {
 	   public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 	   boolean handled = false;
@@ -64,7 +64,7 @@ editText1.setOnEditorActionListener(new OnEditorActionListener() {
 	});
 	
 	//added this text when hit done after the user entered answer
-		final EditText editText2 = (EditText) findViewById(R.id.editText2);
+		final EditText editText2 = (EditText) findViewById(R.id.password_field);
 		
 		editText2.setOnEditorActionListener(new OnEditorActionListener() {
 		    
@@ -87,7 +87,7 @@ editText1.setOnEditorActionListener(new OnEditorActionListener() {
 		});
 	
 	//adding the button object
-	Button button = (Button) findViewById(R.id.button2);
+	Button button = (Button) findViewById(R.id.login_button);
 	
 	button.setOnClickListener(new View.OnClickListener() {
 	public void onClick(View v) {
