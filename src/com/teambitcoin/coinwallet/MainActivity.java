@@ -20,6 +20,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	Button button = (Button) findViewById(R.id.button1);
     	button.setOnClickListener(this);
     	
+    	// button to go to address screen (temporary until actual layout is implemented)
+    	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
+    	addrScreenBtn.setOnClickListener(this);
+    	
     	
     }
     public void clickButton1(){
@@ -29,14 +33,21 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	Toast toast = Toast.makeText(context, text, duration);
     	toast.show();
     	
+    	startActivity(new Intent("com.teambitcoin.coinwallet.ForgotPassword"));
+    }
+    
+    public void clickAddrScreenBtn() {
     	startActivity(new Intent("com.teambitcoin.coinwallet.AddressScreen"));
     }
     
     public void onClick(View v) {
-    	switch (v.getId()){
-    	case R.id.button1:
-    	clickButton1();
-    	break;
+    	switch (v.getId()) {
+    		case R.id.button1:
+    			clickButton1();
+    			break;
+    		case R.id.addr_screen_btn:
+    			clickAddrScreenBtn();
+    			break;
     	}
     	
 	}
