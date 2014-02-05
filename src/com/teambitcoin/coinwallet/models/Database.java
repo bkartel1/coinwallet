@@ -8,6 +8,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Thread-safe wrapper class for the database, with access generally restricted to members of the model package.
+ * @author Michael Williams
+ *
+ */
 public class Database extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 3;
@@ -26,6 +31,11 @@ public class Database extends SQLiteOpenHelper {
 
 	}
 	
+	/**
+	 * Performs raw SQL on writable version of the database.
+	 * Rather than using this, insert, update or delete should be used instead.
+	 * @param sql
+	 */
 	protected static void execWritableSQL(String sql){
 		lock.lock();
 		try{
@@ -36,6 +46,12 @@ public class Database extends SQLiteOpenHelper {
 		}
 	}
 	
+	/**
+	 * Performs raw SQL on read-only version of the database.
+	 * Rather than using this, query should be used instead.
+	 * @param sql
+	 * @return Cursor for navigating the result
+	 */
 	protected static Cursor execReadableSQL(String sql){
 		lock.lock();
 		Cursor result;
@@ -48,6 +64,19 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Wrapper for SQLiteDatabase's query method. 
+	 * This is the prefered way to access data from the database.
+	 * @param table
+	 * @param columns
+	 * @param selection
+	 * @param selectionArgs
+	 * @param groupBy
+	 * @param having
+	 * @param orderBy
+	 * @return
+	 * @see android.database.sqlite.SQLiteDatabase
+	 */
 	protected static Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy){
 		lock.lock();
 		Cursor result;
@@ -60,6 +89,20 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Wrapper for SQLiteDatabase's query method. 
+	 * This is the prefered way to access data from the database. 
+	 * @param table
+	 * @param columns
+	 * @param selection
+	 * @param selectionArgs
+	 * @param groupBy
+	 * @param having
+	 * @param orderBy
+	 * @param limit
+	 * @return
+	 * @see android.database.sqlite.SQLiteDatabase
+	 */
 	protected static Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit){
 		lock.lock();
 		Cursor result;
@@ -72,6 +115,14 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Wrapper for SQLiteDatabase's delete method. 
+	 * @param table
+	 * @param selection
+	 * @param selectionArgs
+	 * @return Number of rows deleted if selection is passed. To remove all rows, and still get a deletion count, pass "1" for selection.
+	 * @see android.database.sqlite.SQLiteDatabase
+	 */
 	protected static int delete(String table, String selection, String[] selectionArgs){
 		lock.lock();
 		int result;
@@ -84,6 +135,15 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Wrapper for SQLiteDatabase's update method.
+	 * @param table
+	 * @param values
+	 * @param whereClause
+	 * @param whereArgs
+	 * @return Number of rows affected.
+	 * @see android.database.sqlite.SQLiteDatabase
+	 */
 	protected static int update(String table, ContentValues values, String whereClause, String[] whereArgs){
 		lock.lock();
 		int result;
@@ -96,6 +156,13 @@ public class Database extends SQLiteOpenHelper {
 		return result;
 	}
 	
+	/**
+	 * Wrapper for SQLiteDatabase's insert method.
+	 * @param table
+	 * @param values
+	 * @return row ID of inserted row, or -1 if an error occured 
+	 * @see android.database.sqlite.SQLiteDatabase
+	 */
 	protected static long insert(String table, ContentValues values){
 		lock.lock();
 		long result;
@@ -120,6 +187,7 @@ public class Database extends SQLiteOpenHelper {
 
 	/**
 	 * Currently unthread-safe singleton implementationation for accessing the db.
+	 * Deprecated in preference for thread-safe methods. 
 	 * @return Instance of the Database.
 	 */
 	@Deprecated

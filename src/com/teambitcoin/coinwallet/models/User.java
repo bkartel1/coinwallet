@@ -19,4 +19,8 @@ public class User {
 				SECURITY_ANSWER_COLUMN_NAME + " TEXT NOT NULL," +
 				PASSWORD_COLUMN_NAME + " TEXT NOT NULL);" ;
 	}
+	
+	public static boolean isValidUsername(String username){
+		return VALID_USERNAME.matcher(username).matches();
+	}
 }
