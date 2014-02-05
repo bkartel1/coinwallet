@@ -106,16 +106,21 @@ public class BlockchainAPI {
 	 * Adds a new bitcoin address to the account.
 	 * 
 	 * @param account account to which the new address should be added
+	 * @param label the label associated with the newly generated address,
+	 * 				if null, the label will be a random UUID
 	 * @return the new Address that was added
 	 * @throws Exception if the account is not valid
 	 */
-	public Address generateNewAddress(Account account) throws Exception {
+	public Address generateNewAddress(Account account, String label) throws Exception {
 		if(account.getGuid() == null || account.getGuid().length() <= 0){
 			throw new Exception("ERROR: Not a valid GUID!");
 		}
+		if(label == null || label.length() == 0){
+			label = UUID.randomUUID().toString();
+		}
 		Request r = Request.Get(getBase().setPath("/merchant/"+account.getGuid()+"/new_address")
 										 .addParameter("password", account.getPassword())
-										 .addParameter("label", UUID.randomUUID().toString())
+										 .addParameter("label", label)
 										 .build());
 		
 		JsonObject response = (JsonObject) new JsonParser().parse(r.execute()
