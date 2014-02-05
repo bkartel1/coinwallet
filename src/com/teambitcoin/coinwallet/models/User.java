@@ -2,6 +2,8 @@ package com.teambitcoin.coinwallet.models;
 
 import java.util.regex.Pattern;
 
+import android.database.Cursor;
+
 public class User {
 	private static final String TABLE_NAME = "users";
 	private static final String USERNAME_COLUMN_NAME = "username";
@@ -10,7 +12,31 @@ public class User {
 	private static final String SECURITY_ANSWER_COLUMN_NAME = "answer";
 	private static final String PASSWORD_COLUMN_NAME = "password";
 	private static final Pattern VALID_USERNAME = Pattern.compile("^((\\d{10})|((\\+\\d)?\\d{3}-\\d{3}-\\d{4})|([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}))$");
+	
+	private String username;
+	private String guid;
+	
+	protected User(String username, String guid){
+		this.username = username;
+		this.guid = guid;
+	}
 
+	public static User getUser(String username){
+		Cursor cursor = Database.query(TABLE_NAME, new String[]{GUID_COLUMN_NAME} , USERNAME_COLUMN_NAME + "= ?", new String[]{username}, null, null, null);
+		if (cursor.isAfterLast()){
+			return null;
+		} else { 
+			return new User(username, cursor.getString(cursor.getColumnIndex(GUID_COLUMN_NAME)));
+		}
+	}
+	
+	public String getQuestion(){
+		Cursor cursor = Database.query(TABLE_NAME, new String[]{SECURITY_QUESTION_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
+		return cursor.getString(cursor.getColumnIndex(SECURITY_QUESTION_COLUMN_NAME));
+	}
+	
+	
+	
 	protected static String getSQLInitQuery(){
 		return "CREATE TABLE " + TABLE_NAME + " (" +
 				GUID_COLUMN_NAME + " TEXT PRIMARY KEY," +
