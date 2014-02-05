@@ -20,7 +20,7 @@ import com.teambitcoin.coinwallet.models.*;
 
 public class ForgotPassword extends Activity{
 String username;//username variable to hold the input
-String secretQuestion;//variable to hold the secret question query from database
+String secretQuestionDb;//variable to hold the secret question query from database
 String answer;//answer variable to the input
 String DbAnswer;//variable to hold answer query from database
 String DbPassword;//variable to hold password query from database
@@ -33,8 +33,9 @@ public void onCreate(Bundle savedInstanceState){
 
 //added this text when hit done after the user entered username
 final EditText editText1 = (EditText) findViewById(R.id.username_field);//had to make it final in order to work...
-editText1.setOnEditorActionListener(new OnEditorActionListener() {
-	public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+	editText1.setOnEditorActionListener(new OnEditorActionListener() {
+		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 		   	boolean handled = false;
 	   		if (actionId == EditorInfo.IME_ACTION_DONE) {
 	        	
@@ -55,9 +56,9 @@ editText1.setOnEditorActionListener(new OnEditorActionListener() {
 	        	//method to query the secret question from database according to username entered...
 	        	//this method return a string with the question
 	        	
-	        	secretQuestion = User.getUser(username).getQuestion();
+	        	secretQuestionDb = User.getUser(username).getQuestion();
 	        	
-	        	CharSequence secretQuestion = "Secret question: " + secretQuestion;//put the secret question here
+	        	CharSequence secretQuestion = "Secret question: " + secretQuestionDb;//put the secret question here
 	        	
 	        	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
 	        	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
@@ -71,8 +72,7 @@ editText1.setOnEditorActionListener(new OnEditorActionListener() {
 	});
 	
 	//added this text when hit done after the user entered answer
-
-		final EditText editText2 = (EditText) findViewById(R.id.password_field);
+	final EditText editText2 = (EditText) findViewById(R.id.password_field);
 		
 		editText2.setOnEditorActionListener(new OnEditorActionListener() {
 		    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -96,10 +96,9 @@ editText1.setOnEditorActionListener(new OnEditorActionListener() {
 	//adding the button object
 
 	Button button = (Button) findViewById(R.id.login_button);
-	
-
 	button.setOnClickListener(new View.OnClickListener() {
-		public void onClick(View v) {
+		
+	public void onClick(View v) {
 			Context context = getApplicationContext();
 			CharSequence text = "Checking answer...";
 			int duration = Toast.LENGTH_SHORT;
