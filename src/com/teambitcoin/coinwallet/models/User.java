@@ -1,6 +1,5 @@
 package com.teambitcoin.coinwallet.models;
 
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
 import android.database.Cursor;
@@ -40,7 +39,9 @@ public class User {
 		values.put(GUID_COLUMN_NAME, acc.getGuid());
 		values.put(PASSWORD_COLUMN_NAME, password);
 		Database.insert(TABLE_NAME, values);
-		return new User(username, acc.getGuid());
+		User user = new User(username, acc.getGuid()); 
+		LOGGED_IN = user;
+		return user;
 	}
 	
 	public String getUsername(){

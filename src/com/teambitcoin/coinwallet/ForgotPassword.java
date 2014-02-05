@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.inputmethod.*;
 
 public class ForgotPassword extends Activity{
+<<<<<<< HEAD
 	String username;//username variable to hold the input
 	String answer;//answer variable to the input
 
@@ -65,6 +66,56 @@ public class ForgotPassword extends Activity{
 		//added this text when hit done after the user entered answer
 		final EditText editText2 = (EditText) findViewById(R.id.editText2);
 
+=======
+String username;//username variable to hold the input
+String answer;//answer variable to the input
+
+public void onCreate(Bundle savedInstanceState){
+	super.onCreate(savedInstanceState);
+	setContentView(R.layout.forgot_main);
+		
+		
+//added this text when hit done after the user entered username
+final EditText editText1 = (EditText) findViewById(R.id.username_field);//had to make it final in order to work...
+editText1.setOnEditorActionListener(new OnEditorActionListener() {
+	   public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+	   boolean handled = false;
+	   		if (actionId == EditorInfo.IME_ACTION_DONE) {
+	        	
+	        	Context context = getApplicationContext();
+	        	CharSequence text = "Successfully entered username";
+	        	int duration = Toast.LENGTH_SHORT;
+
+	        	Toast toast = Toast.makeText(context, text, duration);
+	        	toast.show();
+	        	username = editText1.getText().toString();
+	        	CharSequence usernamePrint = "Welcome " + username + " your question will appear shortly";
+	        	int durationUsername = Toast.LENGTH_LONG;
+
+	        	Toast toastUsername = Toast.makeText(context, usernamePrint, durationUsername);
+	        	toastUsername.show();
+	        	
+	        	//method to query the secret question from database according to username entered...
+	        	//this method return a string with the question
+	        	//querySecretQuestion(username);
+	        	
+	        	CharSequence secretQuestion = "Here is your secret question...";//put the secret question here
+	        	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
+	        	
+	        	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
+	        	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
+	        	toast2.show();
+	        	
+	        	handled = true;
+	        }
+	        return handled;
+	    }
+	});
+	
+	//added this text when hit done after the user entered answer
+		final EditText editText2 = (EditText) findViewById(R.id.password_field);
+		
+>>>>>>> master
 		editText2.setOnEditorActionListener(new OnEditorActionListener() {
 
 			public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -103,8 +154,32 @@ public class ForgotPassword extends Activity{
 
 			}
 		});
+<<<<<<< HEAD
 
 
+=======
+	
+	//adding the button object
+	Button button = (Button) findViewById(R.id.login_button);
+	
+	button.setOnClickListener(new View.OnClickListener() {
+	public void onClick(View v) {
+		Context context = getApplicationContext();
+    	CharSequence text = "Checking answer...";
+    	int duration = Toast.LENGTH_SHORT;
+
+    	Toast toast = Toast.makeText(context, text, duration);
+    	toast.show();
+		
+		//call the method which will check if the answer entered correspond
+    	//to the right answer to that member's secret question
+		//validateAnswer(answer);	
+			
+		}
+	});
+	
+	
+>>>>>>> master
 	}
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
