@@ -1,8 +1,10 @@
 package com.teambitcoin.coinwallet.models;
 
 import java.util.regex.Pattern;
-
 import android.database.Cursor;
+import android.content.ContentValues;
+import com.teambitcoin.coinwallet.api.Account;
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
 
 public class User {
 	private static final String TABLE_NAME = "users";
@@ -21,6 +23,28 @@ public class User {
 		this.guid = guid;
 	}
 
+	public static User create(String username, String password) throws Exception{
+		Cursor cursor = Database.query(TABLE_NAME, new String[]{GUID_COLUMN_NAME} , USERNAME_COLUMN_NAME + "= ?", new String[]{username}, null, null, null);
+		if (!cursor.isAfterLast()||!isValidUsername(username)){
+			return null;
+		}
+		Account acc = new BlockchainAPI().createAccount(username, password);
+		ContentValues values = new ContentValues();
+		values.put(USERNAME_COLUMN_NAME, username);
+		values.put(GUID_COLUMN_NAME, acc.getGuid());
+		values.put(PASSWORD_COLUMN_NAME, password);
+		Database.insert(TABLE_NAME, values);
+		return new User(username, acc.getGuid());
+	}
+	
+	public String getUsername(){
+		return username;
+	}
+	
+	public String getGUID(){
+		return guid;
+	}
+	
 	public static User getUser(String username){
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{GUID_COLUMN_NAME} , USERNAME_COLUMN_NAME + "= ?", new String[]{username}, null, null, null);
 		if (cursor.isAfterLast()){
