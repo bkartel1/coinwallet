@@ -45,22 +45,16 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
     
     public void onClick(View v) {
-<<<<<<< HEAD
-    	switch (v.getId()) {
-    		case R.id.button1:
-    			clickButton1();
-    			break;
-    		case R.id.addr_screen_btn:
-    			clickAddrScreenBtn();
-    			break;
-=======
     	switch (v.getId()){
     	case R.id.button1:
     		forgotButtonClicked();
     	case R.id.login_button:
     		loginClicked();
     	break;
->>>>>>> master
+    	// TODO: temporary only; remove this later
+		case R.id.addr_screen_btn:
+			clickAddrScreenBtn();
+		break;
     	}
     	
 	}
