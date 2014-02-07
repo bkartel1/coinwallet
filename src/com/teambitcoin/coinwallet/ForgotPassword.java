@@ -55,16 +55,17 @@ final EditText editText1 = (EditText) findViewById(R.id.username_field);//had to
 	        	
 	        	//method to query the secret question from database according to username entered...
 	        	//this method return a string with the question
+	        	querySecretQuestion(username);
 	        	
-	        	secretQuestionDb = User.getUser(username).getQuestion();
-	        	
+	        	//secretQuestionDb = User.getUser(username).getQuestion();
+	        	/*
 	        	CharSequence secretQuestion = "Secret question: " + secretQuestionDb;//put the secret question here
 	        	
 	        	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
 	        	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
 	        	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
 	        	toast2.show();
-	        	
+	        	*/
 	        	handled = true;
 	        }
 	        return handled;
@@ -123,17 +124,42 @@ public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.main, menu);
     return true;
     }
-//useless function...	
+	
 public String querySecretQuestion(String username){
+	if((User.getUser(username).getQuestion()).equals(null)){
+		Context context = getApplicationContext();
+		secretQuestionDb = null;
+		
+		CharSequence secretQuestion = "No Secret Question associated with the inputted username";//put the secret question here
+    	
+    	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
+    	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
+    	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
+    	toast2.show();
+    	
+		return secretQuestionDb;
+	}else{
+		Context context = getApplicationContext();
+		secretQuestionDb = User.getUser(username).getQuestion();
+		
+		CharSequence secretQuestion = "Secret question: " + secretQuestionDb;//put the secret question here
+    	
+    	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
+    	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
+    	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
+    	toast2.show();
+    	
+		return secretQuestionDb;
+	}
 	//take the inputted username and go to the database first check if that username exist
 	//if not output the entered username does not exist
 	
 	//if the username exist query the secret question associated with it and return it
-	return null;
+	
 	}
 
 
-public void validateAnswer(String answer){
+public String validateAnswer(String answer){
 	 
 	DbPassword = User.getUser(username).recoverPassword(answer);
 	
@@ -146,6 +172,7 @@ public void validateAnswer(String answer){
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
 		toast.show();
+		return DbPassword;
 		
 	}else{//if correct answer shown, show password to user
 		
@@ -155,7 +182,7 @@ public void validateAnswer(String answer){
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
 		toast.show();
-		
+		return DbPassword;
 	}
 	//query from database the answer associated to the user's secret question, if the inputted answer
 	//equals the one saved in the database output the user recorded password else print WRONG ANSWER...	
