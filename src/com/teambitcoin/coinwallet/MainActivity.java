@@ -48,6 +48,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	switch (v.getId()){
     	case R.id.button1:
     		forgotButtonClicked();
+    		break;//don't remove this it makes the app fails!!!
     	case R.id.login_button:
     		loginClicked();
     	break;

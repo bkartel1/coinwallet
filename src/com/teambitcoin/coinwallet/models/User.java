@@ -109,8 +109,8 @@ public class User {
 		LOGGED_IN = null;
 	}
 	
-	protected String getPassword(){
-		return password;
+	protected Account generateAccount(){
+		return new Account(username, password, guid);
 	}
 	
 	protected static String getSQLInitQuery(){
