@@ -1,9 +1,11 @@
 package com.teambitcoin.coinwallet.models;
 
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.content.Context;
 import android.content.ContentValues;
+import android.content.ContextWrapper;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -17,7 +19,7 @@ public class Database extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 3;
 	private static final String DB_NAME = "coinwallet.db";
-	private static final Database INSTANCE = new Database(null);
+	private static final Database INSTANCE = new Database(new ContextWrapper(null).getApplicationContext());
 	 
 	private static final ReentrantLock lock = new ReentrantLock();
 	
@@ -28,7 +30,15 @@ public class Database extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(User.getSQLInitQuery());
-
+		
+		try
+		{
+			db.execSQL(AddressDatabaseHandler.GetAddresseSQLInitQuery());
+		}
+		catch(SQLException e)
+		{
+			System.out.println("lol");
+		}
 	}
 	
 	/**

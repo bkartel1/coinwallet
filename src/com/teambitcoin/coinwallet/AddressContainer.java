@@ -4,33 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.teambitcoin.coinwallet.api.Address;
-import com.teambitcoin.coinwallet.api.DatabaseConnection;
+import com.teambitcoin.coinwallet.models.AddressDatabaseHandler;
 
-public class AddressContainer {
-
-	public DatabaseConnection dbConnection;
+public class AddressContainer {	
 	
-	public List<Address> activeAddressList;
-	public List<Address> archivedAddressList;
+	private String username;
+	private List<Address> activeAddressList;
+	private List<Address> archivedAddressList;
 	
-	public AddressContainer()
-	{
-		dbConnection = new DatabaseConnection();
-		activeAddressList = new ArrayList<Address>();
-		archivedAddressList = new ArrayList<Address>();
-		PopulateActiveAddressList();
-		PopulateArchivedAddressList();
+	public AddressContainer(String username){
+		this.username = username;
+		
+		this.activeAddressList = new ArrayList<Address>();
+		this.archivedAddressList = new ArrayList<Address>();
+		
+		this.PopulateActiveAddressList();
+		this.PopulateArchivedAddressList();
 	}
 
-	
-	public void CreateAddress(Address address)
-	{
+	public void CreateAddress(Address address){
 		activeAddressList.add(address);
 		ActiveAddressToDatabase(address);
 	}
 	
-	public void ArchiveAddress(Address address)
-	{
+	public void ArchiveAddress(Address address){
 		activeAddressList.remove(address);
 		archivedAddressList.add(address);
 	}
@@ -39,24 +36,33 @@ public class AddressContainer {
 	 * Database interactions 
 	 * 
 	 */
-	public void PopulateActiveAddressList()
-	{
-		dbConnection.RetrieveActiveAddresses(activeAddressList);
+	public void PopulateActiveAddressList(){
+		activeAddressList = AddressDatabaseHandler.RetrieveAddresses(username,false);
 	}
 
-	public void PopulateArchivedAddressList()
-	{
-		dbConnection.RetrieveArchivedAddresses(archivedAddressList);
+	public void PopulateArchivedAddressList(){
+		archivedAddressList = AddressDatabaseHandler.RetrieveAddresses(username,false);
 	}
 	
-	public void ActiveAddressToDatabase(Address address)
-	{
-		dbConnection.WriteNewActiveAddress(address);
+	public void ActiveAddressToDatabase(Address address){
+		int newAddressId = activeAddressList.size() + archivedAddressList.size(); 
+		AddressDatabaseHandler.WriteNewAddress(newAddressId,username,address,false);
 	}
 	
-	public void ArchiveAddressToDatabase(Address address)
-	{
-		dbConnection.WriteNewArchivedAddress(address);
+	public void ArchiveAddressToDatabase(Address address){
+		int newAddressId = activeAddressList.size() + archivedAddressList.size(); 
+		AddressDatabaseHandler.WriteNewAddress(newAddressId,username,address,true);
 	}
+	
+	
+	public List<Address> getActiveAddressList() {
+		return activeAddressList;
+	}
+
+
+	public List<Address> getArchivedAddressList() {
+		return archivedAddressList;
+	}
+
 	
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.teambitcoin.coinwallet.api.Address;
 import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.User;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,7 +34,9 @@ public class AddressScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_main);
 		
-		addresses = new AddressContainer();
+		User user = new User("me","1");
+		addresses = new AddressContainer(user.getGUID());
+		
 		initDummyList();
 		createAddressEntries();
 		
@@ -129,7 +132,7 @@ public class AddressScreen extends Activity {
 	public void createAddressEntries()
 	{		
 		addressEntries = new ArrayList<HashMap<String, String>>();
-		for(Address address : addresses.activeAddressList)
+		for(Address address : addresses.getActiveAddressList())
 		{
 			HashMap<String,String> newEntry = new HashMap<String,String>();
 			newEntry.put("address",address.getLabel());
