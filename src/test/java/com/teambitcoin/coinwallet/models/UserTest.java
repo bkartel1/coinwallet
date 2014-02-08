@@ -44,7 +44,7 @@ public class UserTest {
 	 */
 	@Test
 	public final void testIsValidUsername() {
-		String phoneOne = "514666-1010"; // Random Montreal Phone number in Numeral format
+		String phoneOne = "5146661010"; // Random Montreal Phone number in Numeral format
 		String phoneTwo = "514-666-1010"; // Random Montreal Phone number in dashed format
 		String phoneThree = "+1-514-666-1010"; // Random Montreal Phone number in international dashed format
 		String email = "draringi@draringi.net"; // One of Michael's many email addresses
