@@ -36,19 +36,12 @@ public class AddressScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_main);
 		
-
-//		addresses = new AddressContainer();
-//		addresses.PopulateActiveAddressList();
-//		//initDummyList();
-//		
-//		createAddressEntries();
-
+		// TODO: should this be the current logged-in User?
 		User user = new User("me","1");
 		addresses = new AddressContainer(user.getGUID());
 		
 		CreateViewableList();
 
-		
 		// Address list UI set up
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
 		
@@ -83,20 +76,13 @@ public class AddressScreen extends Activity {
 						// Generate addresses
 						Address generatedAddr = null;
 						try {
-							////////////////////////////////////////////////////
-							
 							//generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
 							generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
 						} catch (Exception e) {
 							// TODO: What to do when address generation fails? 
 							e.printStackTrace();
 						}
-						
-
-//						HashMap<String, String> a = new HashMap<String, String>();
-//						a.put("address", generatedAddr.getLabel());
-//						addressEntries.add(0, a);
-						
+												
 						addresses.CreateAddress(generatedAddr);
 						
 						AddToViewableList(generatedAddr);
@@ -124,71 +110,31 @@ public class AddressScreen extends Activity {
 		
 		// TODO: change all hard coded strings to resources 
 		contextMenu.setHeaderTitle("Options");
-//		contextMenu.add(1, 1, 1, "Edit address label");
-//		contextMenu.add(1, 2, 2, "Archive");
 		contextMenu.add(1, 1, 1, "Archive");
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem menuItem) {
 		switch (menuItem.getItemId()) {
-//		case 1:
-//			// TODO: call method to edit address labels (?)
-//			break;
-		case 2:
-			// TODO: call method to archive addresses 
+		case 1:
 			Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
 			break;
 		}
 		
 		return true;
 	}
-	
-//<<<<<<< HEAD
-//	// TODO: replace with real address fetch
-//	// TODO: Get rid of this damn thing :)
-//	private void initDummyList() {
-//		addresses.CreateAddress(new Address("addr1", "my_addr_label1", 0, 0));
-//		addresses.CreateAddress(new Address("addr2", "my_addr_label2", 0, 0));
-//		addresses.CreateAddress(new Address("addr3", "my_addr_label3", 0, 0));
-//		addresses.CreateAddress(new Address("addr4", "my_addr_label4", 0, 0));
-//		addresses.CreateAddress(new Address("addr5", "my_addr_label5", 0, 0));
-//		addresses.CreateAddress(new Address("addr6", "my_addr_label6", 0, 0));
-//		addresses.CreateAddress(new Address("addr7", "my_addr_label7", 0, 0));
-//		addresses.CreateAddress(new Address("addr8", "my_addr_label8", 0, 0));
-//		addresses.CreateAddress(new Address("addr9", "my_addr_label9", 0, 0));
-//		addresses.CreateAddress(new Address("addr0", "my_addr_label0", 0, 0));
-//	}
-	
-//	private void createAddressEntries()
-//	{		
-//=======
-	// oye oye.
+
 	private void CreateViewableList(){		
-//>>>>>>> 6648a1f82fe34466284079e674855b50bd0c9dc0
 		addressEntries = new ArrayList<HashMap<String, String>>();
-		for(Address address : addresses.getActiveAddressList())
-		{
-//<<<<<<< HEAD
-//			HashMap<String,String> newEntry = new HashMap<String,String>();
-//			newEntry.put("address", address.getLabel());
-//			addressEntries.add(newEntry);
-//		}
-//	}
-	
-
-	
-
-//=======
+		for(Address address : addresses.getActiveAddressList())	{
 			AddToViewableList(address);
 		}
 	}
 	
 	private void AddToViewableList(Address newAddress){
 		HashMap<String,String> newEntry = new HashMap<String,String>();
-		newEntry.put("address",newAddress.getLabel());
-		addressEntries.add(newEntry);
-//>>>>>>> 6648a1f82fe34466284079e674855b50bd0c9dc0
+		newEntry.put("address", newAddress.getLabel());
+		addressEntries.add(0, newEntry);
 	}
 	
 	private void popupLabelLengthTooLongWarning() {
@@ -197,14 +143,13 @@ public class AddressScreen extends Activity {
 		addNewAddrDialog.setMessage("The label must be between 0 and 255 characters.");
 	}
 	
-	// TODO: Move this somewhere else
+	// TODO: Is this necessary? Move this somewhere else
 	private Address apiCallToGenerateNewAddress(Editable addrLabelInput) throws Exception {
 		User loggedInUser = User.getLoggedInUser();
 		if (loggedInUser != null) {
 			Account account = new UserWrapper().getUserAccount(loggedInUser);
 			return new BlockchainAPI().generateNewAddress(account, addrLabelInput.toString());
 		}
-		
 		return null;
 	}
 }
