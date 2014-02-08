@@ -23,7 +23,7 @@ public class User {
 	private String guid;
 	private String password;
 	
-	protected User(String username, String guid){
+	public User(String username, String guid){
 		this.username = username;
 		this.guid = guid;
 	}

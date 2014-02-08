@@ -36,11 +36,18 @@ public class AddressScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_main);
 		
-		addresses = new AddressContainer();
-		addresses.PopulateActiveAddressList();
-		//initDummyList();
+
+//		addresses = new AddressContainer();
+//		addresses.PopulateActiveAddressList();
+//		//initDummyList();
+//		
+//		createAddressEntries();
+
+		User user = new User("me","1");
+		addresses = new AddressContainer(user.getGUID());
 		
-		createAddressEntries();
+		CreateViewableList();
+
 		
 		// Address list UI set up
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
@@ -78,16 +85,21 @@ public class AddressScreen extends Activity {
 						try {
 							////////////////////////////////////////////////////
 							
-							generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
-							//generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
+							//generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
+							generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
 						} catch (Exception e) {
 							// TODO: What to do when address generation fails? 
 							e.printStackTrace();
 						}
 						
-						HashMap<String, String> a = new HashMap<String, String>();
-						a.put("address", generatedAddr.getLabel());
-						addressEntries.add(0, a);
+
+//						HashMap<String, String> a = new HashMap<String, String>();
+//						a.put("address", generatedAddr.getLabel());
+//						addressEntries.add(0, a);
+						
+						addresses.CreateAddress(generatedAddr);
+						
+						AddToViewableList(generatedAddr);
 						
 						// Update adapter with newly generated address
 						simpleAdapter.notifyDataSetChanged();					
@@ -132,6 +144,7 @@ public class AddressScreen extends Activity {
 		return true;
 	}
 	
+//<<<<<<< HEAD
 //	// TODO: replace with real address fetch
 //	// TODO: Get rid of this damn thing :)
 //	private void initDummyList() {
@@ -147,15 +160,35 @@ public class AddressScreen extends Activity {
 //		addresses.CreateAddress(new Address("addr0", "my_addr_label0", 0, 0));
 //	}
 	
-	private void createAddressEntries()
-	{		
+//	private void createAddressEntries()
+//	{		
+//=======
+	// oye oye.
+	private void CreateViewableList(){		
+//>>>>>>> 6648a1f82fe34466284079e674855b50bd0c9dc0
 		addressEntries = new ArrayList<HashMap<String, String>>();
-		for(Address address : addresses.activeAddressList)
+		for(Address address : addresses.getActiveAddressList())
 		{
-			HashMap<String,String> newEntry = new HashMap<String,String>();
-			newEntry.put("address", address.getLabel());
-			addressEntries.add(newEntry);
+//<<<<<<< HEAD
+//			HashMap<String,String> newEntry = new HashMap<String,String>();
+//			newEntry.put("address", address.getLabel());
+//			addressEntries.add(newEntry);
+//		}
+//	}
+	
+
+	
+
+//=======
+			AddToViewableList(address);
 		}
+	}
+	
+	private void AddToViewableList(Address newAddress){
+		HashMap<String,String> newEntry = new HashMap<String,String>();
+		newEntry.put("address",newAddress.getLabel());
+		addressEntries.add(newEntry);
+//>>>>>>> 6648a1f82fe34466284079e674855b50bd0c9dc0
 	}
 	
 	private void popupLabelLengthTooLongWarning() {
@@ -174,5 +207,4 @@ public class AddressScreen extends Activity {
 		
 		return null;
 	}
-	
 }
