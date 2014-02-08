@@ -15,7 +15,7 @@ public class User {
 	private static final String SECURITY_QUESTION_COLUMN_NAME = "question";
 	private static final String SECURITY_ANSWER_COLUMN_NAME = "answer";
 	private static final String PASSWORD_COLUMN_NAME = "password";
-	private static final Pattern VALID_USERNAME = Pattern.compile("^((\\d{10})|((\\+\\d)?\\d{3}-\\d{3}-\\d{4})|([A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}))$");
+	private static final Pattern VALID_USERNAME = Pattern.compile("^((\\d{10})|((\\+\\d{1,2}-)?\\d{3}-\\d{3}-\\d{4})|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,7}))$");
 	
 	private static User LOGGED_IN = null;
 	
@@ -23,21 +23,43 @@ public class User {
 	private String guid;
 	private String password;
 	
-	protected User(String username, String guid){
+	private User(String username, String guid){
 		this.username = username;
 		this.guid = guid;
 	}
 
-	public static User create(String username, String password) throws Exception{
+	/**
+	 * Backwards compatability wrapper for create, which simply fills the new question and answer fields with null.
+	 * Logs in new user.
+	 * @param username
+	 * @param password
+	 * @return New User
+	 * @throws Exception
+	 */
+	public static User create(String username, String password)throws Exception{
+		return create(username, password, null, null);
+	}
+	
+	public static User create(String username, String password, String question, String answer) throws Exception{
+		return create(username, password, question, answer, false);
+	}
+	public static User create(String username, String password, String question, String answer, boolean dummy) throws Exception{
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{GUID_COLUMN_NAME} , USERNAME_COLUMN_NAME + "= ?", new String[]{username}, null, null, null);
 		if (!cursor.isAfterLast()||!isValidUsername(username)){
 			return null;
 		}
-		Account acc = new BlockchainAPI().createAccount(username, password);
+		Account acc;
+		if (!dummy){
+			acc = new BlockchainAPI().createAccount(username, password);
+		} else {
+			acc = new Account(username, password, "abba");
+		}
 		ContentValues values = new ContentValues();
 		values.put(USERNAME_COLUMN_NAME, username);
 		values.put(GUID_COLUMN_NAME, acc.getGuid());
 		values.put(PASSWORD_COLUMN_NAME, password);
+		values.put(SECURITY_QUESTION_COLUMN_NAME, question);
+		values.put(SECURITY_ANSWER_COLUMN_NAME, answer);
 		Database.insert(TABLE_NAME, values);
 		User user = new User(username, acc.getGuid()); 
 		LOGGED_IN = user;
