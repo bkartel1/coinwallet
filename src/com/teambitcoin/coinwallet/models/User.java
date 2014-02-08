@@ -47,6 +47,21 @@ public class User {
 	}
 	
 	/**
+	 * Sets the security question and answer on the user, 
+	 * providing it is currently logged in.
+	 * @param question
+	 * @param answer
+	 */
+	public void setQnA(String question, String answer){
+		if(this.equals(LOGGED_IN)){
+			ContentValues values = new ContentValues();
+			values.put(SECURITY_QUESTION_COLUMN_NAME, question);
+			values.put(SECURITY_ANSWER_COLUMN_NAME, answer);
+			Database.update(TABLE_NAME, values,GUID_COLUMN_NAME + "= ?", new String[]{guid});
+		}
+	}
+	
+	/**
 	 * Production wrapper for the create method, sets dummy status to false,
 	 * as we actually want to create new accounts on blockchain.info in the app, 
 	 * but not in our unit tests.
