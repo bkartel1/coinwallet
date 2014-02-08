@@ -3,11 +3,14 @@ package com.teambitcoin.coinwallet.models;
 import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.util.Log;
 
 import com.teambitcoin.coinwallet.api.Address;
 
 public class AddressDatabaseHandler
 {
+	private static final String DEBUG_TAG = "[DatabaseHandler]";
+	
 	private static final String TABLE_NAME = "user_valid_add";
 	private static final String GUID_COLUMN_NAME = "guid";
 	private static final String USER_GUID_COLUMN_NAME = "user_guid";
@@ -20,7 +23,7 @@ public class AddressDatabaseHandler
 	public static String GetAddresseSQLInitQuery(){
 		return "CREATE TABLE " + TABLE_NAME + " (" +
 				GUID_COLUMN_NAME + " TEXT PRIMARY KEY," +
-				USER_GUID_COLUMN_NAME + " TEXT UNIQUE NOT NULL," +
+				USER_GUID_COLUMN_NAME + " TEXT NOT NULL," +
 				ADDRESS_ARCHIVED_MODE + " INTEGER NOT NULL," +
 				USER_ADDRESS_COLUMN_NAME + " TEXT NOT NULL," +
 				ADDRESS_LABEL_NAME + " TEXT UNIQUE NOT NULL," +
@@ -61,6 +64,8 @@ public class AddressDatabaseHandler
 			}
 		}
 		
+		Log.i(DEBUG_TAG,"query returned: " + addressList.size() + " results.");
+		
 		return addressList;
 	}
 	
@@ -75,7 +80,10 @@ public class AddressDatabaseHandler
 		ContentValues values = new ContentValues();
 		values.put(ADDRESS_ARCHIVED_MODE, archiveModeValue);
 		
-		Database.update(TABLE_NAME, values, USER_ADDRESS_COLUMN_NAME + " = " , new String[] { address });
+		if(Database.update(TABLE_NAME, values, USER_ADDRESS_COLUMN_NAME + " = " , new String[] { address }) != 1)
+		{
+			Log.i(DEBUG_TAG,"Row NOT successfully updated");
+		}
 	}
 	
 	public static void WriteNewAddress(int id,String userGuid,Address address,boolean isArchived)
@@ -90,11 +98,18 @@ public class AddressDatabaseHandler
 		values.put(USER_GUID_COLUMN_NAME, userGuid);
 		values.put(GUID_COLUMN_NAME, Integer.toString(id));
 		values.put(USER_ADDRESS_COLUMN_NAME,address.getAddress());
-		values.put(ADDRESS_LABEL_NAME, address.getTotalReceived());
+		values.put(ADDRESS_TOTAL_RECEIVED_NAME, address.getTotalReceived());
 		values.put(ADDRESS_LABEL_NAME, address.getLabel());
 		values.put(ADDRESS_ARCHIVED_MODE, archiveModeValue);
 		values.put(ADDRESS_BALANCE_NAME, address.getBalance());
-		Database.insert(TABLE_NAME, values);
+		if(Database.insert(TABLE_NAME, values) == 1)
+		{
+			Log.i(DEBUG_TAG,"Row inserted successfully");
+		}
+		else
+		{
+			Log.i(DEBUG_TAG,"Row NOT inserted successfully");	
+		}
 	}
 	
 	

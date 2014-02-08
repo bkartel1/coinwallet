@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 import com.teambitcoin.coinwallet.*;
+import com.teambitcoin.coinwallet.models.Database;
 
 public class MainActivity extends Activity implements View.OnClickListener{
     @Override
@@ -19,6 +20,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //adding the button object
     	Button button = (Button) findViewById(R.id.button1);
     	button.setOnClickListener(this);
+    	
+    	Database.initializeDatabase(getApplicationContext());
     	
     	// button to go to address screen (temporary until actual layout is implemented)
     	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);

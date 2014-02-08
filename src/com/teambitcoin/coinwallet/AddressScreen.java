@@ -37,8 +37,7 @@ public class AddressScreen extends Activity {
 		User user = new User("me","1");
 		addresses = new AddressContainer(user.getGUID());
 		
-		initDummyList();
-		createAddressEntries();
+		CreateViewableList();
 		
 		// Address list UI set up
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
@@ -74,9 +73,10 @@ public class AddressScreen extends Activity {
 							e.printStackTrace();
 						}
 						
-						HashMap<String, String> a = new HashMap<String, String>();
-						a.put("address", generatedAddr.getLabel());
-						addressEntries.add(0, a);
+						addresses.CreateAddress(generatedAddr);
+						
+						AddToViewableList(generatedAddr);
+						
 						simpleAdapter.notifyDataSetChanged();					
 						
 						Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
@@ -113,31 +113,19 @@ public class AddressScreen extends Activity {
 		return true;
 	}
 	
-	// TODO: replace with real address fetch
-	// TODO: Get rid of this damn thing :)
-	private void initDummyList() {
-		addresses.CreateAddress(new Address("addr1", "my_addr_label1", 0, 0));
-		addresses.CreateAddress(new Address("addr2", "my_addr_label2", 0, 0));
-		addresses.CreateAddress(new Address("addr3", "my_addr_label3", 0, 0));
-		addresses.CreateAddress(new Address("addr4", "my_addr_label4", 0, 0));
-		addresses.CreateAddress(new Address("addr5", "my_addr_label5", 0, 0));
-		addresses.CreateAddress(new Address("addr6", "my_addr_label6", 0, 0));
-		addresses.CreateAddress(new Address("addr7", "my_addr_label7", 0, 0));
-		addresses.CreateAddress(new Address("addr8", "my_addr_label8", 0, 0));
-		addresses.CreateAddress(new Address("addr9", "my_addr_label9", 0, 0));
-		addresses.CreateAddress(new Address("addr0", "my_addr_label0", 0, 0));
-	}
-	
 	// oye oye.
-	public void createAddressEntries()
-	{		
+	private void CreateViewableList(){		
 		addressEntries = new ArrayList<HashMap<String, String>>();
 		for(Address address : addresses.getActiveAddressList())
 		{
-			HashMap<String,String> newEntry = new HashMap<String,String>();
-			newEntry.put("address",address.getLabel());
-			addressEntries.add(newEntry);
+			AddToViewableList(address);
 		}
+	}
+	
+	private void AddToViewableList(Address newAddress){
+		HashMap<String,String> newEntry = new HashMap<String,String>();
+		newEntry.put("address",newAddress.getLabel());
+		addressEntries.add(newEntry);
 	}
 	
 }

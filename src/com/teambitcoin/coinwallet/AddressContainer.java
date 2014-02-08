@@ -41,7 +41,7 @@ public class AddressContainer {
 	}
 
 	public void PopulateArchivedAddressList(){
-		archivedAddressList = AddressDatabaseHandler.RetrieveAddresses(username,false);
+		archivedAddressList = AddressDatabaseHandler.RetrieveAddresses(username,true);
 	}
 	
 	public void ActiveAddressToDatabase(Address address){
