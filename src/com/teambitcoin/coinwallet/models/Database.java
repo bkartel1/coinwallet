@@ -22,8 +22,13 @@ public class Database extends SQLiteOpenHelper {
 	private static final ReentrantLock lock = new ReentrantLock();
 	
 	public static void initializeDatabase(Context context){
-		if (INSTANCE!=null){
-			INSTANCE = new Database(context);
+		if (INSTANCE==null){
+			lock.lock();
+			try{
+				INSTANCE = new Database(context);
+			} finally {
+				lock.unlock();
+			}
 		}
 	}
 	

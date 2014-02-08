@@ -24,6 +24,8 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //adding the button object
     	Button button = (Button) findViewById(R.id.button1);
     	button.setOnClickListener(this);
+    	findViewById(R.id.register_button).setOnClickListener(this);
+    	findViewById(R.id.login_button).setOnClickListener(this);
     	Database.initializeDatabase(getApplicationContext());
     	
     }
