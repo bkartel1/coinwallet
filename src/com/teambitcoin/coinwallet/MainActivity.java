@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teambitcoin.coinwallet.*;
+import com.teambitcoin.coinwallet.models.Database;
 import com.teambitcoin.coinwallet.models.User;
 
 public class MainActivity extends Activity implements View.OnClickListener{
@@ -23,7 +24,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //adding the button object
     	Button button = (Button) findViewById(R.id.button1);
     	button.setOnClickListener(this);
-    	
+    	Database.initializeDatabase(getApplicationContext());
     	
     }
     public void forgotButtonClicked(){
@@ -43,7 +44,10 @@ public class MainActivity extends Activity implements View.OnClickListener{
     		break;//don't remove this it makes the app fails!!!
     	case R.id.login_button:
     		loginClicked();
-    	break;
+    		break;
+    	case R.id.register_button:
+    		registerClicked();
+    		break;
     	}
     	
 	}

@@ -17,9 +17,15 @@ public class Database extends SQLiteOpenHelper {
 
 	private static final int DB_VERSION = 3;
 	private static final String DB_NAME = "coinwallet.db";
-	private static final Database INSTANCE = new Database(new ContextWrapper(null).getApplicationContext());
+	private static Database INSTANCE;
 	 
 	private static final ReentrantLock lock = new ReentrantLock();
+	
+	public static void initializeDatabase(Context context){
+		if (INSTANCE!=null){
+			INSTANCE = new Database(context);
+		}
+	}
 	
 	private Database(Context context){
 		super(context, DB_NAME, null , DB_VERSION );
