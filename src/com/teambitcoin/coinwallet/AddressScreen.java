@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.teambitcoin.coinwallet.api.Address;
-import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.AddressContainer;
 import com.teambitcoin.coinwallet.models.User;
 
 import android.app.Activity;
@@ -18,6 +18,8 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,17 +29,24 @@ import android.widget.Toast;
 public class AddressScreen extends Activity {
 	SimpleAdapter simpleAdapter;
 	AddressContainer addresses;
+	
 	List<HashMap<String, String>> addressEntries;
+	boolean isViewingArchives;
+	Address selectedAddress = null;
+	
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		isViewingArchives = false;
+		addressEntries = new ArrayList<HashMap<String,String>>();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_main);
 		
 		User user = new User("me","1");
 		addresses = new AddressContainer(user.getGUID());
 		
-		CreateViewableList();
+		UpdateViewableList();
 		
 		// Address list UI set up
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
@@ -48,6 +57,18 @@ public class AddressScreen extends Activity {
 		
 		addrListView.setAdapter(simpleAdapter);
 		registerForContextMenu(addrListView);
+		
+		
+		Button archivedListBtn = (Button) findViewById(R.id.archived_addr_btn);
+		archivedListBtn.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View arg0) {
+				isViewingArchives = !isViewingArchives;
+				UpdateViewableList();
+				simpleAdapter.notifyDataSetChanged();					
+			}
+			
+		});
 		
 		// Add address button set up
 		Button addNewAddrBtn = (Button) findViewById(R.id.add_new_addr_btn);
@@ -75,7 +96,7 @@ public class AddressScreen extends Activity {
 						
 						addresses.CreateAddress(generatedAddr);
 						
-						AddToViewableList(generatedAddr);
+						UpdateViewableList();
 						
 						simpleAdapter.notifyDataSetChanged();					
 						
@@ -97,27 +118,46 @@ public class AddressScreen extends Activity {
 	public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenuInfo info) {
 		super.onCreateContextMenu(contextMenu, view, info);
 		
+		AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) info;
+		
+		List<Address> addresseList = GetCurrentList();
+		
+		selectedAddress = addresseList.get(acmi.position);
+		
+		String archiveMode = (isViewingArchives) ? "Un-Archive" : "Archive";
+		
 		// TODO: change all hard coded strings to resources 
 		contextMenu.setHeaderTitle("Options");
 		contextMenu.add(1, 1, 1, "Edit");
-		contextMenu.add(1, 2, 2, "Archive");
+		contextMenu.add(1, 2, 2, archiveMode);
+		
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem menuItem) {
-		//Toast.makeText(this, "Not yet implemented!", Toast.LENGTH_SHORT).show();
-		if(menuItem.getItemId() == 2)
-		{
+		if(menuItem.getItemId() == 2){
+			if(selectedAddress != null){
+				if(isViewingArchives == false){
+					addresses.ArchiveAddress(selectedAddress);
+				}
+				else{
+					addresses.UnArchiveAddress(selectedAddress);
+				}
+				UpdateViewableList();
+				simpleAdapter.notifyDataSetChanged();
+			}
 			Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
 		}
 		return true;
 	}
 	
 	// oye oye.
-	private void CreateViewableList(){		
-		addressEntries = new ArrayList<HashMap<String, String>>();
-		for(Address address : addresses.getActiveAddressList())
-		{
+	private void UpdateViewableList(){		
+		addressEntries.clear();
+		
+		List<Address> addresseList = GetCurrentList();
+		
+		for(Address address : addresseList){
 			AddToViewableList(address);
 		}
 	}
@@ -126,6 +166,18 @@ public class AddressScreen extends Activity {
 		HashMap<String,String> newEntry = new HashMap<String,String>();
 		newEntry.put("address",newAddress.getLabel());
 		addressEntries.add(newEntry);
+	}
+	
+	private ArrayList<Address> GetCurrentList(){
+		ArrayList<Address> addresseList;
+		
+		if(isViewingArchives){
+			addresseList = addresses.getArchivedAddressList();
+		}
+		else{
+			addresseList = addresses.getActiveAddressList();
+		}
+		return addresseList;
 	}
 	
 }

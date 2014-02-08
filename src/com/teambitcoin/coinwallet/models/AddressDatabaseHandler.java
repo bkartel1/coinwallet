@@ -80,7 +80,7 @@ public class AddressDatabaseHandler
 		ContentValues values = new ContentValues();
 		values.put(ADDRESS_ARCHIVED_MODE, archiveModeValue);
 		
-		if(Database.update(TABLE_NAME, values, USER_ADDRESS_COLUMN_NAME + " = " , new String[] { address }) != 1)
+		if(Database.update(TABLE_NAME, values, USER_ADDRESS_COLUMN_NAME + " = ?" , new String[] { address }) != 1)
 		{
 			Log.i(DEBUG_TAG,"Row NOT successfully updated");
 		}

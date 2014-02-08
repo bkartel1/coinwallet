@@ -18,7 +18,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
       
         //adding the button object
-    	Button button = (Button) findViewById(R.id.button1);
+    	Button button = (Button) findViewById(R.id.archived_addr_btn);
     	button.setOnClickListener(this);
     	
     	Database.initializeDatabase(getApplicationContext());
@@ -45,7 +45,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     
     public void onClick(View v) {
     	switch (v.getId()) {
-    		case R.id.button1:
+    		case R.id.archived_addr_btn:
     			clickButton1();
     			break;
     		case R.id.addr_screen_btn:
