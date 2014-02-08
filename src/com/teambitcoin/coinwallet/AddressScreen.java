@@ -7,6 +7,9 @@ import java.util.List;
 import com.teambitcoin.coinwallet.api.Account;
 import com.teambitcoin.coinwallet.api.Address;
 import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.models.UserWrapper;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -75,7 +78,7 @@ public class AddressScreen extends Activity {
 						try {
 							////////////////////////////////////////////////////
 							
-							generatedAddr = new BlockchainAPI().generateNewAddress(new Account(), addrLabelInput.toString());
+							generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
 							//generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
 						} catch (Exception e) {
 							// TODO: What to do when address generation fails? 
@@ -159,6 +162,17 @@ public class AddressScreen extends Activity {
 		AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
 		addNewAddrDialog.setTitle("Error");
 		addNewAddrDialog.setMessage("The label must be between 0 and 255 characters.");
+	}
+	
+	// TODO: Move this somewhere else
+	private Address apiCallToGenerateNewAddress(Editable addrLabelInput) throws Exception {
+		User loggedInUser = User.getLoggedInUser();
+		if (loggedInUser != null) {
+			Account account = new UserWrapper().getUserAccount(loggedInUser);
+			return new BlockchainAPI().generateNewAddress(account, addrLabelInput.toString());
+		}
+		
+		return null;
 	}
 	
 }
