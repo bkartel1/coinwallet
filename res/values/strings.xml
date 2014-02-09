@@ -19,4 +19,6 @@
     <string name="addr_screen_name">Addresses</string>
     <string name="add_new_addr">Add New</string>
     
+    <string name="archived_active_btn">Archived/Active</string>
+    
 </resources>
