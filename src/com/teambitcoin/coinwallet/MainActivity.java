@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teambitcoin.coinwallet.*;
+import com.teambitcoin.coinwallet.models.Database;
 import com.teambitcoin.coinwallet.models.User;
 import com.teambitcoin.coinwallet.models.Database;
 
@@ -22,16 +23,22 @@ public class MainActivity extends Activity implements View.OnClickListener{
         setContentView(R.layout.activity_main);
       
         //adding the button object
-    	Button button = (Button) findViewById(R.id.button1);
+    	Button button = (Button) findViewById(R.id.forgot_button);
     	button.setOnClickListener(this);
-    	
+//<<<<<<< HEAD
+//    	
+//    	Database.initializeDatabase(getApplicationContext());
+//    	
+//    	// button to go to address screen (temporary until actual layout is implemented)
+//    	// TODO: remove this
+//    	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
+//    	addrScreenBtn.setOnClickListener(this);
+//    	
+//=======
+    	findViewById(R.id.register_button).setOnClickListener(this);
+    	findViewById(R.id.login_button).setOnClickListener(this);
     	Database.initializeDatabase(getApplicationContext());
-    	
-    	// button to go to address screen (temporary until actual layout is implemented)
-    	// TODO: remove this
-    	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
-    	addrScreenBtn.setOnClickListener(this);
-    	
+//>>>>>>> master
     	
     }
     public void forgotButtonClicked(){
@@ -49,27 +56,47 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
     
     public void onClick(View v) {
-    	switch (v.getId()) {
-    	case R.id.button1:
+//<<<<<<< HEAD
+//    	switch (v.getId()) {
+//    	case R.id.button1:
+//=======
+    	switch (v.getId()){
+    	case R.id.forgot_button:
+//>>>>>>> master
     		forgotButtonClicked();
-    		break;//don't remove this it makes the app fails!!!
+    		break;
     	case R.id.login_button:
     		loginClicked();
     		break;
-        case R.id.register_button:
-            registerClicked();
-            break;
-    	// TODO: temporary only; remove this later
-		case R.id.addr_screen_btn:
-			clickAddrScreenBtn();
-			break;
+//<<<<<<< HEAD
+//        case R.id.register_button:
+//            registerClicked();
+//            break;
+//    	// TODO: temporary only; remove this later
+//		case R.id.addr_screen_btn:
+//			clickAddrScreenBtn();
+//			break;
+//=======
+    	case R.id.register_button:
+    		registerClicked();
+    		break;
+    	case R.id.finish_register_button:
+    		finishRegistration();
+    		break;
+//>>>>>>> master
     	}
-    	
 	}
+    
+    protected void finishRegistration(){
+    	EditText questionField, answerField;
+    	questionField = (EditText)findViewById(R.id.question_field);
+    	answerField = (EditText)findViewById(R.id.answer_field);
+    	User.getLoggedInUser().setQnA(questionField.getText().toString(), answerField.getText().toString());
+    	startActivity(new Intent(this, LanderActivity.class));
+    }
     
     protected void registerClicked(){
     	EditText usernameField, passwordField;
-    	Context context = getApplicationContext();
     	usernameField = (EditText)findViewById(R.id.username_field);
     	passwordField = (EditText)findViewById(R.id.password_field);
     	String username = usernameField.getText().toString();
@@ -91,13 +118,14 @@ public class MainActivity extends Activity implements View.OnClickListener{
     		TextView alert = (TextView)findViewById(R.id.alert_text);
     		alert.setText("Error: Username already taken");
     	} else {
-    		//TODO: Enter Logged in page here...
+    		setContentView(R.layout.register_qna);
+    		findViewById(R.id.finish_register_button).setOnClickListener(this);
+    		//startActivity(new Intent(this, LanderActivity.class));
     	}
     }
 
     protected void loginClicked(){
     	EditText usernameField, passwordField;
-    	Context context = getApplicationContext();
     	usernameField = (EditText)findViewById(R.id.username_field);
     	passwordField = (EditText)findViewById(R.id.password_field);
     	String username = usernameField.getText().toString();
@@ -107,7 +135,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     		TextView alert = (TextView)findViewById(R.id.alert_text);
     		alert.setText("Error: Username or password incorrect");
     	} else {
-    		//TODO: Load logged in page here...
+    		startActivity(new Intent(this, LanderActivity.class));
     	}
     }
 

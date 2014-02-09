@@ -47,7 +47,8 @@ public class AddressScreen extends Activity {
 		setContentView(R.layout.address_main);
 		
 		// TODO: should this be the current logged-in User?
-		User user = new User("me","1");
+//		User user = new User("me","1");
+		User user = User.getLoggedInUser();
 		addresses = new AddressContainer(user.getGUID());
 		
 		UpdateViewableList();

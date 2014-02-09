@@ -28,7 +28,7 @@
     </EditText>
     
     <TextView 
-    android:id="@+id/textView2"
+    android:id="@+id/answer_label"
     android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:layout_below="@id/username_field"
@@ -39,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/answer_label"
         android:ems="10" 
         android:hint="Please answer question"
         android:imeOptions="actionDone"

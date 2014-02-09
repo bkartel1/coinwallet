@@ -8,6 +8,12 @@
     <string name="password_title">Password:</string>
     <string name="login_text">Login</string>
     <string name="register_text">Register</string>
+    <string name="username_hint">phone# or email</string>
+    <string name="password_hint">At least 10 chars long</string>
+    <string name="question_text">Secret Question:</string>
+    <string name="answer_label">Secret Answer:</string>
+    <string name="finish_register_button">Finish Registration</string>
+    <string name="title_activity_lander">LanderActivity</string>
 
     <!-- Address resources -->
     <string name="addr_screen_name">Addresses</string>
