@@ -13,5 +13,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
-
+    
+    <!-- This button is only used for accessing the address screen. 
+         Should be replaced when the landing page is fully implemented -->
+    <Button
+        android:id="@+id/addr_screen_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lander_label"
+        android:layout_centerHorizontal="true"
+        android:text="Addresses" />
+     <!-- End address button -->
 </RelativeLayout>

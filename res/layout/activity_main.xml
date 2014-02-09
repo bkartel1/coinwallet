@@ -82,16 +82,5 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dp"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <!-- TODO: This button is only used for accessing the address screen. 
-         To be deleted/moved to the view seen after the user logs in  
-    <Button
-        android:id="@+id/addr_screen_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/button1"
-        android:layout_centerHorizontal="true"
-        android:text="Addresses" />
-     End address button -->
     
 </RelativeLayout>

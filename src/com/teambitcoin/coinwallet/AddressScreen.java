@@ -46,8 +46,6 @@ public class AddressScreen extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.address_main);
 		
-		// TODO: should this be the current logged-in User?
-//		User user = new User("me","1");
 		User user = User.getLoggedInUser();
 		addresses = new AddressContainer(user.getGUID());
 		
@@ -57,12 +55,11 @@ public class AddressScreen extends Activity {
 		ListView addrListView = (ListView) findViewById(R.id.address_list);
 		
 		simpleAdapter = new SimpleAdapter(this, addressEntries, 
-				android.R.layout.simple_list_item_1, new String[] {"address"}, 
-				new int[] {android.R.id.text1});
+				android.R.layout.simple_list_item_2, new String[] {"addrLabel", "address"}, 
+				new int[] {android.R.id.text1, android.R.id.text2});
 		
 		addrListView.setAdapter(simpleAdapter);
 		registerForContextMenu(addrListView);
-		
 		
 		Button archivedListBtn = (Button) findViewById(R.id.archived_addr_btn);
 		archivedListBtn.setOnClickListener(new OnClickListener() {
@@ -99,9 +96,9 @@ public class AddressScreen extends Activity {
 						// Generate addresses
 						Address generatedAddr = null;
 						try {
-							// TODO: Need to make a call to the Blockchain API to generate an address
-							//generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
-							generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
+							generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
+							// Dummy function
+							//generatedAddr = new Address("addr", addrLabelInput.toString(), 0, 0);
 						} catch (Exception e) {
 							// TODO: What to do if address generation fails? 
 							e.printStackTrace();
@@ -119,7 +116,7 @@ public class AddressScreen extends Activity {
 				});
 				addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int which) {
-						// TODO: cancel operation
+						
 					}
 				});
 				
@@ -176,7 +173,8 @@ public class AddressScreen extends Activity {
 	
 	private void AddToViewableList(Address newAddress){
 		HashMap<String,String> newEntry = new HashMap<String,String>();
-		newEntry.put("address", newAddress.getLabel());
+		newEntry.put("addrLabel", newAddress.getLabel());
+		newEntry.put("address", newAddress.getAddress());
 		addressEntries.add(newEntry);
 	}	
 
@@ -193,17 +191,17 @@ public class AddressScreen extends Activity {
 	}
 	
 	private void popupLabelLengthTooLongWarning() {
-		AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
-		addNewAddrDialog.setTitle("Error");
-		addNewAddrDialog.setMessage("The label must be between 0 and 255 characters.");
+		Toast.makeText(this, "The label must be between 0 and 255 characters.", Toast.LENGTH_LONG).show();
 	}
 	
-	// TODO: Need to get this working (depends on BlockchainAPI method)
+	/* Makes a call to the Blockchain API to generate a new address */
 	private Address apiCallToGenerateNewAddress(Editable addrLabelInput) throws Exception {
 		User loggedInUser = User.getLoggedInUser();
 		if (loggedInUser != null) {
 			Account account = new UserWrapper().getUserAccount(loggedInUser);
-			return new BlockchainAPI().generateNewAddress(account, addrLabelInput.toString());
+			
+			Address newAddress = new BlockchainAPI().generateNewAddress(account, addrLabelInput.toString());
+			return newAddress;
 		}
 		return null;
 	}

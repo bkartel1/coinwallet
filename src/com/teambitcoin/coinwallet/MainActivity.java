@@ -16,7 +16,8 @@ import com.teambitcoin.coinwallet.models.Database;
 import com.teambitcoin.coinwallet.models.User;
 import com.teambitcoin.coinwallet.models.Database;
 
-public class MainActivity extends Activity implements View.OnClickListener{
+public class MainActivity extends Activity implements View.OnClickListener {
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,22 +26,12 @@ public class MainActivity extends Activity implements View.OnClickListener{
         //adding the button object
     	Button button = (Button) findViewById(R.id.forgot_button);
     	button.setOnClickListener(this);
-//<<<<<<< HEAD
-//    	
-//    	Database.initializeDatabase(getApplicationContext());
-//    	
-//    	// button to go to address screen (temporary until actual layout is implemented)
-//    	// TODO: remove this
-//    	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
-//    	addrScreenBtn.setOnClickListener(this);
-//    	
-//=======
+
     	findViewById(R.id.register_button).setOnClickListener(this);
     	findViewById(R.id.login_button).setOnClickListener(this);
-    	Database.initializeDatabase(getApplicationContext());
-//>>>>>>> master
-    	
+    	Database.initializeDatabase(getApplicationContext());    	
     }
+    
     public void forgotButtonClicked(){
     	Context context = getApplicationContext();
     	CharSequence text = "Successfully entered forgot password menu";
@@ -50,44 +41,25 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	
     	startActivity(new Intent("com.teambitcoin.coinwallet.ForgotPassword"));
     }
-    
-    public void clickAddrScreenBtn() {
-    	startActivity(new Intent("com.teambitcoin.coinwallet.AddressScreen"));
-    }
-    
+        
     public void onClick(View v) {
-//<<<<<<< HEAD
-//    	switch (v.getId()) {
-//    	case R.id.button1:
-//=======
     	switch (v.getId()){
     	case R.id.forgot_button:
-//>>>>>>> master
     		forgotButtonClicked();
     		break;
     	case R.id.login_button:
     		loginClicked();
     		break;
-//<<<<<<< HEAD
-//        case R.id.register_button:
-//            registerClicked();
-//            break;
-//    	// TODO: temporary only; remove this later
-//		case R.id.addr_screen_btn:
-//			clickAddrScreenBtn();
-//			break;
-//=======
     	case R.id.register_button:
     		registerClicked();
     		break;
     	case R.id.finish_register_button:
     		finishRegistration();
     		break;
-//>>>>>>> master
     	}
 	}
     
-    protected void finishRegistration(){
+    protected void finishRegistration() {
     	EditText questionField, answerField;
     	questionField = (EditText)findViewById(R.id.question_field);
     	answerField = (EditText)findViewById(R.id.answer_field);
@@ -95,7 +67,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	startActivity(new Intent(this, LanderActivity.class));
     }
     
-    protected void registerClicked(){
+    protected void registerClicked() {
     	EditText usernameField, passwordField;
     	usernameField = (EditText)findViewById(R.id.username_field);
     	passwordField = (EditText)findViewById(R.id.password_field);
