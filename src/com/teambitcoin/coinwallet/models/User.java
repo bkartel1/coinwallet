@@ -145,6 +145,7 @@ public class User {
 		values.put(SECURITY_ANSWER_COLUMN_NAME, answer);
 		Database.insert(TABLE_NAME, values);
 		user.guid = acc.getGuid();
+		user.password = password;
 		LOGGED_IN = user;
 		return user;
 	}
