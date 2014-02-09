@@ -1,16 +1,15 @@
-package com.teambitcoin.coinwallet;
+package com.teambitcoin.coinwallet.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.teambitcoin.coinwallet.api.Address;
-import com.teambitcoin.coinwallet.models.AddressDatabaseHandler;
 
 public class AddressContainer {	
 	
 	private String username;
-	private List<Address> activeAddressList;
-	private List<Address> archivedAddressList;
+	private ArrayList<Address> activeAddressList;
+	private ArrayList<Address> archivedAddressList;
 	
 	public AddressContainer(String username){
 		this.username = username;
@@ -30,39 +29,42 @@ public class AddressContainer {
 	public void ArchiveAddress(Address address){
 		activeAddressList.remove(address);
 		archivedAddressList.add(address);
+		SwitchArchiveModeInDatabase(address,true);
+	}
+	
+	public void UnArchiveAddress(Address address){
+		archivedAddressList.remove(address);
+		activeAddressList.add(address);
+		SwitchArchiveModeInDatabase(address,false);
+	}
+	
+	public ArrayList<Address> getActiveAddressList() {
+		return activeAddressList;
+	}
+
+
+	public ArrayList<Address> getArchivedAddressList() {
+		return archivedAddressList;
 	}
 	
 	/**
 	 * Database interactions 
 	 * 
 	 */
-	public void PopulateActiveAddressList(){
+	private void PopulateActiveAddressList(){
 		activeAddressList = AddressDatabaseHandler.RetrieveAddresses(username,false);
 	}
 
-	public void PopulateArchivedAddressList(){
+	private void PopulateArchivedAddressList(){
 		archivedAddressList = AddressDatabaseHandler.RetrieveAddresses(username,true);
 	}
 	
-	public void ActiveAddressToDatabase(Address address){
+	private void ActiveAddressToDatabase(Address address){
 		int newAddressId = activeAddressList.size() + archivedAddressList.size(); 
 		AddressDatabaseHandler.WriteNewAddress(newAddressId,username,address,false);
 	}
 	
-	public void ArchiveAddressToDatabase(Address address){
-		int newAddressId = activeAddressList.size() + archivedAddressList.size(); 
-		AddressDatabaseHandler.WriteNewAddress(newAddressId,username,address,true);
+	private void SwitchArchiveModeInDatabase(Address address,boolean isArchived){
+		AddressDatabaseHandler.ChangeArchiveMode(address.getAddress(), isArchived);
 	}
-	
-	
-	public List<Address> getActiveAddressList() {
-		return activeAddressList;
-	}
-
-
-	public List<Address> getArchivedAddressList() {
-		return archivedAddressList;
-	}
-
-	
 }

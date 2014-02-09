@@ -71,7 +71,7 @@
         android:layout_centerHorizontal="true"
         android:onClick="getSecretQuestion"
         android:text="Forgot Password" />
-
+        
     <TextView
         android:id="@+id/alert_text"
         android:layout_width="match_parent"

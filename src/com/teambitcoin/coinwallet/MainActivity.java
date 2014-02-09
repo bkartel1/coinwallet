@@ -28,6 +28,7 @@ public class MainActivity extends Activity implements View.OnClickListener{
     	Database.initializeDatabase(getApplicationContext());
     	
     	// button to go to address screen (temporary until actual layout is implemented)
+    	// TODO: remove this
     	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
     	addrScreenBtn.setOnClickListener(this);
     	
@@ -48,17 +49,20 @@ public class MainActivity extends Activity implements View.OnClickListener{
     }
     
     public void onClick(View v) {
-    	switch (v.getId()){
+    	switch (v.getId()) {
     	case R.id.button1:
     		forgotButtonClicked();
     		break;//don't remove this it makes the app fails!!!
     	case R.id.login_button:
     		loginClicked();
-    	break;
+    		break;
+        case R.id.register_button:
+            registerClicked();
+            break;
     	// TODO: temporary only; remove this later
 		case R.id.addr_screen_btn:
 			clickAddrScreenBtn();
-		break;
+			break;
     	}
     	
 	}

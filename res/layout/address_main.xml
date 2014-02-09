@@ -16,4 +16,13 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/add_new_addr_btn" >
     </ListView>
+
+    <Button
+        android:id="@+id/archived_addr_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:text="Archived/Active" />
+
 </RelativeLayout>
