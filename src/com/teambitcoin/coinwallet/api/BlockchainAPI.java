@@ -1,5 +1,6 @@
 package com.teambitcoin.coinwallet.api;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -139,7 +140,7 @@ public class BlockchainAPI {
 					HttpGet get = new HttpGet("http://blockchain.info/"+
 												"/merchant/"+account.getGuid()+
 												"/new_address?api_code=LK75FDss&password="+account.getPassword()+
-												"&label="+label_local);
+												"&label="+URLEncoder.encode(label_local, "UTF-8"));
 					String r = EntityUtils.toString(client.execute(get).getEntity());
 					JsonObject response = (JsonObject) new JsonParser().parse(r);
 					
