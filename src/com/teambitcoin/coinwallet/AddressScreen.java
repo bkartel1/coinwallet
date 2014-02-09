@@ -105,6 +105,13 @@ public class AddressScreen extends Activity {
                             // Dummy
                             // generatedAddr = new Address("addr",
                             // addrLabelInput.toString(), 0, 0);
+                            
+                            if (generatedAddr == null) {
+                                Toast.makeText(AddressScreen.this, 
+                                        "Error: An error occurred. The address was not created.", 
+                                        Toast.LENGTH_LONG);
+                                return;
+                            }
                         }
                         catch (Exception e) {
                             // TODO: What to do if address generation fails?
