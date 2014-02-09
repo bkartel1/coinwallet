@@ -126,7 +126,20 @@ public boolean onCreateOptionsMenu(Menu menu) {
     }
 	
 public String querySecretQuestion(String username){
-	if((User.getUser(username).getQuestion()).equals(null)){
+	if(User.getUser(username) == null){
+		Context context = getApplicationContext();
+		secretQuestionDb = null;
+		
+		CharSequence secretQuestion = "No Secret Question associated with the inputted username";//put the secret question here
+    	
+    	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
+    	Toast toast2 = Toast.makeText(context, secretQuestion, duration2);
+    	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
+    	toast2.show();
+    	
+		return secretQuestionDb;
+	}
+	if(User.getUser(username).getQuestion() == null){
 		Context context = getApplicationContext();
 		secretQuestionDb = null;
 		
@@ -160,11 +173,20 @@ public String querySecretQuestion(String username){
 
 
 public String validateAnswer(String answer){
-	 
-	DbPassword = User.getUser(username).recoverPassword(answer);
-	
-	
-	if(DbPassword.equals(null)){//if the password is null, wrong answer inputted no password shown
+	if(User.getUser(username) == null){
+		Context context = getApplicationContext();
+		DbPassword = null;
+		
+		CharSequence secretAnswer = "Could not find any user with the given username";
+    	
+    	int duration2 = Toast.LENGTH_LONG;//stay on screen longer
+    	Toast toast2 = Toast.makeText(context, secretAnswer, duration2);
+    	toast2.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER, 0, -40);
+    	toast2.show();
+    	return DbPassword;
+	}
+	if(User.getUser(username).recoverPassword(answer) == null){//if the password is null, wrong answer inputted no password shown
+		DbPassword = null;
 		
 		Context context = getApplicationContext();
 		CharSequence text = "Wrong answer to question, please try again";//wrong answer no password shown
@@ -175,6 +197,7 @@ public String validateAnswer(String answer){
 		return DbPassword;
 		
 	}else{//if correct answer shown, show password to user
+		DbPassword = User.getUser(username).recoverPassword(answer);
 		
 		Context context = getApplicationContext();
 		CharSequence text = "Password: " + DbPassword;//set to password query from database
