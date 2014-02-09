@@ -90,8 +90,8 @@ public class BlockchainAPI {
 					HttpGet get = new HttpGet("http://blockchain.info/"+
 												"/merchant/"+account.getGuid()+
 												"/list?api_code=LK75FDss&password="+account.getPassword());
-					
-					JsonObject response = (JsonObject) new JsonParser().parse(client.execute(get).toString());
+					String r = EntityUtils.toString(client.execute(get).getEntity());
+					JsonObject response = (JsonObject) new JsonParser().parse(r);
 					
 					JsonArray addrs = response.get("addresses").getAsJsonArray();
 					List<Address> addresses = new ArrayList<Address>();
@@ -140,8 +140,8 @@ public class BlockchainAPI {
 												"/merchant/"+account.getGuid()+
 												"/new_address?api_code=LK75FDss&password="+account.getPassword()+
 												"&label="+label_local);
-					
-					JsonObject response = (JsonObject) new JsonParser().parse(client.execute(get).toString());
+					String r = EntityUtils.toString(client.execute(get).getEntity());
+					JsonObject response = (JsonObject) new JsonParser().parse(r);
 					
 					Address address = new Address();
 					address.setAddress(response.get("address").getAsString());
@@ -182,7 +182,8 @@ public class BlockchainAPI {
 												"/merchant/"+account.getGuid()+
 												"/archive_address?api_code=LK75FDss&password="+account.getPassword()+
 												"&address="+address);
-					JsonObject response = (JsonObject) new JsonParser().parse(client.execute(get).toString());
+					String r = EntityUtils.toString(client.execute(get).getEntity());
+					JsonObject response = (JsonObject) new JsonParser().parse(r);
 					if(!response.get("archived").getAsString().equals(address.getAddress())){
 						throw new Exception("ERROR: couldn't archive!");
 					}
@@ -216,7 +217,8 @@ public class BlockchainAPI {
 												"/merchant/"+account.getGuid()+
 												"/unarchive_address?api_code=LK75FDss&password="+account.getPassword()+
 												"&address="+address);
-					JsonObject response = (JsonObject) new JsonParser().parse(client.execute(get).toString());
+					String r = EntityUtils.toString(client.execute(get).getEntity());
+					JsonObject response = (JsonObject) new JsonParser().parse(r);
 					if(!response.get("active").getAsString().equals(address.getAddress())){
 						throw new Exception("ERROR: couldn't unarchive!");
 					}
