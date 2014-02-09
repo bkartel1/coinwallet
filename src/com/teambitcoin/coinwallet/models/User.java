@@ -94,9 +94,7 @@ public class User {
 		Account acc;
 		User user = new User(username, null); 
 		if (!dummy){
-			RegisterThread reg = user.new RegisterThread(username, password);
-			reg.start();
-			acc = reg.result();
+			acc = new BlockchainAPI().createAccount(username, password);
 		} else {
 			acc = new Account(username, password, "abba");
 		}
@@ -224,8 +222,8 @@ public class User {
 		return "CREATE TABLE " + TABLE_NAME + " (" +
 				GUID_COLUMN_NAME + " TEXT PRIMARY KEY," +
 				USERNAME_COLUMN_NAME + " TEXT UNIQUE NOT NULL," +
-				SECURITY_QUESTION_COLUMN_NAME + " TEXT NOT NULL," +
-				SECURITY_ANSWER_COLUMN_NAME + " TEXT NOT NULL," +
+				SECURITY_QUESTION_COLUMN_NAME + " TEXT," +
+				SECURITY_ANSWER_COLUMN_NAME + " TEXT," +
 				PASSWORD_COLUMN_NAME + " TEXT NOT NULL);" ;
 	}
 	
@@ -246,35 +244,4 @@ public class User {
 		return LOGGED_IN;
 	}
 	
-	
-	protected class RegisterThread extends Thread {
-		private final ReentrantLock lock = new ReentrantLock();
-		private String username, password;
-		private Account account;
-		private Exception e;
-		
-		public RegisterThread(String username, String password){
-			this.username = username;
-			this.password = password;
-		}
-		
-		public void run(){
-			lock.lock();
-			try{
-				account = new BlockchainAPI().createAccount(username, password);
-			} catch (Exception e){
-				this.e = e;
-			} finally {
-				lock.unlock();
-			}
-		}
-		
-		public Account result() throws Exception {
-			if (e!=null){
-				throw e;
-			} else {
-				return account;
-			}
-		}
-	}
 }
