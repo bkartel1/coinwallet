@@ -1,8 +1,21 @@
 package com.teambitcoin.coinwallet.models;
 
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.regex.Pattern;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESKeySpec;
+
+import android.util.Base64;
+import android.util.Log;
 import android.database.Cursor;
 import android.content.ContentValues;
 
@@ -22,6 +35,10 @@ public class User {
 	private static final String SECURITY_ANSWER_COLUMN_NAME = "answer";
 	private static final String PASSWORD_COLUMN_NAME = "password";
 	private static final Pattern VALID_USERNAME = Pattern.compile("^((\\d{10})|((\\+\\d{1,2}-)?\\d{3}-\\d{3}-\\d{4})|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,7}))$");
+	
+	private static DESKeySpec keySpec;
+	private static SecretKeyFactory keyFactory;
+	private static SecretKey key;
 	
 	private static User LOGGED_IN = null;
 	
@@ -76,6 +93,28 @@ public class User {
 		return create(username, password, question, answer, false);
 	}
 	
+	private static void initCrypt(){
+		try {
+			if (keySpec==null){
+				keySpec = new DESKeySpec("YourSecr".getBytes("UTF8"));
+			}
+			if (keyFactory==null){
+				keyFactory = SecretKeyFactory.getInstance("DES");
+			}
+			if (key==null){
+				key = keyFactory.generateSecret(keySpec);
+			}
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (InvalidKeySpecException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 *  
 	 * @param username Must be either a phone numnber (of form xxxxxxxxxx, xxx-xxx-xxx or +xx-xxx-xxx-xxxx) or and email address
@@ -101,7 +140,7 @@ public class User {
 		ContentValues values = new ContentValues();
 		values.put(USERNAME_COLUMN_NAME, username);
 		values.put(GUID_COLUMN_NAME, acc.getGuid());
-		values.put(PASSWORD_COLUMN_NAME, password);
+		values.put(PASSWORD_COLUMN_NAME, encodePassword(password));
 		values.put(SECURITY_QUESTION_COLUMN_NAME, question);
 		values.put(SECURITY_ANSWER_COLUMN_NAME, answer);
 		Database.insert(TABLE_NAME, values);
@@ -120,7 +159,51 @@ public class User {
 	
 	private String getDecodedPassword(){
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{PASSWORD_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
-		return cursor.getString(cursor.getColumnIndex(PASSWORD_COLUMN_NAME));
+		cursor.moveToNext();
+		String password = cursor.getString(cursor.getColumnIndex(PASSWORD_COLUMN_NAME));
+		return decryptPassword(password);
+	}
+	
+	private static String decryptPassword(String password){
+		initCrypt();
+		try {
+			Cipher cipher = Cipher.getInstance("DES");
+			cipher.init(Cipher.DECRYPT_MODE, key);
+			password = new String(cipher.doFinal(android.util.Base64.decode(password, Base64.URL_SAFE)));
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		}
+		return password;
+	}
+	
+	private static String encodePassword(String password){
+		initCrypt();
+		try {
+			Cipher cipher = Cipher.getInstance("DES");
+			cipher.init(Cipher.ENCRYPT_MODE, key);
+			return android.util.Base64.encodeToString(cipher.doFinal(password.getBytes("UTF8")), Base64.URL_SAFE);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			e.printStackTrace();
+		} catch (InvalidKeyException e) {
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	/**
@@ -130,6 +213,7 @@ public class User {
 	 */
 	public String recoverPassword(String answer){
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{SECURITY_ANSWER_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
+		cursor.moveToNext();
 		String correct = cursor.getString(cursor.getColumnIndex(SECURITY_ANSWER_COLUMN_NAME));
 		if (correct == null){
 			return null;
@@ -158,6 +242,7 @@ public class User {
 		if (cursor.isAfterLast()){
 			return null;
 		} else { 
+			cursor.moveToNext();
 			return new User(username, cursor.getString(cursor.getColumnIndex(GUID_COLUMN_NAME)));
 		}
 	}
@@ -168,11 +253,13 @@ public class User {
 	 */
 	public String getQuestion(){
 		Cursor cursor = Database.query(TABLE_NAME, new String[]{SECURITY_QUESTION_COLUMN_NAME} , GUID_COLUMN_NAME + "= ?", new String[]{guid}, null, null, null);
+		cursor.moveToNext();
 		return cursor.getString(cursor.getColumnIndex(SECURITY_QUESTION_COLUMN_NAME));
 	}
 	
 	private boolean authenticate(String password){
-		if (password==this.getDecodedPassword()){
+		String realPassword = this.getDecodedPassword();
+		if (password.equals(realPassword)){
 			this.password=password;
 			return true;
 		} else {
