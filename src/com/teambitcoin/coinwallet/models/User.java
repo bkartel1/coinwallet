@@ -258,7 +258,13 @@ public class User {
 		return cursor.getString(cursor.getColumnIndex(SECURITY_QUESTION_COLUMN_NAME));
 	}
 	
-	private boolean authenticate(String password){
+	/**
+	 * Checks if a password is correct for the user.
+	 * Used when one needs password authorisation for something.
+	 * @param password
+	 * @return
+	 */
+	public boolean authenticate(String password){
 		String realPassword = this.getDecodedPassword();
 		if (password.equals(realPassword)){
 			this.password=password;

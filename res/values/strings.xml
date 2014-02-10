@@ -21,4 +21,10 @@
     
     <string name="archived_active_btn">Archived/Active</string>
     
+    <string name="new_question_label">New Security Question:</string>
+    
+    <string name="new_answer_label">New Security Answer:</string>
+    
+    <string name="change_qna_button_label">Change Question &amp; Answer</string>
+    
 </resources>

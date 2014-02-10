@@ -39,26 +39,15 @@ public class EditAccount extends Activity implements View.OnClickListener{
     	TextView usernameDispaly; //display username
     	TextView guidDisplay;	  //display GUID
     
-    	final EditText editText1 = (EditText) findViewById(R.id.old_password_field);
-    	EditText editText2 = (EditText) findViewById(R.id.new_password_field);
+    	final EditText passwordField = (EditText) findViewById(R.id.new_qna_password_field);
+    	EditText questionField = (EditText) findViewById(R.id.new_question_field);
+    	EditText answerField = (EditText) findViewById(R.id.new_answer_field);
 		
-    	editText1.setOnEditorActionListener(new OnEditorActionListener() {
-    		public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-    			boolean entered;
-    			String temp;
-    			temp = editText1.getText().toString();
-    			
-    			if (actionId == EditorInfo.IME_ACTION_DONE) {
-    			//TODO
-    			}
-    				
-    		}
-    	});
     	
 	
-	Button button = (Button) findViewById(R.id.change_password);
+	Button newQnAButton = (Button) findViewById(R.id.change_qna_button);
 	
-	button.setOnClickListener(new View.OnClickListener() {
+	newQnAButton.setOnClickListener(new View.OnClickListener() {
 
 		public void onClick(View v) {
 			//TODO Check password
@@ -69,15 +58,9 @@ public class EditAccount extends Activity implements View.OnClickListener{
 	});
 
 }
-	public void checkPassword(String password){
-		
-			if (password == oldPassword){
-				//set newPassword for text2;
-		}
-	}
+	
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
 		
-	}
 	}
 }
