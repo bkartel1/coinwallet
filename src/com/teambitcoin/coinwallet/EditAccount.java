@@ -24,24 +24,18 @@ public class EditAccount extends Activity implements View.OnClickListener{
 	String newPassword;
 	String guid;
 	
-	Account account;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.edit_account);
-	
-		//Button addrScreenBtn = (Button) findViewById(R.id.currency_type);
     	
-    	guid = account.getGuid();
-    	oldPassword = account.getPassword();
-    	username = account.getUsername();
+    	//TextView usernameDispaly; //display username
+    	TextView guidDisplay = (TextView) findViewById(R.id.settings_guid_textview);	  //display GUID
+    	guidDisplay.setText(User.getLoggedInUser().getGUID());	
     	
-    	TextView usernameDispaly; //display username
-    	TextView guidDisplay;	  //display GUID
-    
     	final EditText passwordField = (EditText) findViewById(R.id.new_qna_password_field);
-    	EditText questionField = (EditText) findViewById(R.id.new_question_field);
-    	EditText answerField = (EditText) findViewById(R.id.new_answer_field);
+    	final EditText questionField = (EditText) findViewById(R.id.new_question_field);
+    	final EditText answerField = (EditText) findViewById(R.id.new_answer_field);
 		
     	
 	
@@ -50,8 +44,12 @@ public class EditAccount extends Activity implements View.OnClickListener{
 	newQnAButton.setOnClickListener(new View.OnClickListener() {
 
 		public void onClick(View v) {
-			//TODO Check password
-			
+			if(!User.getLoggedInUser().authenticate(passwordField.getText().toString())){
+				Toast.makeText(getApplicationContext(), "Incorrect Password", Toast.LENGTH_SHORT).show();
+				return;
+			}
+			User.getLoggedInUser().setQnA(questionField.getText().toString(), answerField.getText().toString());
+			Toast.makeText(getApplicationContext(), "Security Question & Answer Changed", Toast.LENGTH_LONG).show();
 		}
 
 			

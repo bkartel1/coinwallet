@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -17,11 +18,18 @@ public class LanderActivity extends Activity implements View.OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lander);
+		
 		landerLabel = (TextView)findViewById(R.id.lander_label);
 		landerLabel.setText("Welcome " + User.getLoggedInUser().getUsername());
 		
     	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
     	addrScreenBtn.setOnClickListener(LanderActivity.this);
+	}
+	
+	@Override
+	public void onBackPressed() { 
+//		   User.logout();
+//		   super.onBackPressed();
 	}
 	
 	public void onClick(View v) {
@@ -41,5 +49,16 @@ public class LanderActivity extends Activity implements View.OnClickListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.lander, menu);
 		return true;
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	    case R.id.action_settings:
+	    	startActivity(new Intent(this, EditAccount.class));
+	    	return true;
+	    default:
+	    	return super.onOptionsItemSelected(item);
+	    }
 	}
 }

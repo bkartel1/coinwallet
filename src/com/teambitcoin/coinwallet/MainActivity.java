@@ -22,7 +22,11 @@ public class MainActivity extends Activity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-      
+        if (User.getLoggedInUser()!= null){//User must not be logged in to view this activity
+        	startActivity(new Intent(this, LanderActivity.class));
+        	return;
+        }
+
         //adding the button object
     	Button button = (Button) findViewById(R.id.forgot_button);
     	button.setOnClickListener(this);
@@ -115,7 +119,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
+        //getMenuInflater().inflate(R.menu.main, menu); //No Menu on login screen.
         return true;
     }
     

@@ -27,4 +27,6 @@
     
     <string name="change_qna_button_label">Change Question &amp; Answer</string>
     
+    <string name="guid_header_label">GUID:</string>
+    
 </resources>
