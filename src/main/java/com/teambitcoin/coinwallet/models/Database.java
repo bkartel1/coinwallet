@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet.models;
+package main.java.com.teambitcoin.coinwallet.models;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

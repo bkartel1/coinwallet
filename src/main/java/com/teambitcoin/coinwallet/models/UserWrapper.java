@@ -1,6 +1,6 @@
-package com.teambitcoin.coinwallet.models;
+package main.java.com.teambitcoin.coinwallet.models;
 
-import com.teambitcoin.coinwallet.api.Account;
+import main.java.com.teambitcoin.coinwallet.api.Account;
 
 public class UserWrapper {
 	public UserWrapper() {}

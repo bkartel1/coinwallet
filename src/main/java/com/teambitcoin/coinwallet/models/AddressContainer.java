@@ -1,9 +1,9 @@
-package com.teambitcoin.coinwallet.models;
+package main.java.com.teambitcoin.coinwallet.models;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.teambitcoin.coinwallet.api.Address;
+import main.java.com.teambitcoin.coinwallet.api.Address;
 
 public class AddressContainer {	
 	

@@ -1,6 +1,9 @@
-package com.teambitcoin.coinwallet;
+package main.java.com.teambitcoin.coinwallet;
 
 //import android.R.string;
+//import android.R;
+import com.teambitcoin.coinwallet.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +19,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.view.KeyEvent;
 import android.view.inputmethod.*;
-import com.teambitcoin.coinwallet.models.*;
+import main.java.com.teambitcoin.coinwallet.models.*;
 
 public class ForgotPassword extends Activity{
 String username;//username variable to hold the input

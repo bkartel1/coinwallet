@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet.api;
+package main.java.com.teambitcoin.coinwallet.api;
 
 public class Address {
 	private int balance;

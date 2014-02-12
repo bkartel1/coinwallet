@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet;
+package main.java.com.teambitcoin.coinwallet;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,9 +12,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teambitcoin.coinwallet.*;
-import com.teambitcoin.coinwallet.models.Database;
-import com.teambitcoin.coinwallet.models.User;
-import com.teambitcoin.coinwallet.models.Database;
+import main.java.com.teambitcoin.coinwallet.models.Database;
+import main.java.com.teambitcoin.coinwallet.models.User;
+import main.java.com.teambitcoin.coinwallet.models.Database;
 
 public class MainActivity extends Activity implements View.OnClickListener {
 	

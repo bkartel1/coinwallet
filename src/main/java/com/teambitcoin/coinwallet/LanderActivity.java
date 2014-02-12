@@ -1,6 +1,8 @@
-package com.teambitcoin.coinwallet;
+package main.java.com.teambitcoin.coinwallet;
 
-import com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.R;
+
+import main.java.com.teambitcoin.coinwallet.models.User;
 
 import android.os.Bundle;
 import android.app.Activity;

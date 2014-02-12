@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet.models;
+package main.java.com.teambitcoin.coinwallet.models;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -19,8 +19,8 @@ import android.util.Log;
 import android.database.Cursor;
 import android.content.ContentValues;
 
-import com.teambitcoin.coinwallet.api.Account;
-import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import main.java.com.teambitcoin.coinwallet.api.Account;
+import main.java.com.teambitcoin.coinwallet.api.BlockchainAPI;
 
 /**
  * 

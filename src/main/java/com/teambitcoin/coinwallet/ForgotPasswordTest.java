@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet;
+package main.java.com.teambitcoin.coinwallet;
 
 import static org.junit.Assert.*;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import com.teambitcoin.coinwallet.*;
-import com.teambitcoin.coinwallet.models.User;
+import main.java.com.teambitcoin.coinwallet.models.User;
 
 
 public class ForgotPasswordTest {
