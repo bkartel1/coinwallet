@@ -1,17 +1,15 @@
-package main.java.com.teambitcoin.coinwallet;
+package com.teambitcoin.coinwallet;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.teambitcoin.coinwallet.R;
-
-import main.java.com.teambitcoin.coinwallet.api.Account;
-import main.java.com.teambitcoin.coinwallet.api.Address;
-import main.java.com.teambitcoin.coinwallet.api.BlockchainAPI;
-import main.java.com.teambitcoin.coinwallet.models.AddressContainer;
-import main.java.com.teambitcoin.coinwallet.models.User;
-import main.java.com.teambitcoin.coinwallet.models.UserWrapper;
+import com.teambitcoin.coinwallet.api.Account;
+import com.teambitcoin.coinwallet.api.Address;
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.AddressContainer;
+import com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.models.UserWrapper;
 
 import android.app.Activity;
 import android.app.AlertDialog;

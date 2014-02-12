@@ -1,4 +1,4 @@
-package main.java.com.teambitcoin.coinwallet.api;
+package com.teambitcoin.coinwallet.api;
 
 
 public class Account {
