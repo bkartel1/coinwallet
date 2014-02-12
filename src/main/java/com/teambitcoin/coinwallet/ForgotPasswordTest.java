@@ -1,4 +1,4 @@
-package com.teambitcoin.coinwallet.api;
+package com.teambitcoin.coinwallet;
 
 import static org.junit.Assert.*;
 import java.util.List;

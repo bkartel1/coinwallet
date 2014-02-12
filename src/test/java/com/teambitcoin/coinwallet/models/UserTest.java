@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.teambitcoin.coinwallet.api;
+package com.teambitcoin.coinwallet.models;
 
 import static org.junit.Assert.*;
 
