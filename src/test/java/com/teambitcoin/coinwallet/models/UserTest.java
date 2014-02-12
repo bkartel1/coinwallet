@@ -1,13 +1,13 @@
 /**
  * 
  */
-package test.java.com.teambitcoin.coinwallet.models;
+package com.teambitcoin.coinwallet.models;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import main.java.com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.models.User;
 
 /**
  * @author Michael Williams
