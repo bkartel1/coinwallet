@@ -1,11 +1,11 @@
-package main.java.com.teambitcoin.coinwallet.models;
+package com.teambitcoin.coinwallet.models;
 
 import java.util.ArrayList;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
-import main.java.com.teambitcoin.coinwallet.api.Address;
+import com.teambitcoin.coinwallet.api.Address;
 
 public class AddressDatabaseHandler
 {

@@ -1,4 +1,4 @@
-package main.java.com.teambitcoin.coinwallet.api;
+package com.teambitcoin.coinwallet.api;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
