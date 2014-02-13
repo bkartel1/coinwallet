@@ -1,4 +1,11 @@
 language: java
+jdk: oraclejdk7
+env:
+    matrix:
+    - ANDROID_SDKS=build-tools-19.0.1,android-19,addon-google_apis-google-19            ANDROID_TARGET=android-8   ANDROID_ABI=armeabi
+    - ANDROID_SDKS=android-10           ANDROID_TARGET=android-10  ANDROID_ABI=armeabi
+    - ANDROID_SDKS=sysimg-16            ANDROID_TARGET=android-16  ANDROID_ABI=armeabi-v7a
+    - ANDROID_SDKS=android-17,sysimg-17 ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a
 before_install:
   # download the latest android sdk and unzip
   - wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
@@ -11,4 +18,12 @@ before_install:
   # only update the sdk for the tools and platform-tools (1,2) and whatever api level
   # you are building for android (run "android list sdk" to get the full list.  9 = 2.3.3 or API level 10
   - echo "y"| android update sdk --filter 1,2 --no-ui --force
-  - echo "y"| android update sdk --filter build-tools-19.0.1,android-19,addon-google_apis-google-19  --no-ui --force
+  - echo "y"| android update sdk --filter build-tools-19.0.1,$ANDROID_SDKS  --no-ui --force
+  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
+  - emulator -avd test -no-skin -no-audio -no-window &
+  
+before_script:
+  # Make sure the emulator has started before running tests
+  - ./wait_for_emulator
+
+script: mvn install -Pintegration-tests -Dandroid.device=test
