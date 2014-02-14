@@ -54,7 +54,7 @@
           <version>3.8.3-SNAPSHOT</version>
           <configuration>
             <sdk>
-              <platform>19</platform>
+              <platform>${env.ANDROID_API_LVL}</platform>
             </sdk>
             <undeployBeforeDeploy>true</undeployBeforeDeploy>
           </configuration>
@@ -63,4 +63,16 @@
       </plugins>
     </pluginManagement>
   </build>
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>!env.ANDROID_API_LVL</name>
+        </property>
+      </activation>
+      <properties>
+        <env.ANDROID_API_LVL>19</env.ANDROID_API_LVL>
+      </properties>
+    </profile>
+  </profiles>
 </project>

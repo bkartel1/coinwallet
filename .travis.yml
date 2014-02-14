@@ -2,10 +2,10 @@ language: java
 jdk: oraclejdk7
 env:
     matrix:
-    - ANDROID_SDKS=build-tools-19.0.1,android-19,addon-google_apis-google-19            ANDROID_TARGET=android-8   ANDROID_ABI=armeabi
-    - ANDROID_SDKS=android-10           ANDROID_TARGET=android-10  ANDROID_ABI=armeabi
-    - ANDROID_SDKS=sysimg-16            ANDROID_TARGET=android-16  ANDROID_ABI=armeabi-v7a
-    - ANDROID_SDKS=android-17,sysimg-17 ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a
+    - ANDROID_SDKS=build-tools-19.0.1,android-19,addon-google_apis-google-19            ANDROID_TARGET=android-19   ANDROID_ABI=armeabi-v7a	ANDROID_API_LVL=19
+    - ANDROID_SDKS=android-10           ANDROID_TARGET=android-10  ANDROID_ABI=armeabi	ANDROID_API_LVL=10
+    - ANDROID_SDKS=sysimg-16            ANDROID_TARGET=android-16  ANDROID_ABI=armeabi-v7a ANDROID_API_LVL=16
+    - ANDROID_SDKS=android-17,sysimg-17 ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a ANDROID_API_LVL=17
 before_install:
   # download the latest android sdk and unzip
   - wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
