@@ -88,7 +88,7 @@
         <configuration>
           <sdk>
                         <!-- platform as api level (api level 16 = platform 4.1)-->
-            <platform>19</platform>
+            <platform>${env.ANDROID_API_LVL}</platform>
           </sdk>
         </configuration>
       </plugin>
@@ -99,4 +99,16 @@
         </plugin>
     </plugins>
   </build>
+  <profiles>
+    <profile>
+      <activation>
+        <property>
+          <name>!env.ANDROID_API_LVL</name>
+        </property>
+      </activation>
+      <properties>
+        <env.ANDROID_API_LVL>19</env.ANDROID_API_LVL>
+      </properties>
+    </profile>
+  </profiles>
 </project>

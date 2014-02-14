@@ -27,7 +27,7 @@
 
   <modules>
     <module>CoinWallet</module>
-    <!--<module>CoinWallet-tests</module>-->
+    <module>CoinWallet-tests</module>
   </modules>
 
   <dependencyManagement>
@@ -51,7 +51,7 @@
         <plugin>
           <groupId>com.jayway.maven.plugins.android.generation2</groupId>
           <artifactId>android-maven-plugin</artifactId>
-          <version>3.8.3-SNAPSHOT</version>
+          <version>3.8.2</version>
           <configuration>
             <sdk>
               <platform>${env.ANDROID_API_LVL}</platform>
