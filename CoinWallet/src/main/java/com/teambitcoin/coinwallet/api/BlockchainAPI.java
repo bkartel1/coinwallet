@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -193,7 +192,7 @@ public class BlockchainAPI {
 				}
 				return null;
 			}
-		};		
+		}.execute();		
 	}
 	
 	/**
@@ -228,6 +227,49 @@ public class BlockchainAPI {
 				}
 				return null;
 			}
-		};		
+		}.execute();		
+	}
+	
+	/**
+	 * Will send a payment to the given address.
+	 * 
+	 * @param account the user account from which the money is sent
+	 * @param address to which the money is being sent
+	 * @param amountInSatoshis the amount of money to send in satoshis 
+	 * (1BTC=100000000Satoshis)
+	 * @throws Exception if payment fails
+	 */
+	public Payment sendPayment(final Account account, final String address, final int amountInSatoshis) throws Exception{
+		return new AsyncTask<Void, Void, Payment>() {
+			@Override
+			protected Payment doInBackground(Void... voids){
+				try{
+					if(account.getGuid() == null || account.getGuid().length() <= 0){
+						throw new Exception("ERROR: Not a valid GUID!");
+					}
+					HttpClient client = new DefaultHttpClient();
+					HttpGet get = new HttpGet("http://blockchain.info/"+
+												"/merchant/"+account.getGuid()+
+												"/payment?api_code=LK75FDss"+
+												"&password="+account.getPassword()+
+												"&to="+address+
+												"&amount="+amountInSatoshis);
+					String r = EntityUtils.toString(client.execute(get).getEntity());
+					JsonObject response = (JsonObject) new JsonParser().parse(r);
+					if(response.get("error") != null){
+						throw new Exception("ERROR: couldn't send payment, "+
+												response.get("error").getAsString()+"!");
+					}
+					Payment payment = new Payment();
+					payment.setMessage(response.get("message").getAsString());
+					payment.setTxHash(response.get("tx_hash").getAsString());
+					payment.setNotice(response.get("notice").getAsString());
+					return payment;
+				}catch(Exception e){
+					e.printStackTrace();
+				}
+				return null;
+			}
+		}.execute().get();		
 	}
 }
