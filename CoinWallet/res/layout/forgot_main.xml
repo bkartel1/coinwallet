@@ -12,7 +12,7 @@
     android:id="@+id/textview1"
     android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
-	android:text="username" />
+	android:text="Username" />
 
     <EditText
         android:id="@+id/username_field"
@@ -24,15 +24,15 @@
         android:imeOptions="actionDone"
         android:inputType="text"
         android:hint="Please enter username" >
-
+		<requestFocus />
     </EditText>
     
     <TextView 
-    android:id="@+id/answer_label"
-    android:layout_width="fill_parent"
-	android:layout_height="wrap_content"
-	android:layout_below="@id/username_field"
-	android:text="answer" />
+	    android:id="@+id/answer_label"
+	    android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/username_field"
+		android:text="Answer" />
 
     <EditText
         android:id="@+id/password_field"
@@ -43,10 +43,7 @@
         android:ems="10" 
         android:hint="Please answer question"
         android:imeOptions="actionDone"
-        android:inputType="text">
-
-        <requestFocus />
-    </EditText>
+        android:inputType="text" />
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"

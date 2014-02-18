@@ -1,9 +1,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    <item
+        android:id="@+id/action_send_bitcoins"
+        android:orderInCategory="1"
+        android:showAsAction="never"
+        android:title="@string/send_bitcoin"/>
+    <item
+        android:id="@+id/action_receive_bitcoins"
+        android:orderInCategory="2"
+        android:showAsAction="never"
+        android:title="@string/receive_bitcoin"/>
+    <item
+        android:id="@+id/action_show_transactions"
+        android:orderInCategory="3"
+        android:showAsAction="never"
+        android:title="@string/show_transactions"/>
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/action_settings"/>
-
 </menu>

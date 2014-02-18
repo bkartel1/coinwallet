@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (User.getLoggedInUser()!= null){//User must not be logged in to view this activity
-        	startActivity(new Intent(this, LanderActivity.class));
+        	startActivity(new Intent(this, AddressScreen.class));
         	return;
         }
 
@@ -67,7 +67,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	questionField = (EditText)findViewById(R.id.question_field);
     	answerField = (EditText)findViewById(R.id.answer_field);
     	User.getLoggedInUser().setQnA(questionField.getText().toString(), answerField.getText().toString());
-    	startActivity(new Intent(this, LanderActivity.class));
+    	startActivity(new Intent(this, AddressScreen.class));
     }
     
     protected void registerClicked() {
@@ -95,7 +95,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	} else {
     		setContentView(R.layout.register_qna);
     		findViewById(R.id.finish_register_button).setOnClickListener(this);
-    		//startActivity(new Intent(this, LanderActivity.class));
     	}
     }
 
@@ -110,16 +109,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     		Toast.makeText(getApplicationContext(), 
     				"Error: Username or password incorrect", Toast.LENGTH_SHORT).show();
     	} else {
-    		startActivity(new Intent(this, LanderActivity.class));
+    		startActivity(new Intent(this, AddressScreen.class));
     	}
-    }
-
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.main, menu); //No Menu on login screen.
-        return true;
-    }
-    
+    }    
 }

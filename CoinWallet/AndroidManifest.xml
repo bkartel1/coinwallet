@@ -33,27 +33,35 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
         <activity
             android:name="com.teambitcoin.coinwallet.AddressScreen"
-            android:label="@string/addr_screen_name">
+            android:label="@string/addr_screen_name" >
             <intent-filter>
                 <action android:name="com.teambitcoin.coinwallet.AddressScreen" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.teambitcoin.coinwallet.LanderActivity"
-            android:label="@string/title_activity_lander">
-            
+            android:label="@string/title_activity_lander" >
         </activity>
-        
         <activity
             android:name="com.teambitcoin.coinwallet.EditAccount"
             android:label="@string/app_name" >
         </activity>
-
+        <activity
+            android:name="com.teambitcoin.coinwallet.SendBitcoins"
+            android:label="@string/title_activity_send_bitcoins" >
+        </activity>
+        <activity
+            android:name="com.teambitcoin.coinwallet.ReceiveBitcoins"
+            android:label="@string/title_activity_receive_bitcoins" >
+        </activity>
+        <activity
+            android:name="com.teambitcoin.coinwallet.ShowTransactions"
+            android:label="@string/title_activity_show_transactions" >
+        </activity>
     </application>
 
 </manifest>

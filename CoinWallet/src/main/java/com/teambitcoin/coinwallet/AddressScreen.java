@@ -4,20 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import com.teambitcoin.coinwallet.api.Account;
-import com.teambitcoin.coinwallet.api.Address;
-import com.teambitcoin.coinwallet.api.BlockchainAPI;
-import com.teambitcoin.coinwallet.models.AddressContainer;
-import com.teambitcoin.coinwallet.models.User;
-import com.teambitcoin.coinwallet.models.UserWrapper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -28,6 +23,13 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
+
+import com.teambitcoin.coinwallet.api.Account;
+import com.teambitcoin.coinwallet.api.Address;
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.AddressContainer;
+import com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.models.UserWrapper;
 
 /**
  * This class is responsible for displaying a list of addresses associated with
@@ -60,7 +62,7 @@ public class AddressScreen extends Activity {
         ListView addrListView = (ListView) findViewById(R.id.address_list);
         
         simpleAdapter = new SimpleAdapter(this, addressEntries, 
-                android.R.layout.simple_list_item_2, 
+                android.R.layout.simple_list_item_2,
                 new String[] { ADDR_LABEL_MAP_KEY, ADDR_VALUE_MAP_KEY }, 
                 new int[] { android.R.id.text1, android.R.id.text2 }
         );
@@ -68,10 +70,15 @@ public class AddressScreen extends Activity {
         addrListView.setAdapter(simpleAdapter);
         registerForContextMenu(addrListView);
         
-        Button archivedListBtn = (Button) findViewById(R.id.archived_addr_btn);
+        final Button archivedListBtn = (Button) findViewById(R.id.archived_addr_btn);
         archivedListBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
                 isViewingArchives = !isViewingArchives;
+                if(isViewingArchives){
+                	archivedListBtn.setText("Show active");
+                }else{
+                	archivedListBtn.setText("Show archived");
+                }
                 UpdateViewableList();
                 simpleAdapter.notifyDataSetChanged();
             }
@@ -83,7 +90,6 @@ public class AddressScreen extends Activity {
             // Dialog prompt for address label
             public void onClick(View v) {
                 final EditText addrLabelText = new EditText(AddressScreen.this);
-                
                 AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
                 addNewAddrDialog.setTitle("New address");
                 addNewAddrDialog.setMessage("A new address will be generated. Please enter a label for this address.");
@@ -91,13 +97,11 @@ public class AddressScreen extends Activity {
                 addNewAddrDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Editable addrLabelInput = addrLabelText.getText();
-                        
                         // Label length check
                         if (addrLabelInput.length() > 255) {
                             popupLabelLengthTooLongWarning();
                             return;
                         }
-                        
                         // Generate addresses
                         Address generatedAddr = null;
                         try {
@@ -117,23 +121,17 @@ public class AddressScreen extends Activity {
                             // TODO: What to do if address generation fails?
                             e.printStackTrace();
                         }
-                        
                         addresses.CreateAddress(generatedAddr);
-                        
-                        UpdateViewableList();
-                        
+                        UpdateViewableList();     
                         // Update adapter with newly generated address
                         simpleAdapter.notifyDataSetChanged();
-                        
                         Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
                     }
                 });
                 addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        
                     }
                 });
-                
                 addNewAddrDialog.show();
             }
         });
@@ -143,12 +141,9 @@ public class AddressScreen extends Activity {
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenuInfo info) {
         super.onCreateContextMenu(contextMenu, view, info);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) info;
-        
         List<Address> addresseList = GetCurrentList();
         selectedAddress = addresseList.get(acmi.position);
-        
         String archiveMode = (isViewingArchives) ? "Un-Archive" : "Archive";
-        
         contextMenu.setHeaderTitle("Options");
         contextMenu.add(1, 1, 1, archiveMode);
     }
@@ -159,8 +154,7 @@ public class AddressScreen extends Activity {
             if (selectedAddress != null) {
                 if (isViewingArchives == false) {
                     addresses.ArchiveAddress(selectedAddress);
-                }
-                else {
+                } else {
                     addresses.UnArchiveAddress(selectedAddress);
                 }
                 UpdateViewableList();
@@ -174,9 +168,7 @@ public class AddressScreen extends Activity {
     
     private void UpdateViewableList() {
         addressEntries.clear();
-        
         List<Address> addresseList = GetCurrentList();
-        
         for (Address address : addresseList) {
             AddToViewableList(address);
         }
@@ -190,19 +182,17 @@ public class AddressScreen extends Activity {
     }
     
     private ArrayList<Address> GetCurrentList() {
-        ArrayList<Address> addresseList;
-        
+        ArrayList<Address> addressList;
         if (isViewingArchives) {
-            addresseList = addresses.getArchivedAddressList();
+            addressList = addresses.getArchivedAddressList();
+        } else {
+            addressList = addresses.getActiveAddressList();
         }
-        else {
-            addresseList = addresses.getActiveAddressList();
-        }
-        return addresseList;
+        return addressList;
     }
     
     private void popupLabelLengthTooLongWarning() {
-        Toast.makeText(this, "The label must be between 0 and 255 characters.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "The label must contain between 0 and 255 characters.", Toast.LENGTH_LONG).show();
     }
     
     /* Makes a call to the Blockchain API to generate a new address */
@@ -210,10 +200,39 @@ public class AddressScreen extends Activity {
         User loggedInUser = User.getLoggedInUser();
         if (loggedInUser != null) {
             Account account = new UserWrapper().getUserAccount(loggedInUser);
-            
             Address newAddress = new BlockchainAPI().generateNewAddress(account, addrLabelInput.toString());
             return newAddress;
         }
         return null;
     }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+    	switch (item.getItemId()) {
+		case R.id.action_settings:
+			startActivity(new Intent(this, EditAccount.class));
+			return true;
+			
+		case R.id.action_send_bitcoins:
+			startActivity(new Intent(this, SendBitcoins.class));
+			return true;
+			
+		case R.id.action_receive_bitcoins:
+			startActivity(new Intent(this, ReceiveBitcoins.class));
+			return true;
+			
+		case R.id.action_show_transactions:
+			startActivity(new Intent(this, ShowTransactions.class));
+			return true;
+			
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+    }
+    
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.lander, menu);
+		return true;
+	}
 }

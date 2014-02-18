@@ -21,7 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:hint="Please enter your password"
+            android:inputType="textPassword">
+            <requestFocus />
+        </EditText>
 
         <TextView
             android:id="@+id/textView2"
@@ -33,9 +36,10 @@
             android:id="@+id/new_question_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Please enter a new secret question"
             android:ems="10" >
 
-            <requestFocus />
+            
         </EditText>
 
         <TextView
@@ -48,6 +52,7 @@
             android:id="@+id/new_answer_field"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="Please enter a new secret answer"
             android:ems="10" />
 
         <Button
