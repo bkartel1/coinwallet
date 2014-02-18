@@ -42,8 +42,7 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	int duration = Toast.LENGTH_SHORT;
     	Toast toast = Toast.makeText(context, text, duration);
     	toast.show();
-    	
-    	startActivity(new Intent("com.teambitcoin.coinwallet.ForgotPassword"));
+    	startActivity(new Intent(this, ForgotPassword.class));
     }
         
     public void onClick(View v) {
@@ -78,21 +77,21 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	String username = usernameField.getText().toString();
     	String password = passwordField.getText().toString();
     	if (!User.isValidUsername(username)){
-    		TextView alert = (TextView)findViewById(R.id.alert_text);
-    		alert.setText("Error: Invalid Username");
+    		Toast.makeText(getApplicationContext(), 
+    						"Error: Please enter a username and a password.", Toast.LENGTH_SHORT).show();
     		return;
     	}
     	User user;
     	try {
     		user = User.create(username, password);
     	} catch (Exception e) {
-    		TextView alert = (TextView)findViewById(R.id.alert_text);
-    		alert.setText(e.getMessage());
+    		Toast.makeText(getApplicationContext(), 
+    						e.getMessage(), Toast.LENGTH_SHORT).show();
     		return;
     	}
     	if (user == null){
-    		TextView alert = (TextView)findViewById(R.id.alert_text);
-    		alert.setText("Error: Username already taken");
+    		Toast.makeText(getApplicationContext(), 
+    						"Error: Username already taken", Toast.LENGTH_SHORT).show();
     	} else {
     		setContentView(R.layout.register_qna);
     		findViewById(R.id.finish_register_button).setOnClickListener(this);
@@ -108,8 +107,8 @@ public class MainActivity extends Activity implements View.OnClickListener {
     	String password = passwordField.getText().toString();
     	User user = User.login(username, password);
     	if (user==null) {
-    		TextView alert = (TextView)findViewById(R.id.alert_text);
-    		alert.setText("Error: Username or password incorrect");
+    		Toast.makeText(getApplicationContext(), 
+    				"Error: Username or password incorrect", Toast.LENGTH_SHORT).show();
     	} else {
     		startActivity(new Intent(this, LanderActivity.class));
     	}

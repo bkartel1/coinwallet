@@ -18,9 +18,7 @@ public class LanderActivity extends Activity implements View.OnClickListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_lander);
-		
-		landerLabel = (TextView)findViewById(R.id.lander_label);
-		landerLabel.setText("Welcome " + User.getLoggedInUser().getUsername());
+		setTitle(User.getLoggedInUser().getUsername());
 		
     	Button addrScreenBtn = (Button) findViewById(R.id.addr_screen_btn);
     	addrScreenBtn.setOnClickListener(LanderActivity.this);
