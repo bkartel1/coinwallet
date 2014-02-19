@@ -179,5 +179,16 @@
         </plugins>
       </reporting>
     </profile>
+    <profile>
+      <id>integration-tests</id>
+      <activation>
+        <property>
+          <name>integration-tests</name>
+        </property>
+      </activation>
+      <properties>
+        <android.enableIntegrationTest>true</android.enableIntegrationTest>
+      </properties>
+    </profile>
   </profiles>
 </project>
