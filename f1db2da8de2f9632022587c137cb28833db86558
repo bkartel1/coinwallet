@@ -1,0 +1,1 @@
+This fixed the allow failures :) I also added fast finishing in this commit, which means we don't have to wait for those that are allowed to fail before saying that we are successful :)
