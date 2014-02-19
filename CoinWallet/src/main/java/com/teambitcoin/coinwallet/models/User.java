@@ -135,7 +135,7 @@ public class User {
 		if (!dummy){
 			acc = new BlockchainAPI().createAccount(username, password);
 		} else {
-			acc = new Account(username, password, "abba");
+			acc = new Account(username, password, username);
 		}
 		ContentValues values = new ContentValues();
 		values.put(USERNAME_COLUMN_NAME, username);
