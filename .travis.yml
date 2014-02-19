@@ -5,6 +5,14 @@ env:
     - ANDROID_SDKS=android-18            ANDROID_TARGET=android-18   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=18
     - ANDROID_SDKS=android-16,sysimg-16            ANDROID_TARGET=android-16  ANDROID_ABI=armeabi-v7a ANDROID_API_LVL=16
     - ANDROID_SDKS=android-17,sysimg-17 ANDROID_TARGET=android-17  ANDROID_ABI=armeabi-v7a ANDROID_API_LVL=17
+    - ANDROID_SDKS=android-15           ANDROID_TARGET=android-15  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=15
+    - ANDROID_SDKS=android-14           ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=14
+    - ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
+    - ANDROID_SDKS=android-12           ANDROID_TARGET=android-12  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=12
+    - ANDROID_SDKS=android-11           ANDROID_TARGET=android-11  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=11
+    - ANDROID_SDKS=android-10           ANDROID_TARGET=android-10  ANDROID_ABI=armeabi     ANDROID_API_LVL=10
+    - ANDROID_SDKS=android-9           ANDROID_TARGET=android-9  ANDROID_ABI=armeabi     ANDROID_API_LVL=9
+    - ANDROID_SDKS=android-8           ANDROID_TARGET=android-8  ANDROID_ABI=armeabi     ANDROID_API_LVL=8
     allow_failures:
         - ANDROID_SDKS=android-8           ANDROID_TARGET=android-8  ANDROID_ABI=armeabi     ANDROID_API_LVL=8
         - ANDROID_SDKS=android-9           ANDROID_TARGET=android-9  ANDROID_ABI=armeabi     ANDROID_API_LVL=9
@@ -14,6 +22,7 @@ env:
         - ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
         - ANDROID_SDKS=android-14           ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=14
         - ANDROID_SDKS=android-15           ANDROID_TARGET=android-15  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=15
+        - ANDROID_SDKS=android-18            ANDROID_TARGET=android-18   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=18
         - ANDROID_SDKS=android-19,addon-google_apis-google-19            ANDROID_TARGET=android-19   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=19
 before_install:
   # download the latest android sdk and unzip
