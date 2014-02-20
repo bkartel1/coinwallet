@@ -1,2 +1,6 @@
 ## Temp Files ##
 *~
+
+#Unwanted java files
+*.java
+*.class
