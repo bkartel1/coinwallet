@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 echo -e "Starting to update Results Branch\n"
 cp -R CoinWallet/target $HOME/CoinWallet
 # Check that target folder exists for CoinWallet-tests module, as if the main module fails, it won't
