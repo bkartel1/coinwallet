@@ -2,7 +2,8 @@
 echo -e "Starting to update Results Branch\n"
 cp -R CoinWallet/target $HOME/CoinWallet
 # Check that target folder exists for CoinWallet-tests module, as if the main module fails, it won't
-if [ -d "CoinWallet-tests/target" ] 
+if [ -d "CoinWallet-tests/target" ]
+  then
   cp -R CoinWallet-tests/target $HOME/CoinWallet-tests
 fi
 cd $HOME
@@ -11,7 +12,7 @@ git config --global user.name "Travis"
 git clone --quiet --branch=results https://${GH_TOKEN}@github.com/cwallet/coinwallet.git results > /dev/null
 cd results
 mkdir -p $TRAVIS_BRANCH/$TRAVIS_COMMIT/$ANDROID_TARGET/
-cp $HOME/CoinWallet* $TRAVIS_BRANCH/$TRAVIS_COMMIT/$ANDROID_TARGET/
+cp -R $HOME/CoinWallet* $TRAVIS_BRANCH/$TRAVIS_COMMIT/$ANDROID_TARGET/
 git pull > /dev/null # In case any changes have occured
 git add -f .
 git commit -m "Travis build $TRAVIS_JOB_NUMBER pushed to results"
