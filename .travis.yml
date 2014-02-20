@@ -10,12 +10,12 @@ env:
     ANDROID_API_LVL=17
   - ANDROID_SDKS=android-15,sysimg-15           ANDROID_TARGET=android-15  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=15
   - ANDROID_SDKS=android-14,sysimg-14           ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=14
-  - ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
-  - ANDROID_SDKS=android-12           ANDROID_TARGET=android-12  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=12
-  - ANDROID_SDKS=android-11           ANDROID_TARGET=android-11  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=11
+  #- ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
+  #- ANDROID_SDKS=android-12           ANDROID_TARGET=android-12  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=12
+  #- ANDROID_SDKS=android-11           ANDROID_TARGET=android-11  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=11
   - ANDROID_SDKS=android-10,sysimg-10           ANDROID_TARGET=android-10  ANDROID_ABI=armeabi     ANDROID_API_LVL=10
-  - ANDROID_SDKS=android-9           ANDROID_TARGET=android-9  ANDROID_ABI=armeabi     ANDROID_API_LVL=9
-  - ANDROID_SDKS=android-8           ANDROID_TARGET=android-8  ANDROID_ABI=armeabi     ANDROID_API_LVL=8
+  #- ANDROID_SDKS=android-9           ANDROID_TARGET=android-9  ANDROID_ABI=armeabi     ANDROID_API_LVL=9
+  #- ANDROID_SDKS=android-8           ANDROID_TARGET=android-8  ANDROID_ABI=armeabi     ANDROID_API_LVL=8
   global:
     secure: K++kzFt1/W7LDSLQnW3IgVhP8gp8T79Ezjq9VL5ELnJw3n+R1UHBpT8iWHNZglUpZbPIDGLG+c1P5lbX0FLnJ2Ctvplm4uRtxysmUYK1mtYp/3poXgAaS99oQPZu1AcXJoXEtNhZiUz5hJQgMN+iQwXJbqfP2Fo97IhDY8TLn5Y=
 matrix:
@@ -27,6 +27,8 @@ matrix:
   - env: ANDROID_SDKS=android-11           ANDROID_TARGET=android-11  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=11
   - env: ANDROID_SDKS=android-12           ANDROID_TARGET=android-12  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=12
   - env: ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
+  - env: ANDROID_SDKS=android-14,sysimg-14           ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=14
+  - env: ANDROID_SDKS=android-19,addon-google_apis-google-19,sysimg-19            ANDROID_TARGET=android-19   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=19
 before_install:
 - wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
 - tar -zxf android-sdk_r22.3-linux.tgz
