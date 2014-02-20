@@ -21,7 +21,7 @@ public class UserTest extends AndroidTestCase {
 	/**
 	 * Test method for {@link com.teambitcoin.coinwallet.models.User#create(String, String, String, String, boolean)}.
 	 */
-	@Test
+	//@Test
 	public final void testCreate() throws Exception{
 		User bob = User.create("bob", "1234567890", "question", "answer", true);// returns null, as "bob" is not a valid username
 		User alice = User.create("alice@wonder.land", "jabberwock", "Follow the white rabbit?", "yes", true);// returns User object, as "alice@wonder.land" is a valid username
@@ -43,7 +43,7 @@ public class UserTest extends AndroidTestCase {
 	/**
 	 * Test method for {@link com.teambitcoin.coinwallet.models.User#generateAccount()}.
 	 */
-	@Test
+	//@Test
 	public final void testGenerateAccount() throws Exception {
 		Account acc = new UserWrapper().getUserAccount(testuser);
 		assertTrue(acc.getUsername().equals("tester@test.dom"));
