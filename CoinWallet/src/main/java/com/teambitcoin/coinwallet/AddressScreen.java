@@ -36,6 +36,7 @@ import com.teambitcoin.coinwallet.models.UserWrapper;
  * the {@code Account} of the currently logged-in {@code User}.
  */
 public class AddressScreen extends Activity {
+    private static final int MAX_ADDR_LABEL_LENGTH = 255;
     private static final String ADDR_LABEL_MAP_KEY = "addrLabel";
     private static final String ADDR_VALUE_MAP_KEY = "address";
     
@@ -70,18 +71,11 @@ public class AddressScreen extends Activity {
         addrListView.setAdapter(simpleAdapter);
         registerForContextMenu(addrListView);
         
+        // Archive/Unarchive view switcher button
         final Button archivedListBtn = (Button) findViewById(R.id.archived_addr_btn);
         archivedListBtn.setOnClickListener(new OnClickListener() {
             public void onClick(View arg0) {
-                isViewingArchives = !isViewingArchives;
-                if (isViewingArchives) {
-                    archivedListBtn.setText("Show active");
-                }
-                else {
-                    archivedListBtn.setText("Show archived");
-                }
-                updateViewableList();
-                simpleAdapter.notifyDataSetChanged();
+                toggleArchiveBtnText(archivedListBtn);
             }
         });
         
@@ -90,49 +84,7 @@ public class AddressScreen extends Activity {
         addNewAddrBtn.setOnClickListener(new OnClickListener() {
             // Dialog prompt for address label
             public void onClick(View v) {
-                final EditText addrLabelText = new EditText(AddressScreen.this);
-                AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
-                addNewAddrDialog.setTitle("New address");
-                addNewAddrDialog.setMessage("A new address will be generated. Please enter a label for this address.");
-                addNewAddrDialog.setView(addrLabelText);
-                addNewAddrDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        Editable addrLabelInput = addrLabelText.getText();
-                        // Label length check
-                        if (addrLabelInput.length() > 255) {
-                            popupLabelLengthTooLongWarning();
-                            return;
-                        }
-                        // Generate addresses
-                        Address generatedAddr = null;
-                        try {
-                            generatedAddr = apiCallToGenerateNewAddress(addrLabelInput);
-                            // Dummy
-                            // generatedAddr = new Address("addr",
-                            // addrLabelInput.toString(), 0, 0);
-                            
-                            if (generatedAddr == null) {
-                                Toast.makeText(AddressScreen.this,
-                                        "Error: An error occurred. The address was not created.", Toast.LENGTH_LONG);
-                                return;
-                            }
-                        }
-                        catch (Exception e) {
-                            // TODO: What to do if address generation fails?
-                            e.printStackTrace();
-                        }
-                        addresses.createAddress(generatedAddr);
-                        updateViewableList();
-                        // Update adapter with newly generated address
-                        simpleAdapter.notifyDataSetChanged();
-                        Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
-                    }
-                });
-                addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                addNewAddrDialog.show();
+                configureAddNewAddressDialogPrompt();
             }
         });
     }
@@ -167,6 +119,32 @@ public class AddressScreen extends Activity {
         return true;
     }
     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, EditAccount.class));
+                return true;
+            case R.id.action_send_bitcoins:
+                startActivity(new Intent(this, SendBitcoins.class));
+                return true;
+            case R.id.action_receive_bitcoins:
+                startActivity(new Intent(this, ReceiveBitcoins.class));
+                return true;
+            case R.id.action_show_transactions:
+                startActivity(new Intent(this, ShowTransactions.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.lander, menu);
+        return true;
+    }
+    
     private void updateViewableList() {
         addressEntries.clear();
         List<Address> addresseList = getCurrentList();
@@ -193,8 +171,76 @@ public class AddressScreen extends Activity {
         return addressList;
     }
     
+    private void toggleArchiveBtnText(Button archivedListBtn) {
+        isViewingArchives = !isViewingArchives;
+        if (isViewingArchives) {
+            archivedListBtn.setText("Show active");
+        }
+        else {
+            archivedListBtn.setText("Show archived");
+        }
+        updateViewableList();
+        simpleAdapter.notifyDataSetChanged();
+    }
+    
+    private void configureAddNewAddressDialogPrompt() {
+        final EditText addrLabelText = new EditText(AddressScreen.this);
+        AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
+        addNewAddrDialog.setTitle("New address");
+        addNewAddrDialog.setMessage("A new address will be generated. Please enter a label for this address.");
+        addNewAddrDialog.setView(addrLabelText);
+        addNewAddrDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // Label length check
+                if (isLabelTooLong(addrLabelText)) {
+                    popupLabelLengthTooLongWarning();
+                    return;
+                }
+                // Generate addresses
+                generateNewBitcoinAddress(addrLabelText.getText());
+                updateViewableList();
+                simpleAdapter.notifyDataSetChanged();
+                
+                Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
+            }
+        });
+        addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing (standard cancel behavior)
+            }
+        });
+        
+        addNewAddrDialog.show();
+    }
+    
+    private boolean isLabelTooLong(EditText addrLabelText) {
+        Editable addrLabelInput = addrLabelText.getText();
+        return addrLabelInput.length() > MAX_ADDR_LABEL_LENGTH;
+    }
+    
     private void popupLabelLengthTooLongWarning() {
         Toast.makeText(this, "The label must contain between 0 and 255 characters.", Toast.LENGTH_LONG).show();
+    }
+    
+    private void generateNewBitcoinAddress(Editable label) {
+        Address generatedAddr = null;
+        try {
+            generatedAddr = apiCallToGenerateNewAddress(label);
+            if (generatedAddr == null) {
+                Toast.makeText(AddressScreen.this,
+                               "Error: An error occurred. The address was not created.", 
+                               Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(AddressScreen.this,
+                    "Error: An error occurred. The address was not created.", 
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        addresses.createAddress(generatedAddr);
     }
     
     /* Makes a call to the Blockchain API to generate a new address */
@@ -206,31 +252,5 @@ public class AddressScreen extends Activity {
             return newAddress;
         }
         return null;
-    }
-    
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, EditAccount.class));
-                return true;
-            case R.id.action_send_bitcoins:
-                startActivity(new Intent(this, SendBitcoins.class));
-                return true;
-            case R.id.action_receive_bitcoins:
-                startActivity(new Intent(this, ReceiveBitcoins.class));
-                return true;
-            case R.id.action_show_transactions:
-                startActivity(new Intent(this, ShowTransactions.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.lander, menu);
-        return true;
     }
 }
