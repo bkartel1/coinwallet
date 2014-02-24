@@ -1,0 +1,4 @@
+com/teambitcoin/coinwallet/tests/UserTest.class
+com/teambitcoin/coinwallet/tests/BuildConfig.class
+com/teambitcoin/coinwallet/tests/ForgotPasswordTest.class
+com/teambitcoin/coinwallet/tests/BlockchainTest.class
