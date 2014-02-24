@@ -42,7 +42,8 @@ before_install:
 - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
 - emulator -avd test -no-skin -no-audio -no-window &
 before_script:
-- "./wait_for_emulator"
+- adb -e wait-for-device
+#- "./wait_for_emulator"
 
 script: mvn install -Pintegration-tests -Dandroid.device=test -e
 
