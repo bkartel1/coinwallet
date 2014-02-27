@@ -45,12 +45,22 @@ public class User {
     private String username;
     private String guid;
     private String password;
+    private String currency;
     
     private User(String username, String guid) {
         this.username = username;
         this.guid = guid;
+        this.currency = "CAD";
     }
     
+
+    public String getCurrency(){
+        return currency;
+    }
+
+    public void setCurrency(String currency){
+        this.currency = currency;
+    }
     /**
      * Backwards compatability wrapper for create, which simply fills the new
      * question and answer fields with null. Logs in new user.
