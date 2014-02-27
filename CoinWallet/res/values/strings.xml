@@ -34,4 +34,5 @@
     <string name="title_activity_send_bitcoins">Send Bitcoins</string>
 	<string name="title_activity_receive_bitcoins">Receive Bitcoins</string>
 	<string name="title_activity_show_transactions">Show Transactions</string>
+	<string name="action_logout"></string>
 </resources>

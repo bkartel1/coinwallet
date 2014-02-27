@@ -134,6 +134,9 @@ public class AddressScreen extends Activity {
             case R.id.action_show_transactions:
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;
+            case R.id.action_logout:
+            	User.logout();
+            	startActivity(new Intent(this, MainActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
