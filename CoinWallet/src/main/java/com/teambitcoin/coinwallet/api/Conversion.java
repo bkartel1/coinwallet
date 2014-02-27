@@ -78,16 +78,22 @@ public class Conversion {
 		}
 	}
 
-	public double toBTC(double amount, String currency){
-                return toBTC(amount, (Currency) null);
+	public double toBTC(double amount, String currency) throws Exception{
+		if (!supportedCurrencies.containsKey(currency)){
+			throw new Exception("Invalid Currency");
+		}
+                return toBTC(amount, supportedCurrencies.get(currency));
         }
 
 	public double toBTC(double amount, Currency currency){
 		return 0.0;
 	}
 
-        public double toMoney(double amount, String currency){
-                return toMoney(amount, (Currency) null);
+        public double toMoney(double amount, String currency) throws Exception{
+		if (!supportedCurrencies.containsKey(currency)){
+			throw new Exception("Invalid Currency");
+		}
+                return toMoney(amount, supportedCurrencies.get(currency));
         }
 
 	public double toMoney(double amount, Currency currency){
