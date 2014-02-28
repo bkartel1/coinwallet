@@ -12,7 +12,7 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentTop="true"
 	    android:text="@string/qr_back_btn_text" />
-    
+	    
     <ImageView 
         android:id="@+id/qrcode_image" 
         android:layout_width="200dip" 
@@ -22,6 +22,18 @@
         android:layout_centerHorizontal="true" 
         android:layout_below="@+id/qr_back_btn" 
         android:contentDescription="@string/qrcode_image_desc" />
+    
+    <TextView 
+	    android:id="@+id/qrcode_image_placeholder_text"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignLeft="@+id/qrcode_image"
+	    android:layout_alignTop="@+id/qrcode_image"
+	    android:layout_alignRight="@+id/qrcode_image"
+	    android:layout_alignBottom="@+id/qrcode_image"
+	    android:layout_margin="1dp"
+	    android:gravity="center"
+	    android:text="@string/qr_placeholder_text" />
     
 	<TextView android:id="@+id/qrcode_address_text"
 		android:layout_width="wrap_content"

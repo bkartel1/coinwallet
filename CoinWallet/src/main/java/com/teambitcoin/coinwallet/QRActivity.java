@@ -1,5 +1,6 @@
 package com.teambitcoin.coinwallet;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -14,7 +15,7 @@ import android.widget.TextView;
  * Displays a QR code image on screen, generated from an {@code Address}.
  */
 public class QRActivity extends Activity {
-    private static int QR_IMAGE_WIDTH = 200;
+    private static int QR_IMAGE_WIDTH  = 200;
     private static int QR_IMAGE_HEIGHT = 200;
     
     @Override
@@ -35,7 +36,7 @@ public class QRActivity extends Activity {
         qrAddressTextView.setText(bitcoinAddress);
         
         // Download and display the QR code
-        generateQrCode(bitcoinAddress, qrImageView);
+        displayQrCode(bitcoinAddress, qrImageView);
         
         // Bind the back button to return to the previous screen
         qrBackBtn.setOnClickListener(new View.OnClickListener() {
@@ -52,10 +53,22 @@ public class QRActivity extends Activity {
                height + "x" + width + "&cht=qr&chl=" + address; 
     }
     
-    private void generateQrCode(String address, ImageView imageView) {
+    private void displayQrCode(String address, ImageView imageView) {
         String url = constructGoogleGraphAPIRemoteUrl(address, QR_IMAGE_HEIGHT, QR_IMAGE_WIDTH);
         
-        Picasso.with(this).load(url).into(imageView);
+        Picasso.with(this).load(url).into(imageView, new Callback() {
+            TextView placeholderTextView = (TextView) findViewById(R.id.qrcode_image_placeholder_text);
+            
+            @Override
+            public void onSuccess() {
+                placeholderTextView.setText("");
+            }
+
+            @Override
+            public void onError() {
+                placeholderTextView.setText("Error: Could not generate QR code.");
+            }
+        });
     }
     
 }

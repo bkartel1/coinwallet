@@ -264,7 +264,7 @@ public class AddressScreen extends Activity {
             updateViewableList();
             simpleAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Address was archived", Toast.LENGTH_LONG).show();
     }
     
     private void clickGenerateQRMenuItem() {
