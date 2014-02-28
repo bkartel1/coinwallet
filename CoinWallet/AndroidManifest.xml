@@ -62,6 +62,10 @@
             android:name="com.teambitcoin.coinwallet.ShowTransactions"
             android:label="@string/title_activity_show_transactions" >
         </activity>
+        <activity
+            android:name="com.teambitcoin.coinwallet.QRActivity" 
+            android:label="@string/addr_screen_name">
+        </activity>
     </application>
 
 </manifest>

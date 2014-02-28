@@ -21,6 +21,12 @@
     <string name="archived_active_btn">Archived/Active</string>
     <string name="show_archived">Show archived</string>
     <string name="show_active">Show active</string>
+    
+    <!-- QR code resources -->
+    <string name="qrcode_image_desc">QR code</string>
+    <string name="qr_back_btn_text">&lt; Back</string>
+    
+    <!-- Other -->
     <string name="new_question_label">New Security Question:</string>
     <string name="new_answer_label">New Security Answer:</string>
     <string name="change_qna_button_label">Change Question &amp; Answer</string>

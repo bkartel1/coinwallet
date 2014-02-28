@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" 
+    android:id="@+id/qrcode_layout_view"
+    android:padding="15dip">
+    
+	<Button
+	    android:id="@+id/qr_back_btn"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentTop="true"
+	    android:text="@string/qr_back_btn_text" />
+    
+    <ImageView 
+        android:id="@+id/qrcode_image" 
+        android:layout_width="200dip" 
+        android:layout_height="200dip" 
+        android:layout_margin="10dip" 
+        android:layout_gravity="center" 
+        android:layout_centerHorizontal="true" 
+        android:layout_below="@+id/qr_back_btn" 
+        android:contentDescription="@string/qrcode_image_desc" />
+    
+	<TextView android:id="@+id/qrcode_address_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:gravity="center_horizontal"
+		android:layout_centerHorizontal="true"
+		android:layout_below="@+id/qrcode_image" />
+	
+</RelativeLayout>

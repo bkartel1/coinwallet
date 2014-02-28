@@ -285,7 +285,10 @@ public class AddressScreen extends Activity {
     
     private void clickGenerateQRMenuItem() {
         if (selectedAddress != null) {
-            
+            Intent qrActivity = new Intent(getApplicationContext(), QRActivity.class);
+            qrActivity.putExtra("bitcoinAddress", selectedAddress.getAddress());
+            startActivity(qrActivity);
+            overridePendingTransition(0, 0);
         }
     }
     
