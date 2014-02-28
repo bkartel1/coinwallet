@@ -1,27 +1,43 @@
 package com.teambitcoin.coinwallet;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teambitcoin.coinwallet.api.Account;
@@ -98,22 +114,18 @@ public class AddressScreen extends Activity {
         String archiveMode = (isViewingArchives) ? "Un-Archive" : "Archive";
         contextMenu.setHeaderTitle("Options");
         contextMenu.add(1, 1, 1, archiveMode);
+        contextMenu.add(1, 2, 2, "Generate QR");
     }
     
     @Override
     public boolean onContextItemSelected(MenuItem menuItem) {
-        if (menuItem.getItemId() == 1) {
-            if (selectedAddress != null) {
-                if (isViewingArchives == false) {
-                    addresses.archiveAddress(selectedAddress);
-                }
-                else {
-                    addresses.unArchiveAddress(selectedAddress);
-                }
-                updateViewableList();
-                simpleAdapter.notifyDataSetChanged();
-            }
-            Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
+        int menuItemId = menuItem.getItemId();
+        if (menuItemId == 1) {
+            clickArchiveMenuItem();
+        }
+        
+        if (menuItemId == 2) {
+            clickGenerateQRMenuItem();
         }
         
         return true;
@@ -134,9 +146,6 @@ public class AddressScreen extends Activity {
             case R.id.action_show_transactions:
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;
-            case R.id.action_logout:
-            	User.logout();
-            	startActivity(new Intent(this, MainActivity.class));
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -188,11 +197,11 @@ public class AddressScreen extends Activity {
     
     private void configureAddNewAddressDialogPrompt() {
         final EditText addrLabelText = new EditText(AddressScreen.this);
-        AlertDialog.Builder addNewAddrDialog = new AlertDialog.Builder(AddressScreen.this);
-        addNewAddrDialog.setTitle("New address");
-        addNewAddrDialog.setMessage("A new address will be generated. Please enter a label for this address.");
-        addNewAddrDialog.setView(addrLabelText);
-        addNewAddrDialog.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        final AlertDialog.Builder addNewAddrDialogBuilder = new AlertDialog.Builder(this);
+        addNewAddrDialogBuilder.setTitle("New address");
+        addNewAddrDialogBuilder.setMessage("A new address will be generated. " +
+        		"Please enter a label for this address.");
+        addNewAddrDialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 // Label length check
                 if (isLabelTooLong(addrLabelText)) {
@@ -207,12 +216,15 @@ public class AddressScreen extends Activity {
                 Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
             }
         });
-        addNewAddrDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        addNewAddrDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                // do nothing (standard cancel behavior)
+                dialog.cancel();
+                dialog.dismiss();
             }
         });
         
+        AlertDialog addNewAddrDialog = addNewAddrDialogBuilder.create();
+        addNewAddrDialog.setView(addrLabelText);        
         addNewAddrDialog.show();
     }
     
@@ -256,4 +268,25 @@ public class AddressScreen extends Activity {
         }
         return null;
     }
+    
+    private void clickArchiveMenuItem() {
+        if (selectedAddress != null) {
+            if (isViewingArchives == false) {
+                addresses.archiveAddress(selectedAddress);
+            }
+            else {
+                addresses.unArchiveAddress(selectedAddress);
+            }
+            updateViewableList();
+            simpleAdapter.notifyDataSetChanged();
+        }
+        Toast.makeText(this, "Archiving address", Toast.LENGTH_SHORT).show();
+    }
+    
+    private void clickGenerateQRMenuItem() {
+        if (selectedAddress != null) {
+            
+        }
+    }
+    
 }
