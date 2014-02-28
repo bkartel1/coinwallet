@@ -193,11 +193,12 @@ public class AddressScreen extends Activity {
                     return;
                 }
                 // Generate addresses
-                generateNewBitcoinAddress(addrLabelText.getText());
+                boolean isAddrCreated = generateNewBitcoinAddress(addrLabelText.getText());
                 updateViewableList();
                 simpleAdapter.notifyDataSetChanged();
                 
-                Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
+                if (isAddrCreated)
+                    Toast.makeText(AddressScreen.this, "Created address", Toast.LENGTH_SHORT).show();
             }
         });
         addNewAddrDialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -221,7 +222,8 @@ public class AddressScreen extends Activity {
         Toast.makeText(this, "The label must contain between 0 and 255 characters.", Toast.LENGTH_LONG).show();
     }
     
-    private void generateNewBitcoinAddress(Editable label) {
+    // Returns true on success
+    private boolean generateNewBitcoinAddress(Editable label) {
         Address generatedAddr = null;
         try {
             generatedAddr = apiCallToGenerateNewAddress(label);
@@ -229,7 +231,7 @@ public class AddressScreen extends Activity {
                 Toast.makeText(AddressScreen.this,
                                "Error: An error occurred. The address was not created.", 
                                Toast.LENGTH_LONG).show();
-                return;
+                return false;
             }
         }
         catch (Exception e) {
@@ -237,9 +239,10 @@ public class AddressScreen extends Activity {
             Toast.makeText(AddressScreen.this,
                     "Error: An error occurred. The address was not created.", 
                     Toast.LENGTH_LONG).show();
-            return;
+            return false;
         }
         addresses.createAddress(generatedAddr);
+        return true;
     }
     
     /* Makes a call to the Blockchain API to generate a new address */
@@ -264,7 +267,10 @@ public class AddressScreen extends Activity {
             updateViewableList();
             simpleAdapter.notifyDataSetChanged();
         }
-        Toast.makeText(this, "Address was archived", Toast.LENGTH_LONG).show();
+        String archiveStr = "archived";
+        if (isViewingArchives)
+            archiveStr = "unarchived";
+        Toast.makeText(this, "Address was " + archiveStr, Toast.LENGTH_LONG).show();
     }
     
     private void clickGenerateQRMenuItem() {
