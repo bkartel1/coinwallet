@@ -1,6 +1,12 @@
 package com.teambitcoin.coinwallet.models;
 
+import java.util.ArrayList;
+
+import com.teambitcoin.coinwallet.api.Address;
+
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Log;
 
 public class Transaction {
 	private static final String TABLE_NAME = "transactions";
@@ -30,6 +36,33 @@ public class Transaction {
         values.put(ADDRESS, transaction.getAddress());
         values.put(AMOUNT, transaction.getAmount());
         Database.insert(TABLE_NAME, values);
+    }
+    
+
+    public static ArrayList<Transaction> retrieveTransactions(String userGuid) {
+        ArrayList<Transaction> transactionList = new ArrayList<Transaction>();
+        String[] columns = { TYPE, ADDRESS, AMOUNT };
+        
+        Cursor cursor = Database.query(TABLE_NAME, columns, USER_GUID + " = ? ", 
+        		new String[] { userGuid }, null, null, null);
+        
+        if (cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            int count = cursor.getCount();
+            int typeIx = cursor.getColumnIndex(TYPE);
+            int addressIx = cursor.getColumnIndex(ADDRESS);
+            int amountIx = cursor.getColumnIndex(AMOUNT);
+            
+            for (int i = 0; i < count; i++) {
+                transactionList.add(new Transaction(
+                		cursor.getString(typeIx), 
+                		userGuid,
+                		cursor.getString(addressIx), 
+                		cursor.getInt(amountIx)));
+                cursor.moveToNext();
+            }
+        }
+        return transactionList;
     }
 
 	protected static String getSQLInitQuery() {
