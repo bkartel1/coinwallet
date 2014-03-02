@@ -61,6 +61,7 @@ public class User {
     }
     
     public void setAccountBalance(int balance) {
+    	this.accountBalance = balance;
         if (this.equals(LOGGED_IN)) {
             ContentValues values = new ContentValues();
             values.put(ACCOUNT_BALANCE, balance);

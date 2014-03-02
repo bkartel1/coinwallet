@@ -93,6 +93,13 @@ public class AddressScreen extends Activity {
     }
     
     @Override
+	protected void onResume() {
+		super.onResume();
+		TextView balance = (TextView) findViewById(R.id.balance);
+        balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" satoshis");
+	}
+    
+	@Override
     public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenuInfo info) {
         super.onCreateContextMenu(contextMenu, view, info);
         AdapterView.AdapterContextMenuInfo acmi = (AdapterContextMenuInfo) info;

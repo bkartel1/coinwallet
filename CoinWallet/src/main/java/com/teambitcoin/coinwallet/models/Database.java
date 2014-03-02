@@ -43,6 +43,7 @@ public class Database extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(User.getSQLInitQuery());
         db.execSQL(AddressDatabaseHandler.getAddresseSQLInitQuery());
+        db.execSQL(Transaction.getSQLInitQuery());
     }
     
     /**

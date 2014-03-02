@@ -16,6 +16,8 @@ import android.util.Log;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.teambitcoin.coinwallet.models.Transaction;
+import com.teambitcoin.coinwallet.models.User;
 
 /**
  * This class is used to connect with Blockchain's API.
@@ -242,6 +244,9 @@ public class BlockchainAPI {
     public Payment sendPayment(final Account account, final String address, final int amountInSatoshis)
             throws Exception {
     	if(isTesting){
+    		User user = User.getLoggedInUser();
+    		Transaction tx = new Transaction("sent", user.getGUID(), address, amountInSatoshis);
+    		Transaction.insertTransaction(tx);
     		return new Payment();
     	}else{
 	        return new AsyncTask<Void, Void, Payment>() {

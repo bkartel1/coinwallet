@@ -1,9 +1,5 @@
 package com.teambitcoin.coinwallet;
 
-import com.teambitcoin.coinwallet.api.BlockchainAPI;
-import com.teambitcoin.coinwallet.models.User;
-import com.teambitcoin.coinwallet.models.UserWrapper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,7 +10,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.models.User;
+import com.teambitcoin.coinwallet.models.UserWrapper;
 
 public class SendBitcoins extends Activity {
 	private static final String[] BaseAddresses = {
@@ -32,11 +33,15 @@ public class SendBitcoins extends Activity {
         		android.R.layout.simple_list_item_1, BaseAddresses);
         AutoCompleteTextView btcAddressTxtView = (AutoCompleteTextView) findViewById(R.id.btc_address);
         btcAddressTxtView.setAdapter(autoCompleteAdapter);
+        
+        ((TextView) findViewById(R.id.balance_in_send_coins))
+        	.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" satoshis");
 	}
 	
 	public void sendBitcoins(View view){
 		final Context that = this; 
 		final String btcAddress = ((EditText)findViewById(R.id.btc_address)).getText().toString();
+		final User user = User.getLoggedInUser();
 		String amountStr = ((EditText)findViewById(R.id.amount_in_satoshis)).getText().toString();
 		int amountTemp = 0;
 		if(amountStr != null && !amountStr.equals("")){
@@ -48,6 +53,8 @@ public class SendBitcoins extends Activity {
 		}else{
 			if(amount <= 0){
 				Toast.makeText(this, "Please enter a valid amount of satoshis", Toast.LENGTH_SHORT).show();
+			}else if(amount > user.getAccountBalance()){
+				Toast.makeText(this, "Insufficient balance to make this transaction", Toast.LENGTH_SHORT).show();
 			}else{
 				new AlertDialog.Builder(this)
 					.setIcon(android.R.drawable.ic_dialog_alert)
@@ -60,6 +67,7 @@ public class SendBitcoins extends Activity {
 							try {
 								new BlockchainAPI().sendPayment(new UserWrapper().getUserAccount(User.getLoggedInUser()), 
 																btcAddress, amount);
+								user.setAccountBalance(user.getAccountBalance() - amount);
 							} catch (Exception e) {
 								e.printStackTrace();
 								Toast.makeText(that, "Transfer failed: "+e.getMessage(), Toast.LENGTH_SHORT).show();
