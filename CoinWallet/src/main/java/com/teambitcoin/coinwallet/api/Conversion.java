@@ -1,17 +1,14 @@
 package com.teambitcoin.coinwallet.api;
 
-import java.net.URL;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+
 import javax.net.ssl.HttpsURLConnection;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
-import com.google.gson.JsonParser;
-
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.util.HashMap;
 
 public class Conversion {
 	private static final String[] API_URL = {"blockchain.info", "/ticker"};
@@ -21,7 +18,7 @@ public class Conversion {
 	private HashMap<String,Currency> supportedCurrencies;
 
 	public Conversion() throws IOException {
-		supportedCurrencies = new HashMap(HASHMAP_STARTING_SIZE);
+		supportedCurrencies = new HashMap<String, Currency>(HASHMAP_STARTING_SIZE);
 		HttpsURLConnection connection = getNewConnection();
 		JsonReader reader = new JsonReader(new InputStreamReader(connection.getInputStream()));
 		try{
@@ -43,16 +40,12 @@ public class Conversion {
 		reader.beginObject();
 		while (reader.hasNext()){
 			String entry = reader.nextName();
-			switch (entry) {
-				case "15m":
+			if(entry.equals("15m")) {
 					rate = reader.nextDouble();
-					break;
-				case "symbol":
+			} else if(entry.equals("symbol")) {
 					symbol = reader.nextString();
-					break;
-				default:
+			} else {
 					reader.skipValue();
-					break;
 			}
 		}
 		supportedCurrencies.put(name, new Currency(name, rate, symbol));

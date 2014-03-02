@@ -130,6 +130,9 @@ public class AddressScreen extends Activity {
             case R.id.action_show_transactions:
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;
+            case R.id.action_logout:
+            	Toast.makeText(this, "LOGGING OUT!", Toast.LENGTH_SHORT).show();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
