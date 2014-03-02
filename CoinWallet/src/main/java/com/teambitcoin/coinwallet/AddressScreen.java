@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.teambitcoin.coinwallet.api.Account;
@@ -55,6 +56,8 @@ public class AddressScreen extends Activity {
         setContentView(R.layout.address_main);
         
         User user = User.getLoggedInUser();
+        TextView balance = (TextView) findViewById(R.id.balance);
+        balance.setText("Balance: "+user.getAccountBalance()+" satoshis");
         addresses = new AddressContainer(user.getGUID());
         
         updateViewableList();

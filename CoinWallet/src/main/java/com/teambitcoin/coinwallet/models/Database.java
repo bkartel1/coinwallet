@@ -17,7 +17,6 @@ import java.util.concurrent.locks.ReentrantLock;
  * 
  */
 public class Database extends SQLiteOpenHelper {
-    
     private static final int DB_VERSION = 3;
     private static final String DB_NAME = "coinwallet.db";
     private static Database INSTANCE;

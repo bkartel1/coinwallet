@@ -33,6 +33,7 @@ public class User {
     private static final String SECURITY_QUESTION_COLUMN_NAME = "question";
     private static final String SECURITY_ANSWER_COLUMN_NAME = "answer";
     private static final String PASSWORD_COLUMN_NAME = "password";
+    private static final String ACCOUNT_BALANCE = "account_balance";
     private static final Pattern VALID_USERNAME = 
         Pattern.compile("^((\\d{10})|((\\+\\d{1,2}-)?\\d{3}-\\d{3}-\\d{4})|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,7}))$");
     
@@ -46,14 +47,27 @@ public class User {
     private String guid;
     private String password;
     private String currency;
+    private int accountBalance;
     
-    private User(String username, String guid) {
+    private User(String username, String guid, int accountBalance) {
         this.username = username;
         this.guid = guid;
         this.currency = "CAD";
+        this.accountBalance = accountBalance;
+    }    
+
+    public int getAccountBalance(){
+    	return accountBalance;
     }
     
-
+    public void setAccountBalance(int balance) {
+        if (this.equals(LOGGED_IN)) {
+            ContentValues values = new ContentValues();
+            values.put(ACCOUNT_BALANCE, balance);
+            Database.update(TABLE_NAME, values, GUID_COLUMN_NAME + "= ?", new String[] { guid });
+        }
+    }
+    
     public String getCurrency(){
         return currency;
     }
@@ -157,7 +171,7 @@ public class User {
             return null;
         }
         Account acc;
-        User user = new User(username, null);
+        User user = new User(username, null, 0);
         if (!dummy) {
             acc = new BlockchainAPI().createAccount(username, password);
         }
@@ -170,6 +184,7 @@ public class User {
         values.put(PASSWORD_COLUMN_NAME, encodePassword(password));
         values.put(SECURITY_QUESTION_COLUMN_NAME, question);
         values.put(SECURITY_ANSWER_COLUMN_NAME, answer);
+        values.put(ACCOUNT_BALANCE, 0);
         Database.insert(TABLE_NAME, values);
         user.guid = acc.getGuid();
         user.password = password;
@@ -286,14 +301,16 @@ public class User {
      * @return user with given username.
      */
     public static User getUser(String username) {
-        Cursor cursor = Database.query(TABLE_NAME, new String[] { GUID_COLUMN_NAME }, USERNAME_COLUMN_NAME + "= ?",
+        Cursor cursor = Database.query(TABLE_NAME, new String[] { GUID_COLUMN_NAME, ACCOUNT_BALANCE }, USERNAME_COLUMN_NAME + "= ?",
                 new String[] { username }, null, null, null);
         if (cursor.isAfterLast()) {
             return null;
         }
         else {
             cursor.moveToNext();
-            return new User(username, cursor.getString(cursor.getColumnIndex(GUID_COLUMN_NAME)));
+            return new User(username, 
+            				cursor.getString(cursor.getColumnIndex(GUID_COLUMN_NAME)),
+            				cursor.getInt(cursor.getColumnIndex(ACCOUNT_BALANCE)));
         }
     }
     
@@ -371,9 +388,13 @@ public class User {
      * @return SQL query for database initialisation.
      */
     protected static String getSQLInitQuery() {
-        return "CREATE TABLE " + TABLE_NAME + " (" + GUID_COLUMN_NAME + " TEXT PRIMARY KEY," + USERNAME_COLUMN_NAME
-                + " TEXT UNIQUE NOT NULL," + SECURITY_QUESTION_COLUMN_NAME + " TEXT," + SECURITY_ANSWER_COLUMN_NAME
-                + " TEXT," + PASSWORD_COLUMN_NAME + " TEXT NOT NULL);";
+        return "CREATE TABLE " + TABLE_NAME + " (" + 
+        			GUID_COLUMN_NAME + " TEXT PRIMARY KEY," + 
+        			USERNAME_COLUMN_NAME + " TEXT UNIQUE NOT NULL," + 
+        			SECURITY_QUESTION_COLUMN_NAME + " TEXT," + 
+        			SECURITY_ANSWER_COLUMN_NAME + " TEXT," + 
+        			PASSWORD_COLUMN_NAME + " TEXT NOT NULL," + 
+        			ACCOUNT_BALANCE + " INTEGER NOT NULL DEFAULT 0);";
     }
     
     /**
