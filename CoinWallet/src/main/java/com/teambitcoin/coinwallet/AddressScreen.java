@@ -141,7 +141,9 @@ public class AddressScreen extends Activity {
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;
             case R.id.action_logout:
-            	Toast.makeText(this, "LOGGING OUT!", Toast.LENGTH_SHORT).show();
+            	User.logout();
+            	Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
+            	startActivity(new Intent(this, MainActivity.class));
             	return true;
             default:
                 return super.onOptionsItemSelected(item);
