@@ -5,6 +5,9 @@ import com.teambitcoin.coinwallet.models.User;
 import com.teambitcoin.coinwallet.models.UserWrapper;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -32,30 +35,47 @@ public class SendBitcoins extends Activity {
 	}
 	
 	public void sendBitcoins(View view){
-		String btcAddress = ((EditText)findViewById(R.id.btc_address)).getText().toString();
+		final Context that = this; 
+		final String btcAddress = ((EditText)findViewById(R.id.btc_address)).getText().toString();
 		String amountStr = ((EditText)findViewById(R.id.amount_in_satoshis)).getText().toString();
-		int amount = 0;
+		int amountTemp = 0;
 		if(amountStr != null && !amountStr.equals("")){
-			amount = Integer.valueOf(amountStr);
+			amountTemp = Integer.valueOf(amountStr);
 		}
+		final int amount = amountTemp;
 		if(!isValidAddress(btcAddress)){
 			Toast.makeText(this, "Please enter a valid bitcoin address", Toast.LENGTH_SHORT).show();
 		}else{
 			if(amount <= 0){
 				Toast.makeText(this, "Please enter a valid amount of satoshis", Toast.LENGTH_SHORT).show();
 			}else{
-				Toast.makeText(this, "Sending "+amount+" satoshis to "+btcAddress+"!", Toast.LENGTH_SHORT).show();
-				try {
-					new BlockchainAPI().sendPayment(new UserWrapper().getUserAccount(User.getLoggedInUser()), 
-													btcAddress, amount);
-				} catch (Exception e) {
-					e.printStackTrace();
-					Toast.makeText(this, "Transfer failed: "+e.getMessage(), Toast.LENGTH_SHORT).show();
-				}
-				startActivity(new Intent(this, AddressScreen.class));
+				new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_alert)
+					.setTitle("Transaction Confirmation")
+					.setMessage("Sending "+amount+" satoshis to "+btcAddress+"")
+					.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							Toast.makeText(that, ""+amount+" satoshis to "+btcAddress+" are sent!", Toast.LENGTH_SHORT).show();
+							try {
+								new BlockchainAPI().sendPayment(new UserWrapper().getUserAccount(User.getLoggedInUser()), 
+																btcAddress, amount);
+							} catch (Exception e) {
+								e.printStackTrace();
+								Toast.makeText(that, "Transfer failed: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+							}
+							startActivity(new Intent(that, AddressScreen.class));
+						}
+					})
+					.setNegativeButton("Cancel", null)
+					.show();
 			}
 		}
 		
+	}
+	
+	public void cancelSend(View view){
+		finish();
 	}
 	
 	private boolean isValidAddress(String btcAddress){
