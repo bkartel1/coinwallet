@@ -79,7 +79,8 @@ public class Conversion {
         }
 
 	public double toBTC(double amount, Currency currency){
-		return 0.0;
+		double rate = currency.getConversionRate();
+		return amount/rate;
 	}
 
         public double toMoney(double amount, String currency) throws Exception{
@@ -90,10 +91,15 @@ public class Conversion {
         }
 
 	public double toMoney(double amount, Currency currency){
-		return 0.0;
+		double rate = currency.getConversionRate();
+		return amount*rate;
 	}
 
-	protected class Currency {
+	protected void addCurrency(Currency currency) {
+		supportedCurrencies.put(currency.getName(), currency);
+	}
+
+	protected static class Currency {
 		private String name;
 		private double conversionRate;
 		private String symbol;
