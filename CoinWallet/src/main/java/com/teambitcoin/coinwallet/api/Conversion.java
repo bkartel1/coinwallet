@@ -99,6 +99,11 @@ public class Conversion {
 		supportedCurrencies.put(currency.getName(), currency);
 	}
 
+	public String[] getCurrencyList() {
+		String[] list = supportedCurrencies.keySet().toArray(new String[0]);
+		return list;
+	}
+
 	protected static class Currency {
 		private String name;
 		private double conversionRate;

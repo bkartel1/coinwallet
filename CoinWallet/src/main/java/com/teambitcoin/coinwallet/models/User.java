@@ -42,7 +42,9 @@ public class User {
     private static SecretKey key;
     
     private static User LOGGED_IN = null;
-    
+
+    private static String DEFAULT_CURRENCY = "CAD";
+
     private String username;
     private String guid;
     private String password;
@@ -52,7 +54,7 @@ public class User {
     private User(String username, String guid, int accountBalance) {
         this.username = username;
         this.guid = guid;
-        this.currency = "CAD";
+        this.currency = DEFAULT_CURRENCY;
         this.accountBalance = accountBalance;
     }    
 
@@ -71,6 +73,10 @@ public class User {
     
     public String getCurrency(){
         return currency;
+    }
+
+    public static String getDefaultCurrency(){
+        return DEFAULT_CURRENCY;
     }
 
     public void setCurrency(String currency){

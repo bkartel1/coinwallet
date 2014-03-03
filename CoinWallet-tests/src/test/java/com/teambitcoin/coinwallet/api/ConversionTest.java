@@ -3,6 +3,9 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 import com.teambitcoin.coinwallet.api.Conversion;
+import com.teambitcoin.coinwallet.models.User;
+import java.util.Arrays;
+
 /**
  * @author Michael Williams
  *
@@ -24,7 +27,7 @@ public class ConversionTest {
         }
 
 	@Test
-	 public final void testToBTC() throws Exception {
+	public final void testToBTC() throws Exception {
 		double testValue = 400.00;
 		double expected = testValue/DUMMY_RATE;
 		double actual = conversion.toBTC(testValue, DUMMY_NAME);
@@ -38,4 +41,19 @@ public class ConversionTest {
 		double actual = conversion.toMoney(testValue, DUMMY_NAME);
 		assertEquals(expected, actual, DELTA_REAL);
 	}
+
+	@Test
+	public final void testGetCurrencyList() throws Exception {
+		String[] currencies = conversion.getCurrencyList();
+		int result = Arrays.binarySearch(currencies, DUMMY_NAME);
+		assertTrue(result >= 0);
+	}
+
+	@Test
+        public final void testSupportsDefault() throws Exception {
+                String[] currencies = conversion.getCurrencyList();
+		String defaultCurrency = User.getDefaultCurrency();
+                int result = Arrays.binarySearch(currencies, defaultCurrency);
+                assertTrue(result >= 0);
+        }
 }
