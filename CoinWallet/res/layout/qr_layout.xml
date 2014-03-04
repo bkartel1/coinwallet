@@ -43,4 +43,12 @@
 		android:layout_centerHorizontal="true"
 		android:layout_below="@+id/qrcode_image" />
 	
+	<Button
+	    android:id="@+id/qr_share_btn"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_alignParentLeft="true"
+	    android:layout_alignParentBottom="true"
+	    android:text="@string/qr_share_btn_text" />
+	
 </RelativeLayout>

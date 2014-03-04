@@ -27,10 +27,11 @@ public class QRActivity extends Activity {
         Button qrBackBtn = (Button) findViewById(R.id.qr_back_btn);
         ImageView qrImageView = (ImageView) findViewById(R.id.qrcode_image);
         TextView qrAddressTextView = (TextView) findViewById(R.id.qrcode_address_text);
+        Button qrShareBtn = (Button) findViewById(R.id.qr_share_btn);
         
         // Get some passed-in data from the previous activity
         Intent intent = getIntent();
-        String bitcoinAddress = intent.getStringExtra("bitcoinAddress");
+        final String bitcoinAddress = intent.getStringExtra("bitcoinAddress");
         
         // Populate the text view with the address of the QR code
         qrAddressTextView.setText(bitcoinAddress);
@@ -44,6 +45,14 @@ public class QRActivity extends Activity {
             public void onClick(View v) {
                 finish();
                 overridePendingTransition(0, 0);
+            }
+        });
+        
+        // Use Android's sharing Intent to share the address when clicked
+        qrShareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                shareAddressIntent(bitcoinAddress);
             }
         });
     }
@@ -69,6 +78,14 @@ public class QRActivity extends Activity {
                 placeholderTextView.setText("Error: Could not generate QR code.");
             }
         });
+    }
+    
+    private void shareAddressIntent(String address) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, address);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bitcoin address" + address);
+        startActivity(Intent.createChooser(sharingIntent, "Share using"));
     }
     
 }

@@ -26,6 +26,7 @@
     <string name="qrcode_image_desc">QR code</string>
     <string name="qr_back_btn_text">&lt; Back</string>
     <string name="qr_placeholder_text">Loading…</string>
+    <string name="qr_share_btn_text">Share</string>
     
     <!-- Other -->
     <string name="new_question_label">New Security Question:</string>
