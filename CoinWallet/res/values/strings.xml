@@ -43,4 +43,6 @@
 	<string name="title_activity_receive_bitcoins">Receive Bitcoins</string>
 	<string name="title_activity_show_transactions">Transactions</string>
 	<string name="action_logout">Logout</string>
+	<string name="currency_button">Default currency</string>
+	<string name="currency_BTC_button">BTC</string>
 </resources>

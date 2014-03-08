@@ -6,6 +6,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ import com.teambitcoin.coinwallet.api.BlockchainAPI;
 import com.teambitcoin.coinwallet.models.AddressContainer;
 import com.teambitcoin.coinwallet.models.User;
 import com.teambitcoin.coinwallet.models.UserWrapper;
+import com.teambitcoin.coinwallet.api.Conversion;
 
 /**
  * This class is responsible for displaying a list of addresses associated with
@@ -96,7 +98,31 @@ public class AddressScreen extends Activity {
 	protected void onResume() {
 		super.onResume();
 		TextView balance = (TextView) findViewById(R.id.balance);
-        balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" satoshis");
+		Button currency = (Button) findViewById(R.id.currency_button);
+		Button btc      = (Button) findViewById(R.id.currency_BTC_button);
+		balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" BTC");
+
+		currency.setOnClickListener(new View.OnClickListener() {
+			TextView balance = (TextView) findViewById(R.id.balance);
+            public void onClick(View v) {
+				double balanceC;
+				try {
+					Conversion conversion = new Conversion();
+					balanceC = conversion .toBTC(User.getLoggedInUser().getAccountBalance(), User.getDefaultCurrency());
+					balance.setText("Balance: "+balanceC+" "+User.getDefaultCurrency());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
+				
+            }
+        });
+		
+		btc.setOnClickListener(new View.OnClickListener() {
+			TextView balance = (TextView) findViewById(R.id.balance);
+            public void onClick(View v) {
+				balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" BTC");
+            }
+        });
 	}
     
 	@Override
