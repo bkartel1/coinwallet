@@ -106,7 +106,7 @@ public class AddressScreen extends Activity {
 			String currency = User.getLoggedInUser().getCurrency();
 			double balanceInCurrency = 0;
 			try{
-				 balanceInCurrency = new Conversion().toMoney(nSatoshis/100000000, currency);
+				 balanceInCurrency = new Conversion().toMoney((double)nSatoshis/100000000.0, currency);
 			}catch (Exception e){
 				e.printStackTrace();
 				return;
