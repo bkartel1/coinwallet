@@ -36,8 +36,8 @@ before_install:
 - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 - sudo apt-get update -qq
 - sudo apt-get install -qq libstdc++6:i386 libgcc1:i386 zlib1g:i386 libncurses5:i386
-- echo "y"| android update sdk --filter 1,2 --no-ui --force
-- echo "y"| android update sdk --filter build-tools-19.0.1,$ANDROID_SDKS  --no-ui
+- yes| android update sdk --filter 1,2 --no-ui --force
+- yes| android update sdk --filter build-tools-19.0.1,$ANDROID_SDKS  --no-ui
   --force
 - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
 - emulator -avd test -no-skin -no-audio -no-window &
