@@ -5,19 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Conversion {
-	private HashMap<String, Currency> supportedCurrencies;
+	private static HashMap<String, Currency> supportedCurrencies = null;
 
 	public Conversion() throws IOException {
-		List<Currency> currencies;
-		try {
-			currencies = new BlockchainAPI().getFiatRates();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return;
-		}
-		supportedCurrencies = new HashMap<String, Conversion.Currency>();
-		for(Currency c : currencies){
-			supportedCurrencies.put(c.getName(), c);
+		if(supportedCurrencies == null){
+			List<Currency> currencies;
+			try {
+				currencies = new BlockchainAPI().getFiatRates();
+			} catch (Exception e) {
+				e.printStackTrace();
+				return;
+			}
+			supportedCurrencies = new HashMap<String, Conversion.Currency>();
+			for(Currency c : currencies){
+				supportedCurrencies.put(c.getName(), c);
+			}
 		}
 	}
 
@@ -54,7 +56,7 @@ public class Conversion {
 		return list;
 	}
 
-	protected static class Currency {
+	public static class Currency {
 		private String name;
 		private double conversionRate;
 		private String symbol;

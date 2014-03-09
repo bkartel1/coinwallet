@@ -1,13 +1,21 @@
 package com.teambitcoin.coinwallet;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.api.Conversion;
 import com.teambitcoin.coinwallet.models.User;
 
 public class EditAccount extends Activity {
@@ -40,5 +48,34 @@ public class EditAccount extends Activity {
                 Toast.makeText(getApplicationContext(), "Security Question & Answer Changed", Toast.LENGTH_LONG).show();
             }
         });
+        
+        //Setup currency selection
+        Spinner currencySelector = (Spinner) findViewById(R.id.currency_selection);
+        List<Conversion.Currency> currencies;
+        try{
+        	currencies = new BlockchainAPI().getFiatRates();
+        }catch(Exception e){
+        	e.printStackTrace();
+        	return;
+        }
+        final List<String> currencyNames = new ArrayList<String>();
+        for(Conversion.Currency c : currencies){
+        	currencyNames.add(c.getName());
+        }
+        ArrayAdapter<String> currencyAdapter = new ArrayAdapter<String>(this, 
+        		android.R.layout.simple_spinner_item, currencyNames);
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        currencySelector.setAdapter(currencyAdapter);
+        currencySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				User.getLoggedInUser().setCurrency(currencyNames.get(position));
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				
+			}
+		});
     }
 }
