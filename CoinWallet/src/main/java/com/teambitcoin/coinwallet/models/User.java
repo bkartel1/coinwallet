@@ -213,6 +213,10 @@ public class User {
     public String getUsername() {
         return username;
     }
+
+    public static String getDefaultCurrency(){
+        return DEFAULT_CURRENCY;
+    }
     
     private String getDecodedPassword() {
         Cursor cursor = Database.query(TABLE_NAME, new String[] { PASSWORD_COLUMN_NAME }, GUID_COLUMN_NAME + "= ?",
