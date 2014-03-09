@@ -3,7 +3,9 @@ package com.teambitcoin.coinwallet.api;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -14,6 +16,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.teambitcoin.coinwallet.models.Transaction;
@@ -279,5 +282,34 @@ public class BlockchainAPI {
 	            }
 	        }.execute().get();
     	}
+    }
+    
+    /**
+     * @throws ExecutionException 
+     * @throws Exception 
+     */
+    public List<Conversion.Currency> getFiatRates() throws Exception {
+        return new AsyncTask<Void, Void, List<Conversion.Currency>>() {
+            @Override
+            protected List<Conversion.Currency> doInBackground(Void... voids) {
+            	List<Conversion.Currency> rates = new ArrayList<Conversion.Currency>();
+                try {
+                    HttpClient client = new DefaultHttpClient();
+                    HttpGet get = new HttpGet("http://blockchain.info/ticker");
+                    String r = EntityUtils.toString(client.execute(get).getEntity());
+                    JsonObject response = (JsonObject) new JsonParser().parse(r);
+                    for(Entry<String, JsonElement> currency : response.entrySet()){
+                    	String name = currency.getKey();
+                    	double rate = ((JsonObject) currency.getValue()).get("15m").getAsDouble();
+                    	String symbol = ((JsonObject) currency.getValue()).get("symbol").getAsString();
+                    	rates.add(new Conversion.Currency(name, rate, symbol));
+                    }
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return rates;
+            }
+        }.execute().get();
     }
 }

@@ -6,7 +6,6 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,10 +28,10 @@ import android.widget.Toast;
 import com.teambitcoin.coinwallet.api.Account;
 import com.teambitcoin.coinwallet.api.Address;
 import com.teambitcoin.coinwallet.api.BlockchainAPI;
+import com.teambitcoin.coinwallet.api.Conversion;
 import com.teambitcoin.coinwallet.models.AddressContainer;
 import com.teambitcoin.coinwallet.models.User;
 import com.teambitcoin.coinwallet.models.UserWrapper;
-import com.teambitcoin.coinwallet.api.Conversion;
 
 /**
  * This class is responsible for displaying a list of addresses associated with
@@ -48,6 +47,8 @@ public class AddressScreen extends Activity {
     private List<HashMap<String, String>> addressEntries;
     private Address selectedAddress = null;
     private boolean isViewingArchives;
+    
+    private boolean showAmountInBtc = true;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,31 +99,20 @@ public class AddressScreen extends Activity {
 	protected void onResume() {
 		super.onResume();
 		TextView balance = (TextView) findViewById(R.id.balance);
-		Button currency = (Button) findViewById(R.id.currency_button);
-		Button btc      = (Button) findViewById(R.id.currency_BTC_button);
-		balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" BTC");
-
-		currency.setOnClickListener(new View.OnClickListener() {
-			TextView balance = (TextView) findViewById(R.id.balance);
-            public void onClick(View v) {
-				double balanceC;
-				try {
-					Conversion conversion = new Conversion();
-					balanceC = conversion .toBTC(User.getLoggedInUser().getAccountBalance(), User.getDefaultCurrency());
-					balance.setText("Balance: "+balanceC+" "+User.getDefaultCurrency());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}	
-				
-            }
-        });
-		
-		btc.setOnClickListener(new View.OnClickListener() {
-			TextView balance = (TextView) findViewById(R.id.balance);
-            public void onClick(View v) {
-				balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" BTC");
-            }
-        });
+		int nSatoshis = User.getLoggedInUser().getAccountBalance();
+		if(showAmountInBtc){
+			balance.setText("Balance: "+User.getLoggedInUser().getAccountBalance()+" satoshis");
+		}else{
+			String currency = User.getLoggedInUser().getCurrency();
+			double balanceInCurrency = 0;
+			try{
+				 balanceInCurrency = new Conversion().toMoney(nSatoshis/100000000, currency);
+			}catch (Exception e){
+				e.printStackTrace();
+				return;
+			}
+			balance.setText("Balance: "+balanceInCurrency+" "+User.getLoggedInUser().getCurrency());
+		}
 	}
     
 	@Override
@@ -180,6 +170,11 @@ public class AddressScreen extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.lander, menu);
         return true;
+    }
+    
+    public void balanceClicked(View view){
+    	showAmountInBtc = !showAmountInBtc;
+    	onResume();
     }
     
     private void updateViewableList() {

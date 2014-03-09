@@ -14,9 +14,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 
-import android.util.Base64;
-import android.database.Cursor;
 import android.content.ContentValues;
+import android.database.Cursor;
+import android.util.Base64;
 
 import com.teambitcoin.coinwallet.api.Account;
 import com.teambitcoin.coinwallet.api.BlockchainAPI;
@@ -34,6 +34,7 @@ public class User {
     private static final String SECURITY_ANSWER_COLUMN_NAME = "answer";
     private static final String PASSWORD_COLUMN_NAME = "password";
     private static final String ACCOUNT_BALANCE = "account_balance";
+    private static final String CURRENCY = "currency";
     private static final Pattern VALID_USERNAME = 
         Pattern.compile("^((\\d{10})|((\\+\\d{1,2}-)?\\d{3}-\\d{3}-\\d{4})|([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,7}))$");
     
@@ -51,12 +52,16 @@ public class User {
     private String currency;
     private int accountBalance;
     
-    private User(String username, String guid, int accountBalance) {
+    private User(String username, String guid, String currency, int accountBalance) {
         this.username = username;
         this.guid = guid;
-        this.currency = DEFAULT_CURRENCY;
+        this.currency = currency;
         this.accountBalance = accountBalance;
-    }    
+    }
+    
+    private User(String username, String guid, int accountBalance) {
+    	this(username, guid, DEFAULT_CURRENCY, accountBalance);
+    }
 
     public int getAccountBalance(){
     	return accountBalance;
@@ -75,12 +80,13 @@ public class User {
         return currency;
     }
 
-    public static String getDefaultCurrency(){
-        return DEFAULT_CURRENCY;
-    }
-
     public void setCurrency(String currency){
         this.currency = currency;
+        if (this.equals(LOGGED_IN)) {
+            ContentValues values = new ContentValues();
+            values.put(CURRENCY, currency);
+            Database.update(TABLE_NAME, values, GUID_COLUMN_NAME + "= ?", new String[] { guid });
+        }
     }
     /**
      * Backwards compatability wrapper for create, which simply fills the new
@@ -308,7 +314,7 @@ public class User {
      * @return user with given username.
      */
     public static User getUser(String username) {
-        Cursor cursor = Database.query(TABLE_NAME, new String[] { GUID_COLUMN_NAME, ACCOUNT_BALANCE }, USERNAME_COLUMN_NAME + "= ?",
+        Cursor cursor = Database.query(TABLE_NAME, new String[] { GUID_COLUMN_NAME, ACCOUNT_BALANCE, CURRENCY }, USERNAME_COLUMN_NAME + "= ?",
                 new String[] { username }, null, null, null);
         if (cursor.isAfterLast()) {
             return null;
@@ -317,6 +323,7 @@ public class User {
             cursor.moveToNext();
             return new User(username, 
             				cursor.getString(cursor.getColumnIndex(GUID_COLUMN_NAME)),
+            				cursor.getString(cursor.getColumnIndex(CURRENCY)),
             				cursor.getInt(cursor.getColumnIndex(ACCOUNT_BALANCE)));
         }
     }
@@ -346,8 +353,7 @@ public class User {
         if (password.equals(realPassword)) {
             this.password = password;
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -401,6 +407,7 @@ public class User {
         			SECURITY_QUESTION_COLUMN_NAME + " TEXT," + 
         			SECURITY_ANSWER_COLUMN_NAME + " TEXT," + 
         			PASSWORD_COLUMN_NAME + " TEXT NOT NULL," + 
+        			CURRENCY + " TEXT NOT NULL DEFAULT 'CAD'," +
         			ACCOUNT_BALANCE + " INTEGER NOT NULL DEFAULT 0);";
     }
     
