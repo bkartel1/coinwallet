@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -66,10 +67,16 @@ public class EditAccount extends Activity {
         		android.R.layout.simple_spinner_item, currencyNames);
         currencyAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         currencySelector.setAdapter(currencyAdapter);
+        final Context that = this;
         currencySelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        	private int check = 0;
 			@Override
 			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				User.getLoggedInUser().setCurrency(currencyNames.get(position));
+				check += 1;
+				if(check > 1){
+					User.getLoggedInUser().setCurrency(currencyNames.get(position));
+					Toast.makeText(that, "Updated currency!", Toast.LENGTH_SHORT).show();
+				}
 			}
 
 			@Override
