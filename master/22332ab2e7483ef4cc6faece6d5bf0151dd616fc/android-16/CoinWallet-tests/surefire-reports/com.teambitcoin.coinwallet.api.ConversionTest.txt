@@ -1,0 +1,24 @@
+-------------------------------------------------------------------------------
+Test set: com.teambitcoin.coinwallet.api.ConversionTest
+-------------------------------------------------------------------------------
+Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.136 sec <<< FAILURE! - in com.teambitcoin.coinwallet.api.ConversionTest
+testGetCurrencyList(com.teambitcoin.coinwallet.api.ConversionTest)  Time elapsed: 0.033 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.teambitcoin.coinwallet.api.Conversion.addCurrency(Conversion.java:51)
+	at com.teambitcoin.coinwallet.api.ConversionTest.setUp(ConversionTest.java:26)
+
+testToMoney(com.teambitcoin.coinwallet.api.ConversionTest)  Time elapsed: 0.007 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.teambitcoin.coinwallet.api.Conversion.addCurrency(Conversion.java:51)
+	at com.teambitcoin.coinwallet.api.ConversionTest.setUp(ConversionTest.java:26)
+
+testToBTC(com.teambitcoin.coinwallet.api.ConversionTest)  Time elapsed: 0.009 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.teambitcoin.coinwallet.api.Conversion.addCurrency(Conversion.java:51)
+	at com.teambitcoin.coinwallet.api.ConversionTest.setUp(ConversionTest.java:26)
+
+testSupportsDefault(com.teambitcoin.coinwallet.api.ConversionTest)  Time elapsed: 0.007 sec  <<< ERROR!
+java.lang.NullPointerException: null
+	at com.teambitcoin.coinwallet.api.Conversion.addCurrency(Conversion.java:51)
+	at com.teambitcoin.coinwallet.api.ConversionTest.setUp(ConversionTest.java:26)
+
