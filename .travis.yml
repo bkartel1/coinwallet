@@ -2,7 +2,7 @@ language: java
 jdk: oraclejdk7
 env:
   matrix:
-  - ANDROID_SDKS=android-19,addon-google_apis-google-19,sysimg-19            ANDROID_TARGET=android-19   ANDROID_ABI=x86  ANDROID_API_LVL=19
+  - ANDROID_SDKS=android-19,addon-google_apis-google-19,sysimg-19            ANDROID_TARGET=android-19   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=19
   - ANDROID_SDKS=android-18,sysimg-18            ANDROID_TARGET=android-18   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=18
   - ANDROID_SDKS=android-16,sysimg-16            ANDROID_TARGET=android-16  ANDROID_ABI=armeabi-v7a
     ANDROID_API_LVL=16
@@ -28,7 +28,7 @@ matrix:
   - env: ANDROID_SDKS=android-12           ANDROID_TARGET=android-12  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=12
   - env: ANDROID_SDKS=android-13           ANDROID_TARGET=android-13  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=13
   - env: ANDROID_SDKS=android-14,sysimg-14           ANDROID_TARGET=android-14  ANDROID_ABI=armeabi-v7a     ANDROID_API_LVL=14
-  - env: ANDROID_SDKS=android-19,addon-google_apis-google-19,sysimg-19            ANDROID_TARGET=android-19   ANDROID_ABI=x86  ANDROID_API_LVL=19
+  - env: ANDROID_SDKS=android-19,addon-google_apis-google-19,sysimg-19            ANDROID_TARGET=android-19   ANDROID_ABI=armeabi-v7a  ANDROID_API_LVL=19
 before_install:
 - wget http://dl.google.com/android/android-sdk_r22.6-linux.tgz
 - tar -zxf android-sdk_r22.6-linux.tgz
