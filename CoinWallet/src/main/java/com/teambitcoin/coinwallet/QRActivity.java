@@ -81,10 +81,11 @@ public class QRActivity extends Activity {
     }
     
     private void shareAddressIntent(String address) {
+    	String shortAddress = " \"" + address.substring(0, 5)+ "...\"";
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, address);
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Bitcoin address" + address);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT,getResources().getString(R.string.qr_share_body_text) + address);
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,getResources().getString(R.string.qr_share_subject_text) + shortAddress);
         startActivity(Intent.createChooser(sharingIntent, "Share using"));
     }
     

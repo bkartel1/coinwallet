@@ -27,6 +27,8 @@
     <string name="qr_back_btn_text">&lt; Back</string>
     <string name="qr_placeholder_text">Loading…</string>
     <string name="qr_share_btn_text">Share</string>
+	<string name="qr_share_subject_text">Sharing bitcoin Address </string>
+    <string name="qr_share_body_text">Hi, I would like to share this BTC address with you: \n \n</string>
     
     <!-- Other -->
     <string name="new_question_label">New Security Question:</string>
