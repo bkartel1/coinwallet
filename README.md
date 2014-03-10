@@ -17,3 +17,6 @@ Automatic builds from Travis-ci can be found in the [results branch](https://git
 
 ## Documentation ##
 _To-Do..._
+
+## Development Notes ##
+ - Should builds start erroring out randomly on travis, particulary around the generation of sources, check for a new version of the sdk.
