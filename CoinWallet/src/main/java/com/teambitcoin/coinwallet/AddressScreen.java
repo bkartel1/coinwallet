@@ -106,12 +106,11 @@ public class AddressScreen extends Activity {
 			String currency = User.getLoggedInUser().getCurrency();
 			double balanceInCurrency = 0;
 			try{
-				 balanceInCurrency = new Conversion().toMoney((double)nSatoshis/100000000.0, currency);
+				balanceInCurrency = new Conversion().toMoney((double)nSatoshis/100000000.0, currency);
+				balance.setText("Balance: "+balanceInCurrency+" "+User.getLoggedInUser().getCurrency());
 			}catch (Exception e){
-				e.printStackTrace();
-				return;
+				balance.setText("Balance: N/A");
 			}
-			balance.setText("Balance: "+balanceInCurrency+" "+User.getLoggedInUser().getCurrency());
 		}
 	}
     
