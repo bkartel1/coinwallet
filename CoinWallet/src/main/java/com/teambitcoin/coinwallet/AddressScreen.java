@@ -155,6 +155,9 @@ public class AddressScreen extends Activity {
             case R.id.action_show_transactions:
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;
+            case R.id.action_show_exchange_rates:
+            	startActivity(new Intent(this, ShowExchangeRates.class));
+            	return true;
             case R.id.action_logout:
             	User.logout();
             	Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
