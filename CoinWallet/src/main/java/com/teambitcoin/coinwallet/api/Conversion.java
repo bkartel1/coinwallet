@@ -6,10 +6,10 @@ import java.util.List;
 
 public class Conversion {
 	private static HashMap<String, Currency> supportedCurrencies = null;
-
+	private static List<Currency> currencies;
 	public Conversion() throws IOException {
 		if(supportedCurrencies == null){
-			List<Currency> currencies;
+			//List<Currency> currencies;
 			try {
 				currencies = new BlockchainAPI().getFiatRates();
 			} catch (Exception e) {
@@ -21,6 +21,10 @@ public class Conversion {
 				supportedCurrencies.put(c.getName(), c);
 			}
 		}
+	}
+	
+	public List<Currency> getCurrencies(){
+		return currencies;
 	}
 
 	public double toBTC(double amount, String currency) throws Exception {
