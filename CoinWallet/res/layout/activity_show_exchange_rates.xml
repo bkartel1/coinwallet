@@ -7,12 +7,57 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".SendBitcoins" >
+    <TextView
+        android:id="@+id/title_exchange_from_amount"
+   	    android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"
+       	android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+       	android:text="@string/exchange_from_amount" />
+    
+    <EditText
+        android:id="@+id/input_exchange_from_amount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:layout_below="@id/title_exchange_from_amount"
+        android:inputType="numberDecimal">
+        
+        <requestFocus/>
+    </EditText>
 
-    <ListView
+
+    <TextView
+        android:id="@+id/title_btc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+       	android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:layout_alignBottom="@id/input_exchange_from_amount"
+        android:layout_toRightOf="@id/input_exchange_from_amount"
+        android:text="@string/exchange_btc" />"
+	<Button
+	    android:id="@+id/button_go"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@id/input_exchange_from_amount"
+	    android:text="@string/exchange_button_go" />	
+    <TextView
+        android:id="@+id/title_exchange_rates"
+   	    android:layout_width="wrap_content"
+       	android:layout_height="wrap_content"
+       	android:layout_centerHorizontal="false"
+        android:layout_centerVertical="false"
+        android:layout_below="@id/button_go"
+       	android:text="@string/title_activity_show_exchange_rates" />    	<ListView
         android:id="@+id/exchange_rates_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="false"
-        android:layout_centerVertical="false" />"
+        android:layout_centerVertical="false"
+        android:layout_below="@id/title_exchange_rates" />
+
+
 
 </RelativeLayout>

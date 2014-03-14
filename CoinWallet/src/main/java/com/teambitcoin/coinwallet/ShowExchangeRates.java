@@ -11,14 +11,32 @@ import com.teambitcoin.coinwallet.api.Conversion.Currency;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
 public class ShowExchangeRates extends Activity {
 	private Conversion exchangeRates;
+	private double amount = 1.0;
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_show_exchange_rates);
+		final EditText inputText = (EditText) findViewById(R.id.input_exchange_from_amount);
+		inputText.setText("1");
+		
+		Button button = (Button) findViewById(R.id.button_go);
+		button.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				try{
+					amount = Double.parseDouble(inputText.getText().toString());
+					getExchangeRates();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		getExchangeRates();
 	}
 	private void getExchangeRates() {
@@ -33,7 +51,7 @@ public class ShowExchangeRates extends Activity {
 		for(Currency exchangeRate : exchangeRates.getCurrencies()){
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("symbol", exchangeRate.getName() + "(" + exchangeRate.getSymbol() + ")");
-			map.put("rate", Double.toString(exchangeRate.getConversionRate()));
+			map.put("rate", Double.toString(amount * exchangeRate.getConversionRate()));
 			entries.add(map);
 		}
 		SimpleAdapter simpleAdapter = new SimpleAdapter(this, entries,
