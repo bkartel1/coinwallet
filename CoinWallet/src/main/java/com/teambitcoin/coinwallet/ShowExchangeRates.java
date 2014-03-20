@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 public class ShowExchangeRates extends Activity {
 	private Conversion exchangeRates;
@@ -41,11 +42,15 @@ public class ShowExchangeRates extends Activity {
 	}
 	private void getExchangeRates() {
 		ListView listView = (ListView) findViewById(R.id.exchange_rates_list);
+		TextView errorView = (TextView) findViewById(R.id.title_exchange_rates);
 		try {
 			exchangeRates = new Conversion();
-		} catch (IOException e) {
-			e.printStackTrace();
-			//TODO: error flow later
+			if(exchangeRates == null) {
+				errorView.setText("N/A");
+			}
+			
+		} catch (Exception e) {
+			errorView.setText("N/A");
 		}
 		List<Map<String, String>> entries = new ArrayList<Map<String, String>>();
 		for(Currency exchangeRate : exchangeRates.getCurrencies()){
