@@ -302,7 +302,11 @@ public class BlockchainAPI {
                     	String name = currency.getKey();
                     	double rate = ((JsonObject) currency.getValue()).get("15m").getAsDouble();
                     	String symbol = ((JsonObject) currency.getValue()).get("symbol").getAsString();
-                    	rates.add(new Conversion.Currency(name, rate, symbol));
+			double last = ((JsonObject) currency.getValue()).get("last").getAsDouble();
+			double buy = ((JsonObject) currency.getValue()).get("buy").getAsDouble();
+			double sell = ((JsonObject) currency.getValue()).get("sell").getAsDouble();
+			double day = ((JsonObject) currency.getValue()).get("24h").getAsDouble();
+                    	rates.add(new Conversion.Currency(name, rate, symbol, last, buy, sell, day));
                     }
                 }
                 catch (Exception e) {

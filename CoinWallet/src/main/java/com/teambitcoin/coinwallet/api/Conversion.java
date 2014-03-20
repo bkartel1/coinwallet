@@ -64,11 +64,25 @@ public class Conversion {
 		private String name;
 		private double conversionRate;
 		private String symbol;
+		private double last;
+		private double buy;
+		private double sell;
+		private double day;
 
 		public Currency(String name, double rate, String symbol) {
 			this.name = name;
 			this.conversionRate = rate;
 			this.symbol = symbol;
+		}
+
+		public Currency(String name, double rate, String symbol, double last, double buy, double sell, double day) {
+			this.name = name;
+			this.conversionRate = rate;
+			this.symbol = symbol;
+			this.last = last;
+			this.buy = buy;
+			this.sell = sell;
+			this.day = day;
 		}
 
 		public double getConversionRate() {
