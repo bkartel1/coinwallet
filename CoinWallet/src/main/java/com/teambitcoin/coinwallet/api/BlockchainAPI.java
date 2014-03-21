@@ -19,6 +19,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.teambitcoin.coinwallet.api.Conversion.Currency;
 import com.teambitcoin.coinwallet.models.Transaction;
 import com.teambitcoin.coinwallet.models.User;
 
@@ -302,11 +303,20 @@ public class BlockchainAPI {
                     	String name = currency.getKey();
                     	double rate = ((JsonObject) currency.getValue()).get("15m").getAsDouble();
                     	String symbol = ((JsonObject) currency.getValue()).get("symbol").getAsString();
-			double last = ((JsonObject) currency.getValue()).get("last").getAsDouble();
-			double buy = ((JsonObject) currency.getValue()).get("buy").getAsDouble();
-			double sell = ((JsonObject) currency.getValue()).get("sell").getAsDouble();
-			double day = ((JsonObject) currency.getValue()).get("24h").getAsDouble();
-                    	rates.add(new Conversion.Currency(name, rate, symbol, last, buy, sell, day));
+                    	
+                    	// Blockchain API doesn't always give some of those values, need to try/catch
+                    	// And instead go back to the previously working set
+                    	// #uglyhack
+                    	try{
+                    		double last = ((JsonObject) currency.getValue()).get("last").getAsDouble();
+                    		double buy = ((JsonObject) currency.getValue()).get("buy").getAsDouble();
+                    		double sell = ((JsonObject) currency.getValue()).get("sell").getAsDouble();
+                    		double day = ((JsonObject) currency.getValue()).get("24h").getAsDouble();
+                    		rates.add(new Conversion.Currency(name, rate, symbol, last, buy, sell, day));
+                    	}
+                    	catch(Exception e) {
+                    		rates.add(new Conversion.Currency(name, rate, symbol));
+                    	}
                     }
                 }
                 catch (Exception e) {

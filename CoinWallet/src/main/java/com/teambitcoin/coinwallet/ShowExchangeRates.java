@@ -45,7 +45,7 @@ public class ShowExchangeRates extends Activity {
 		TextView errorView = (TextView) findViewById(R.id.title_exchange_rates);
 		try {
 			exchangeRates = new Conversion();
-			if(exchangeRates == null) {
+			if(exchangeRates.getCurrencies().isEmpty()) {
 				errorView.setText("N/A");
 			}
 			
