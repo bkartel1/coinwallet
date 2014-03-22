@@ -206,6 +206,16 @@ public class User {
     }
     
     /**
+     * Will delete the given user from the DB. The calling function
+     * should return the user to the login view.
+     * 
+     * @param user
+     */
+    public static void delete(User user){
+    	Database.delete(TABLE_NAME, GUID_COLUMN_NAME + " = ?", new String[] {user.getGUID()});
+    }
+    
+    /**
      * username getter
      * 
      * @return user's username.

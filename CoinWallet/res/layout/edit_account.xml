@@ -57,7 +57,7 @@
 
         <Button
             android:id="@+id/change_qna_button"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/change_qna_button_label" />
 
@@ -78,6 +78,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="TextView" />
+
+        <Button
+            android:id="@+id/button_delete_account"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="deleteAccount"
+            android:text="Delete Account" />
 
     </LinearLayout>
 

@@ -149,9 +149,6 @@ public class AddressScreen extends Activity {
             case R.id.action_send_bitcoins:
                 startActivity(new Intent(this, SendBitcoins.class));
                 return true;
-            case R.id.action_receive_bitcoins:
-                startActivity(new Intent(this, ReceiveBitcoins.class));
-                return true;
             case R.id.action_show_transactions:
                 startActivity(new Intent(this, ShowTransactions.class));
                 return true;

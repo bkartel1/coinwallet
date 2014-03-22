@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -84,5 +87,29 @@ public class EditAccount extends Activity {
 				
 			}
 		});
+    }
+    
+    public void deleteAccount(View view){
+    	final Activity that = this;
+    	final EditText passInput = new EditText(this);
+		new AlertDialog.Builder(this)
+				.setIcon(android.R.drawable.ic_dialog_alert)
+				.setTitle("Deletion Confirmation")
+				.setMessage("Please enter your password to confirm account deletion:")
+				.setView(passInput)
+				.setPositiveButton("Confirm",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								if(User.login(User.getLoggedInUser().getUsername(), passInput.getText().toString()) == null){
+									Toast.makeText(that, "Invalid password", Toast.LENGTH_SHORT).show();
+								}else{
+									User loggedIn = User.getLoggedInUser();
+									User.logout();
+									User.delete(loggedIn);
+									startActivity(new Intent(that, MainActivity.class));
+								}
+							}
+						}).setNegativeButton("Cancel", null).show();
     }
 }

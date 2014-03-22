@@ -1,13 +1,9 @@
 package com.teambitcoin.coinwallet;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.teambitcoin.coinwallet.api.Conversion;
-import com.teambitcoin.coinwallet.api.Conversion.Currency;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -17,6 +13,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+
+import com.teambitcoin.coinwallet.api.Conversion;
+import com.teambitcoin.coinwallet.api.Conversion.Currency;
 
 public class ShowExchangeRates extends Activity {
 	private Conversion exchangeRates;
