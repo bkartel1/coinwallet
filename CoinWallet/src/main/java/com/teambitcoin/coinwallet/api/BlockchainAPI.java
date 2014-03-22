@@ -19,7 +19,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.teambitcoin.coinwallet.api.Conversion.Currency;
 import com.teambitcoin.coinwallet.models.Transaction;
 import com.teambitcoin.coinwallet.models.User;
 
@@ -325,5 +324,40 @@ public class BlockchainAPI {
                 return rates;
             }
         }.execute().get();
+    }
+    
+    /**
+     * @throws ExecutionException 
+     * @throws Exception 
+     */
+    public Statistics getStatistics() {
+        try {
+			return new AsyncTask<Void, Void, Statistics>() {
+			    @Override
+			    protected Statistics doInBackground(Void... voids) {
+			    	Statistics stats = new Statistics();
+			        try {
+			            HttpClient client = new DefaultHttpClient();
+			            HttpGet get = new HttpGet("http://blockchain.info/stats?format=json");
+			            String r = EntityUtils.toString(client.execute(get).getEntity());
+			            JsonObject response = (JsonObject) new JsonParser().parse(r);
+			            stats.setDifficulty(response.get("difficulty").getAsFloat());
+			            stats.setHashRate(response.get("hash_rate").getAsFloat());
+			            stats.setNumberOfBlocks(response.get("n_blocks_total").getAsInt());
+			            stats.setTotalBTC(response.get("n_btc_mined").getAsBigInteger());
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			        }
+			        return stats;
+			    }
+			}.execute().get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return null;
     }
 }

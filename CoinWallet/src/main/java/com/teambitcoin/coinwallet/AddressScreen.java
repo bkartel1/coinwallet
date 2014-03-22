@@ -160,6 +160,9 @@ public class AddressScreen extends Activity {
             	Toast.makeText(this, "Logged out!", Toast.LENGTH_SHORT).show();
             	startActivity(new Intent(this, MainActivity.class));
             	return true;
+            case R.id.action_show_statistics:
+            	startActivity(new Intent(this, ShowStatistics.class));
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
