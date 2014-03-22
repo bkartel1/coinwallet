@@ -53,5 +53,5 @@
 	<string name="title_activity_show_exchange_rates">Exchange Rates</string>
 	<string name="exchange_from_amount">"Convert: "</string>
 	<string name="exchange_btc">" BTC "</string>
-	<string name="exchange_button_go">"Confirm"</string>
+	<string name="exchange_button_go">"Update"</string>
 </resources>
