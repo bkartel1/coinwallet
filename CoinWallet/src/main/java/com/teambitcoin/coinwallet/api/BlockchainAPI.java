@@ -347,6 +347,7 @@ public class BlockchainAPI {
 			            stats.setTotalBTC(response.get("n_btc_mined").getAsBigInteger());
 			        } catch (Exception e) {
 			            e.printStackTrace();
+			            return null;
 			        }
 			        return stats;
 			    }

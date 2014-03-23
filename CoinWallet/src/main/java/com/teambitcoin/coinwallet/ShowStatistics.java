@@ -21,22 +21,29 @@ public class ShowStatistics extends Activity {
 		ListView txListView = (ListView) findViewById(R.id.statistics_list);
 		List<Map<String, String>> txEntries = new ArrayList<Map<String, String>>();
 		
-		txEntries.add(new HashMap<String, String>(){{
-			put("name", "Total Number of BTC");
-			put("value", stats.getTotalBTC().toString());
-		}});
-		txEntries.add(new HashMap<String, String>(){{
-			put("name", "Network difficulty");
-			put("value", Float.toString(stats.getDifficulty()));
-		}});
-		txEntries.add(new HashMap<String, String>(){{
-			put("name", "Network hash rate");
-			put("value", Float.toString(stats.getHashRate()));
-		}});
-		txEntries.add(new HashMap<String, String>(){{
-			put("name", "Total number of blocks");
-			put("value", Integer.toString(stats.getNumberOfBlocks()));
-		}});
+		if(stats != null){
+			txEntries.add(new HashMap<String, String>(){{
+				put("name", "Total Number of BTC");
+				put("value", stats.getTotalBTC().toString());
+			}});
+			txEntries.add(new HashMap<String, String>(){{
+				put("name", "Network difficulty");
+				put("value", Float.toString(stats.getDifficulty()));
+			}});
+			txEntries.add(new HashMap<String, String>(){{
+				put("name", "Network hash rate");
+				put("value", Float.toString(stats.getHashRate()));
+			}});
+			txEntries.add(new HashMap<String, String>(){{
+				put("name", "Total number of blocks");
+				put("value", Integer.toString(stats.getNumberOfBlocks()));
+			}});
+		}else{
+			txEntries.add(new HashMap<String, String>(){{
+				put("name", "No internet connection");
+				put("value", "");
+			}});
+		}
 		
 		SimpleAdapter simpleAdapter = new SimpleAdapter(this, txEntries,
 				android.R.layout.simple_list_item_2, new String[] {
