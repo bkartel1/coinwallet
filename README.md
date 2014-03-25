@@ -16,7 +16,7 @@ To remove incorrect folder/package errors, remove the default source directory, 
 Automatic builds from Travis-ci can be found in the [results branch](https://github.com/cwallet/coinwallet/tree/results/ "Automatic Builds") sorted by branch, then checksum of the commit, then target API.
 
 ## Documentation ##
-_To-Do..._
+Documentation is provided through javadoc, and up-to-date documentation can be found [on this repo's github page](http://cwallet.github.io/coinwallet/), where it is pushed after each successful build by travis-ci.
 
 ## Development Notes ##
  - Should builds start erroring out randomly on travis, particulary around the generation of sources, check for a new version of the sdk.
