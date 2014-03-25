@@ -49,6 +49,7 @@ before_script:
 script: mvn install -Pintegration-tests -Dandroid.device=test -e
 
 after_script:
+- if [[ $TRAVIS_JOB_NUMBER == *.2 ]]; then ./update_docs; fi
 - "./update_results"
 
 branches:

@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+echo -e "Generating Documentation"
+mvn javadoc:javadoc
+echo -e "Starting to update Documentation Branch\n"
+mv CoinWallet/target/site/apidocs $HOME
+cd $HOME
+git config --global user.email "travis@travis-ci.org"
+git config --global user.name "Travis"
+git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/cwallet/coinwallet.git docs > /dev/null
+cd docs
+cp -R $HOME/apidocs/* .
+git pull > /dev/null # In case any changes have occured
+git add -f .
+git commit -m "Travis build $TRAVIS_BUILD_NUMBER Documentation pushed"
+git push -fq origin gh-pages > /dev/null
+echo -e "Done copying the documentation\n"
